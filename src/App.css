@@ -803,3 +803,27 @@ html, body, #root {
     padding-bottom: 6px;
   }
 }
+
+
+
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: #ffffff;
+}
+
+.client-actions {
+  position: fixed;
+  top: 80px; /* hauteur du header */
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  background: #ffffff;
+}
+.chat-area {
+  margin-top: 140px; /* header + boutons */
+}

@@ -129,6 +129,8 @@ const handleClientMedia = async (e) => {
 const sellerSlug = getSellerSlugFromUrl();
 console.log("🌐 sellerSlug détecté depuis URL:", sellerSlug);
 
+
+
   // Admin mode: open with ?admin=1 (doesn't impact clients)
   const isAdminMode =
     new URLSearchParams(window.location.search).get("admin") === "1";
@@ -175,6 +177,25 @@ console.log("🌐 sellerSlug détecté depuis URL:", sellerSlug);
   notificationSoundRef.current = new Audio(`${import.meta.env.BASE_URL}notification.mp3`);
   notificationSoundRef.current.volume = 0.7;
 }, []);
+  useEffect(() => {
+    const unlockAudio = () => {
+      const audio = notificationSoundRef.current;
+      if (!audio) return;
+
+      audio.play().then(() => {
+        audio.pause();
+        audio.currentTime = 0;
+      }).catch(() => {});
+
+      window.removeEventListener("click", unlockAudio);
+    };
+
+    window.addEventListener("click", unlockAudio);
+
+    return () => {
+      window.removeEventListener("click", unlockAudio);
+    };
+  }, []);
 
 useEffect(() => {
   if (messagesEndRef.current) {
