@@ -797,8 +797,9 @@ return (
                     />
                   ) : msg.mediaType === "document" ? (
                     <a
-                      href={getDownloadUrl(msg.mediaUrl, msg.fileName, msg.mediaType)}
-                      target="_blank"
+                      href={`${BRIDGE_URL}/pwa/download?url=${encodeURIComponent(
+                        msg.mediaUrl
+                      )}&name=${encodeURIComponent(msg.fileName || "document.pdf")}`}
                       rel="noopener noreferrer"
                       download={msg.fileName || "document.pdf"}
                     >
