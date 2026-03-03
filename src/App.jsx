@@ -281,6 +281,13 @@ useEffect(() => {
     socket.emit("init", { email: clientEmail, sellerSlug });
     loadMissedCount();
     loadPurchasedContent();
+
+    // 💓 HEARTBEAT (sert au serveur pour savoir si la PWA est "vivante")
+    if (heartbeatInterval) clearInterval(heartbeatInterval);
+    socket.emit("heartbeat"); // ping direct dès la connexion
+    heartbeatInterval = setInterval(() => {
+      socket.emit("heartbeat");
+    }, 20000);
   });
 // 👁 Envoi état visibilité initial + listener
   const handleVisibility = () => {
