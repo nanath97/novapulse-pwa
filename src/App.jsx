@@ -771,7 +771,7 @@ return (
                       controls
                       className="unlocked-image"
                     />
-                  ) : msg.mediaUrl && msg.mediaUrl.endsWith(".pdf") ? (
+                  ) : msg.mediaUrl && msg.mediaUrl.toLowerCase().includes(".pdf") ? (
                     <a
                       href={msg.mediaUrl}
                       download="document.pdf"
