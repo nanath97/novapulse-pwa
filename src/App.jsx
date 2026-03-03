@@ -282,7 +282,17 @@ useEffect(() => {
     loadMissedCount();
     loadPurchasedContent();
   });
+// 👁 Envoi état visibilité initial + listener
+  const handleVisibility = () => {
+    socket.emit("pwa_visibility", {
+      isVisible: document.visibilityState === "visible"
+    });
+  };
 
+  document.addEventListener("visibilitychange", handleVisibility);
+
+  // envoyer état initial
+  handleVisibility();
   // ⬇️ C’EST ICI qu’on modifie les handlers entrants
 
   socket.on("admin_message", (data) => {
@@ -367,6 +377,7 @@ useEffect(() => {
   return () => {
     try {
       if (heartbeatInterval) clearInterval(heartbeatInterval);
+      document.removeEventListener("visibilitychange", handleVisibility);
       socket.disconnect();
     } catch (e) {}
     socketRef.current = null;
