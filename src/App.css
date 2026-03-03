@@ -814,6 +814,8 @@ html, body, #root {
   width: 100%;
   z-index: 1000;
   background: #ffffff;
+  display: flex;
+  justify-content: center; 
 }
 
 .client-actions {
