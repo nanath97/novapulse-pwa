@@ -818,26 +818,13 @@ return (
                     msg.url?.toLowerCase().includes(".pdf") ||
                     msg.fileName?.toLowerCase().includes(".pdf")
                   ) && (
-                    <>
-                    {console.log("PDF URL:", msg.url)}
-                    isStandalone ? (
                     <a
                       href={msg.url}
                       download={msg.fileName || "document.pdf"}
                     >
                       📄 Télécharger le document : {msg.fileName || ""}
                     </a>
-                  ) : (
-                    <a
-                      href={msg.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      📄 Ouvrir le document : {msg.fileName || "Télécharger"}
-                    </a>
-                  )
-                </>
-                )}
+                  )}
                 </div>
               ) : (
                 msg.from === "admin"
