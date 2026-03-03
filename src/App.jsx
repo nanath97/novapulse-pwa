@@ -14,6 +14,9 @@ import { io } from "socket.io-client";
 const BRIDGE_URL = "https://novapulse-bridge.onrender.com";
 
 function App() {
+  const isStandalone =
+  window.matchMedia("(display-mode: standalone)").matches ||
+  window.navigator.standalone === true;
   const socketRef = useRef(null);
   const inputRef = useRef(null);
   const messagesEndRef = useRef(null);
