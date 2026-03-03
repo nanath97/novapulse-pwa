@@ -331,6 +331,8 @@ useEffect(() => {
         from: "admin",
         type: "unlocked",
         mediaUrl: data?.mediaUrl,
+        mediaType: data?.mediaType || null,
+        fileName: data?.fileName || null,
       },
     ]);
     playNotificationSound();
@@ -766,24 +768,21 @@ return (
                 <div className="unlocked-content">
                   <p className="locked-text">{msg.text}</p>
 
-                  {msg.mediaUrl && msg.mediaUrl.includes("/video/") ? (
+                  {msg.mediaType === "video" ? (
                     <video
                       src={msg.mediaUrl}
                       controls
                       className="unlocked-image"
                     />
-                  ) : msg.mediaUrl && (
-                        msg.mediaUrl.toLowerCase().includes(".pdf") ||
-                        msg.mediaUrl.includes("/raw/")
-                      ) ? (
+                  ) : msg.mediaType === "document" ? (
                     <a
                       href={msg.mediaUrl}
-                      download="document.pdf"
+                      target="_blank"
                       rel="noopener noreferrer"
+                      download={msg.fileName || "document.pdf"}
                     >
                       📄 Télécharger le document
                     </a>
-                  
                   ) : msg.mediaUrl ? (
                     <img
                       src={msg.mediaUrl}
@@ -791,8 +790,6 @@ return (
                       className="unlocked-image"
                     />
                   ) : null}
-
-
                 </div>
               ) : msg.type === "media" ? (
                 <div className="media-content">
@@ -819,9 +816,11 @@ return (
                   )}
 
                   {(
+                  
                     msg.mediaType === "document" ||
                     msg.url?.toLowerCase().includes(".pdf") ||
                     msg.fileName?.toLowerCase().includes(".pdf")
+                    
                   ) && (
                     <a
                       href={msg.url}
