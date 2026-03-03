@@ -800,8 +800,8 @@ return (
                       href={`${BRIDGE_URL}/pwa/download?url=${encodeURIComponent(
                         msg.mediaUrl
                       )}&name=${encodeURIComponent(msg.fileName || "document.pdf")}`}
+                      target="_blank"
                       rel="noopener noreferrer"
-                      download={msg.fileName || "document.pdf"}
                     >
                       📄 Télécharger le document
                     </a>
