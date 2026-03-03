@@ -323,6 +323,7 @@ useEffect(() => {
 });
 
   socket.on("paid_content_unlocked", (data) => {
+    console.log("🔓 paid_content_unlocked:", data);
     setMessages((prev) => [
       ...prev,
       {
