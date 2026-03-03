@@ -637,7 +637,6 @@ return (
 
     {isIdentified && topicId && (
   <div className="client-actions">
-    <div className="client-actions-inner">
 
     <button
       className="client-action-button"
@@ -653,7 +652,6 @@ return (
       💳 Paiements & facturation
     </button>
   </div>
-</div>
 )}
     
     {/* Admin note panel (only visible with ?admin=1) */}

@@ -827,15 +827,10 @@ html, body, #root {
 
   display: flex;
   justify-content: center;
+  gap: 16px;
 }
 
-.client-actions-inner {
-  display: flex;
-  gap: 16px;
-  width: 100%;
-  max-width: 600px;
-  justify-content: center;
-}
+
 .chat-area {
   margin-top: 140px; /* header + boutons */
 }
