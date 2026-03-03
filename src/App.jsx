@@ -815,6 +815,14 @@ return (
                     msg.url?.toLowerCase().includes(".pdf") ||
                     msg.fileName?.toLowerCase().includes(".pdf")
                   ) && (
+                    isStandalone ? (
+                    <a
+                      href={msg.url}
+                      download={msg.fileName || "document.pdf"}
+                    >
+                      📄 Télécharger le document : {msg.fileName || ""}
+                    </a>
+                  ) : (
                     <a
                       href={msg.url}
                       target="_blank"
@@ -822,7 +830,8 @@ return (
                     >
                       📄 Ouvrir le document : {msg.fileName || "Télécharger"}
                     </a>
-                  )}
+                  )
+                )}
                 </div>
               ) : (
                 msg.from === "admin"
