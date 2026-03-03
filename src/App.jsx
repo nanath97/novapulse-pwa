@@ -818,6 +818,8 @@ return (
                     msg.url?.toLowerCase().includes(".pdf") ||
                     msg.fileName?.toLowerCase().includes(".pdf")
                   ) && (
+                    <>
+                    {console.log("PDF URL:", msg.url)}
                     isStandalone ? (
                     <a
                       href={msg.url}
@@ -834,6 +836,7 @@ return (
                       📄 Ouvrir le document : {msg.fileName || "Télécharger"}
                     </a>
                   )
+                </>
                 )}
                 </div>
               ) : (
