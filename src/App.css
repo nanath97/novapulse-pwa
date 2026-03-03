@@ -816,18 +816,14 @@ html, body, #root {
   background: #ffffff;
 }
 
-
 .client-actions {
   position: fixed;
-  top: 80px;
+  top: 80px; /* hauteur du header */
   left: 0;
   width: 100%;
   z-index: 999;
   background: #ffffff;
-
 }
-
-
 .chat-area {
   margin-top: 140px; /* header + boutons */
 }
