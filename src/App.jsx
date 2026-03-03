@@ -36,6 +36,27 @@ function App() {
   const [paymentsPaid, setPaymentsPaid] = useState([]);
   const notificationSoundRef = useRef(null);
   
+function getDownloadUrl(mediaUrl, fileName, mediaType) {
+  if (!mediaUrl) return "";
+
+  const name = String(fileName || "").toLowerCase();
+
+  // seulement pour les documents
+  if (mediaType !== "document") return mediaUrl;
+
+  const isPdf = name.endsWith(".pdf") || mediaUrl.toLowerCase().includes(".pdf");
+  const isCloudinaryRaw =
+    mediaUrl.includes("res.cloudinary.com") && mediaUrl.includes("/raw/upload/");
+
+  // Si Cloudinary RAW + pas d'extension .pdf dans l'URL mais le fichier est censé être un PDF -> on force .pdf
+  if (isCloudinaryRaw && isPdf && !mediaUrl.toLowerCase().includes(".pdf")) {
+    return `${mediaUrl}.pdf`;
+  }
+
+  return mediaUrl;
+}
+
+
 
 // Masque visuellement /envXX dans les messages admin
 const maskEnvCommand = (text) => {
@@ -776,7 +797,7 @@ return (
                     />
                   ) : msg.mediaType === "document" ? (
                     <a
-                      href={msg.mediaUrl}
+                      href={getDownloadUrl(msg.mediaUrl, msg.fileName, msg.mediaType)}
                       target="_blank"
                       rel="noopener noreferrer"
                       download={msg.fileName || "document.pdf"}
@@ -823,7 +844,7 @@ return (
                     
                   ) && (
                     <a
-                      href={msg.url}
+                      href={getDownloadUrl(msg.url, msg.fileName, "document")}
                       download={msg.fileName || "document.pdf"}
                     >
                       📄 Télécharger le document : {msg.fileName || ""}
