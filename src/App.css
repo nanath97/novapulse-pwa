@@ -610,7 +610,14 @@ html, body, #root {
 }
 /* ===================== CONTAINER ACTIONS ESPACE CLIENT ===================== */
 
-
+.client-actions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 26px auto 16px auto;
+  max-width: 600px;
+}
 .services-link-wrapper {
   width: 100%;
   display: flex;
@@ -813,16 +820,11 @@ html, body, #root {
 .client-actions {
   position: fixed;
   top: 80px;
-  left: 50%;
-  transform: translateX(-50%); /* 🔥 centre réel */
+  left: 0;
   width: 100%;
-  max-width: 600px;
   z-index: 999;
   background: #ffffff;
 
-  display: flex;
-  justify-content: center;
-  gap: 16px;
 }
 
 
