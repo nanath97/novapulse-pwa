@@ -228,7 +228,7 @@ useEffect(() => {
 // LOAD MISSED COUNT (OFFLINE BADGE)
 // ===============================
 const loadMissedCount = async () => {
-  if (!clientEmail) return;
+  if (!clientEmail) return 0;
 
   try {
     const url = `${BRIDGE_URL}/pwa/missed-count?email=${encodeURIComponent(
@@ -239,12 +239,18 @@ const loadMissedCount = async () => {
     const data = await res.json();
 
     if (data?.success) {
-      setMissedCount(Number(data.missed || 0));
+      const n = Number(data.missed || 0);
+      setMissedCount(n);
+      return n;
     }
   } catch (err) {
     console.error("❌ loadMissedCount error:", err);
   }
+
+  return 0;
 };
+
+// ✅ SOUND NOTIFICATION (inchangé)
 const playNotificationSound = () => {
   try {
     const audio = notificationSoundRef.current;
@@ -276,19 +282,28 @@ useEffect(() => {
 
   let heartbeatInterval = null;
 
-  socket.on("connect", () => {
-    console.log("✅ Connected:", socket.id);
-    socket.emit("init", { email: clientEmail, sellerSlug });
-    loadMissedCount();
-    loadPurchasedContent();
+  socket.on("connect", async () => {
+  console.log("✅ Connected:", socket.id);
 
-    // 💓 HEARTBEAT (sert au serveur pour savoir si la PWA est "vivante")
-    if (heartbeatInterval) clearInterval(heartbeatInterval);
-    socket.emit("heartbeat"); // ping direct dès la connexion
-    heartbeatInterval = setInterval(() => {
-      socket.emit("heartbeat");
-    }, 20000);
-  });
+  socket.emit("init", { email: clientEmail, sellerSlug });
+
+  loadPurchasedContent();
+
+  // ✅ récupère le nombre de messages manqués
+  const n = await loadMissedCount();
+
+  // ✅ si on a raté des messages -> recharge l’historique automatiquement
+  if (n > 0) {
+    await loadHistory();
+  }
+
+  // 💓 HEARTBEAT
+  if (heartbeatInterval) clearInterval(heartbeatInterval);
+  socket.emit("heartbeat");
+  heartbeatInterval = setInterval(() => {
+    socket.emit("heartbeat");
+  }, 20000);
+});
 // 👁 Envoi état visibilité initial + listener
   const handleVisibility = () => {
     socket.emit("pwa_visibility", {
