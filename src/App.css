@@ -814,8 +814,6 @@ html, body, #root {
   width: 100%;
   z-index: 1000;
   background: #ffffff;
-  display: flex;
-  justify-content: center; 
 }
 
 .client-actions {
@@ -825,6 +823,8 @@ html, body, #root {
   width: 100%;
   z-index: 999;
   background: #ffffff;
+  display: flex;
+  justify-content: center;
 }
 .chat-area {
   margin-top: 140px; /* header + boutons */
