@@ -762,7 +762,7 @@ return (
                     </div>
                   )}
                 </div>
-                            ) : msg.type === "unlocked" ? (
+              ) : msg.type === "unlocked" ? (
                 <div className="unlocked-content">
                   <p className="locked-text">{msg.text}</p>
 
@@ -772,10 +772,14 @@ return (
                       controls
                       className="unlocked-image"
                     />
-                  ) : msg.mediaUrl && msg.mediaUrl.toLowerCase().includes(".pdf") ? (
+                  ) : msg.mediaUrl && (
+                        msg.mediaUrl.toLowerCase().includes(".pdf") ||
+                        msg.mediaUrl.includes("/raw/")
+                      ) ? (
                     <a
                       href={msg.mediaUrl}
                       download="document.pdf"
+                      rel="noopener noreferrer"
                     >
                       📄 Télécharger le document
                     </a>
@@ -787,6 +791,8 @@ return (
                       className="unlocked-image"
                     />
                   ) : null}
+
+
                 </div>
               ) : msg.type === "media" ? (
                 <div className="media-content">
