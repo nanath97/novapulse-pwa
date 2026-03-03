@@ -14,9 +14,7 @@ import { io } from "socket.io-client";
 const BRIDGE_URL = "https://novapulse-bridge.onrender.com";
 
 function App() {
-  const isStandalone =
-  window.matchMedia("(display-mode: standalone)").matches ||
-  window.navigator.standalone === true;
+  
   const socketRef = useRef(null);
   const inputRef = useRef(null);
   const messagesEndRef = useRef(null);
@@ -776,11 +774,11 @@ return (
                   ) : msg.mediaUrl && msg.mediaUrl.endsWith(".pdf") ? (
                     <a
                       href={msg.mediaUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      download="document.pdf"
                     >
-                      📄 Ouvrir le document
+                      📄 Télécharger le document
                     </a>
+                  
                   ) : msg.mediaUrl ? (
                     <img
                       src={msg.mediaUrl}
