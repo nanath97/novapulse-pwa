@@ -2,6 +2,7 @@ import "./App.css";
 import sendIcon from "./assets/send.png";
 import blurImg from "./assets/blur.png";
 import introVideo from "./assets/intro.mp4";
+import installVideo from "./assets/install_pwa.mp4";
 import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 
@@ -1084,9 +1085,10 @@ return (
       </p>
 
       <video
-        src="/install_pwa.mp4"
+        src={installVideo}
         controls
-        style={{ width: "100%", borderRadius: "12px" }}
+        playsInline
+        style={{ width: "100%", borderRadius: "12px", marginTop: "10px"}}
       />
     </div>
   </div>
