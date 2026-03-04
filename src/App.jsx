@@ -35,6 +35,7 @@ function App() {
   const [paymentsPending, setPaymentsPending] = useState([]);
   const [paymentsPaid, setPaymentsPaid] = useState([]);
   const notificationSoundRef = useRef(null);
+  const [showInstallVideo, setShowInstallVideo] = useState(false);
   
 function getDownloadUrl(mediaUrl, fileName, mediaType) {
   if (!mediaUrl) return "";
@@ -662,13 +663,18 @@ return (
   Voir prestations & services
 </div>
       <div className="powered-by">
-        Propulsé par NovaPulse
-      </div>
-    </div>
-    <button className="install-btn">
-    Installer l'app
-  </button>
-  </div>
+  Propulsé par NovaPulse
+</div>
+</div>
+
+<button
+  className="install-btn"
+  onClick={() => setShowInstallVideo(true)}
+>
+  Installer l'app
+</button>
+
+</div>
 </header>
 
     {isIdentified && topicId && (
@@ -1040,6 +1046,29 @@ return (
         </div>
       </div>
     )}
+    {showInstallVideo && (
+  <div
+    className="modal-overlay"
+    onClick={() => setShowInstallVideo(false)}
+  >
+    <div
+      className="modal-box"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <h2>Installer NovaPulse</h2>
+
+      <p>
+        Suivez cette courte vidéo pour ajouter l'application sur votre écran d'accueil.
+      </p>
+
+      <video
+        src="/install_pwa.mp4"
+        controls
+        style={{ width: "100%", borderRadius: "12px" }}
+      />
+    </div>
+  </div>
+)}
   </div>
 );
 }
