@@ -36,6 +36,7 @@ function App() {
   const [paymentsPaid, setPaymentsPaid] = useState([]);
   const notificationSoundRef = useRef(null);
   const [showInstallVideo, setShowInstallVideo] = useState(false);
+  const [isPWAInstalled, setIsPWAInstalled] = useState(false);
   
 function getDownloadUrl(mediaUrl, fileName, mediaType) {
   if (!mediaUrl) return "";
@@ -225,6 +226,16 @@ useEffect(() => {
     messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
   }
 }, [messages]);
+
+useEffect(() => {
+  const isStandalone =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true;
+
+  if (isStandalone) {
+    setIsPWAInstalled(true);
+  }
+}, []);
 // ===============================
 // LOAD MISSED COUNT (OFFLINE BADGE)
 // ===============================
@@ -628,55 +639,62 @@ const openServices = () => {
 return (
   
   <div className="app">
-    <header className="header">
-  <div className="header-left">
-    <div className="avatar">
-      <img src="/pro-avatar.jpg" alt="Professionnel" />
-    </div>
+  <header className="header">
 
-    <div className="header-info">
-      <div className="pro-name">Coach Matthieu</div>
+    <div className="header-left">
 
-      <div className="pro-status" style={{ position: "relative" }}>
-        Disponible pour vous répondre
-    
-
-        {missedCount > 0 && (
-          <span
-            style={{
-              position: "absolute",
-              top: -8,
-              right: -30,
-              background: "#ff3b3b",
-              color: "white",
-              borderRadius: "50%",
-              padding: "4px 8px",
-              fontSize: 12,
-              fontWeight: 700,
-            }}
-          >
-            {missedCount}
-          </span>
-        )}
+      <div className="avatar">
+        <img src="/pro-avatar.jpg" alt="Professionnel" />
       </div>
-      <div className="services-link-header" onClick={openServices}>
-  Voir prestations & services
-</div>
-      <div className="powered-by">
-  Propulsé par NovaPulse
-</div>
-</div>
 
-<button
-  className="install-btn"
-  onClick={() => setShowInstallVideo(true)}
->
-  Installer l'app
-</button>
+      <div className="header-info">
 
-</div>
-</header>
+        <div className="pro-name">Coach Matthieu</div>
 
+        <div className="pro-status" style={{ position: "relative" }}>
+          Disponible pour vous répondre
+
+          {missedCount > 0 && (
+            <span
+              style={{
+                position: "absolute",
+                top: -8,
+                right: -30,
+                background: "#ff3b3b",
+                color: "white",
+                borderRadius: "50%",
+                padding: "4px 8px",
+                fontSize: 12,
+                fontWeight: 700,
+              }}
+            >
+              {missedCount}
+            </span>
+          )}
+        </div>
+
+        <div className="services-link-header" onClick={openServices}>
+          Voir prestations & services
+        </div>
+
+        <div className="powered-by">
+          Propulsé par NovaPulse
+        </div>
+
+      </div>
+
+    </div>  {/* ← CE DIV MANQUAIT */}
+
+    {!isPWAInstalled && (
+      <button
+        className="install-btn"
+        onClick={() => setShowInstallVideo(true)}
+      >
+        Installer l'app
+      </button>
+    )}
+
+  </header>
     {isIdentified && topicId && (
   <div className="client-actions">
 
