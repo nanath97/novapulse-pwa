@@ -404,6 +404,7 @@ html, body, #root {
 
 /* Carte popup */
 .modal-box {
+  position: relative;
   width: 380px;
   max-width: 92%;
   background: #ffffff;
@@ -899,4 +900,23 @@ html, body, #root {
   border-radius: 6px;
 
   box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+.modal-close{
+  position: absolute;
+  top: 12px;
+  right: 14px;
+
+  background: none;
+  border: none;
+
+  font-size: 18px;
+  font-weight: bold;
+
+  cursor: pointer;
+  color: #64748b;
+}
+
+.modal-close:hover{
+  color: #111827;
 }

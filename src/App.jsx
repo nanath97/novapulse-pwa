@@ -692,7 +692,7 @@ return (
         onClick={() => setShowInstallVideo(true)}
       >
         Installer l'app
-        <span className="install-badge">⚡ recommandé</span>
+        <span className="install-badge">⚡ recommandé pour mobile</span>
       </button>
     )}
 
@@ -1075,6 +1075,11 @@ return (
       className="modal-box"
       onClick={(e) => e.stopPropagation()}
     >
+    <button
+        className="modal-close"
+        onClick={() => setShowInstallVideo(false)}
+      ></button>
+
       <h2>Installer NovaPulse</h2>
 
       <p>
