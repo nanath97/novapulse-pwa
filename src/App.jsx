@@ -1071,7 +1071,6 @@ return (
     className="modal-overlay"
     onClick={() => setShowInstallVideo(false)}
   >
-    ✕
     <div
       className="modal-box"
       onClick={(e) => e.stopPropagation()}
