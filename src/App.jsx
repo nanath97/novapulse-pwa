@@ -1076,7 +1076,11 @@ return (
       <h2>Installer NovaPulse</h2>
 
       <p>
-        Suivez cette courte vidéo pour ajouter l'application sur votre écran d'accueil.
+        1️⃣ Ouvrez le menu de votre navigateur  
+      <br/>
+        2️⃣ Cliquez sur "Partager"
+      <br/>
+        3️⃣ Cliquez sur "Ajouter à l'écran d'accueil"
       </p>
 
       <video
