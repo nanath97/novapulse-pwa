@@ -665,6 +665,9 @@ return (
         Propulsé par NovaPulse
       </div>
     </div>
+    <button className="install-btn">
+    Installer l'app
+  </button>
   </div>
 </header>
 
