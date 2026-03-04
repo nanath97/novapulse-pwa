@@ -692,7 +692,7 @@ return (
         onClick={() => setShowInstallVideo(true)}
       >
         Installer l'app
-        <span className="install-badge">⚡ recommandé pour mobile</span>
+        <span className="install-badge">⚡ Pour mobile</span>
       </button>
     )}
 
@@ -1071,6 +1071,7 @@ return (
     className="modal-overlay"
     onClick={() => setShowInstallVideo(false)}
   >
+    ✕
     <div
       className="modal-box"
       onClick={(e) => e.stopPropagation()}
