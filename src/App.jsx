@@ -692,6 +692,7 @@ return (
         onClick={() => setShowInstallVideo(true)}
       >
         Installer l'app
+        <span className="install-badge">⚡ recommandé</span>
       </button>
     )}
 

@@ -832,3 +832,71 @@ html, body, #root {
 .chat-area {
   margin-top: 140px; /* header + boutons */
 }
+
+/* ===================== INSTALL BUTTON ===================== */
+
+.install-btn {
+
+  background: linear-gradient(135deg,#2563eb,#1d4ed8);
+  color: white;
+
+  border: none;
+  border-radius: 12px;
+
+  padding: 10px 16px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow: 0 6px 16px rgba(37,99,235,0.35);
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  animation: installBounce 2.5s infinite;
+
+}
+
+.install-btn:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(37,99,235,0.45);
+}
+
+@keyframes installBounce{
+
+  0%{ transform: translateY(0); }
+
+  8%{ transform: translateY(-4px); }
+
+  16%{ transform: translateY(0); }
+
+  24%{ transform: translateY(-2px); }
+
+  32%{ transform: translateY(0); }
+
+  100%{ transform: translateY(0); }
+
+}
+
+.install-btn{
+  position: relative;
+}
+
+/* badge */
+.install-badge{
+  position: absolute;
+  top: -8px;
+  right: -10px;
+
+  background: #22c55e;
+  color: white;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  padding: 2px 6px;
+  border-radius: 6px;
+
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
