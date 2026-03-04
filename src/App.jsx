@@ -1076,10 +1076,6 @@ return (
       className="modal-box"
       onClick={(e) => e.stopPropagation()}
     >
-    <button
-        className="modal-close"
-        onClick={() => setShowInstallVideo(false)}
-      ></button>
 
       <h2>Installer NovaPulse</h2>
 
@@ -1095,6 +1091,7 @@ return (
         src={installVideo}
         controls
         playsInline
+        onEnded={() => setShowInstallVideo(false)}
         style={{ width: "100%", borderRadius: "12px", marginTop: "10px"}}
       />
     </div>
