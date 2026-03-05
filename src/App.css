@@ -605,12 +605,7 @@ html, body, #root {
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
 }
 
-.client-action-button:hover {
-  background: #f1f5f9; /* léger fond au survol */
-  border-color: #94a3b8; /* renforce la perception de clic */
-  transform: translateY(-1px);
-  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
-}
+
 /* ===================== CONTAINER ACTIONS ESPACE CLIENT ===================== */
 
 .client-actions {
