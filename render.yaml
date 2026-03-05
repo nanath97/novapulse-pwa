@@ -1,5 +1,5 @@
 services:
-  - type: web
+  - type: static
     name: novapulse-pwa
     env: static
     buildCommand: npm run build
