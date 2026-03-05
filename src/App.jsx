@@ -1,7 +1,6 @@
 import "./App.css";
 import sendIcon from "./assets/send.png";
 import blurImg from "./assets/blur.png";
-import introVideo from "./assets/intro.mp4";
 import installVideo from "./assets/install_pwa.mp4";
 import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
@@ -29,6 +28,7 @@ function App() {
   const [historyLoaded, setHistoryLoaded] = useState(false);
   const [missedCount, setMissedCount] = useState(0);
   const [showServices, setShowServices] = useState(false);
+  const [sellerConfig, setSellerConfig] = useState(null);
   const [isNewClient, setIsNewClient] = useState(false);
   const [showPayments, setShowPayments] = useState(false);
   const [paymentsLoading, setPaymentsLoading] = useState(false);
@@ -38,6 +38,7 @@ function App() {
   const notificationSoundRef = useRef(null);
   const [showInstallVideo, setShowInstallVideo] = useState(false);
   const [isPWAInstalled, setIsPWAInstalled] = useState(false);
+  
   
 function getDownloadUrl(mediaUrl, fileName, mediaType) {
   if (!mediaUrl) return "";
@@ -237,6 +238,21 @@ useEffect(() => {
     setIsPWAInstalled(true);
   }
 }, []);
+
+
+useEffect(() => {
+  const loadSellerConfig = async () => {
+    try {
+      const res = await fetch(`/sellers/${sellerSlug}/config.json`);
+      const data = await res.json();
+      setSellerConfig(data);
+    } catch (err) {
+      console.error("Erreur chargement config vendeur", err);
+    }
+  };
+
+  loadSellerConfig();
+}, [sellerSlug]);
 // ===============================
 // LOAD MISSED COUNT (OFFLINE BADGE)
 // ===============================
@@ -645,12 +661,14 @@ return (
     <div className="header-left">
 
       <div className="avatar">
-        <img src="/pro-avatar.jpg" alt="Professionnel" />
+        <img src={`/sellers/${sellerSlug}/avatar.jpg`} alt="Professionnel" />
       </div>
 
       <div className="header-info">
 
-        <div className="pro-name">Coach Matthieu</div>
+        <div className="pro-name">
+          {sellerConfig?.name || "Professionnel"}
+        </div>
 
         <div className="pro-status" style={{ position: "relative" }}>
           Disponible pour vous répondre
@@ -770,7 +788,7 @@ return (
               <h3>Bonjour et bienvenue chez NovaPulse 👋</h3>
 
               <video
-                src={introVideo}
+                src={`/sellers/${sellerSlug}/intro.mp4`}
                 controls
                 playsInline
                 className="intro-video"
@@ -789,10 +807,9 @@ return (
           <div className="services-block">
             <h3>Nos services et prestations</h3>
             <ul>
-              <li>🔹 Conseil personnalisé</li>
-              <li>🔹 Accompagnement sur mesure</li>
-              <li>🔹 Prestations premium</li>
-              <li>🔹 Support dédié</li>
+              {sellerConfig?.services?.map((service, index) => (
+                <li key={index}>🔹 {service}</li>
+              ))}
             </ul>
           </div>
         )}
