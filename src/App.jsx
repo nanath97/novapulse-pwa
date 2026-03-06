@@ -704,18 +704,13 @@ return (
       <div className="header-right">
 
         {sellerConfig?.calendly && (
-          <button
-            className="call-btn"
-            onClick={() =>
-              window.open(
-                `${sellerConfig.calendly}?email=${encodeURIComponent(clientEmail || "")}`,
-                "_blank"
-              )
-            }
-          >
-            📞 Réserver un appel
-          </button>
-        )}
+      <button
+        className="call-icon-btn"
+        onClick={() => window.open(sellerConfig.calendly, "_blank")}
+      >
+        📞
+      </button>
+    )}
 
         {!isPWAInstalled && (
           <button
