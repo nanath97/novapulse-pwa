@@ -914,19 +914,23 @@ html, body, #root {
   gap: 10px;
 }
 
-.call-btn {
-  width: 40px;
-  height: 40px;
-  background: #2f80ed;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  font-size: 18px;
-  cursor: pointer;
+.call-icon-btn {
+  width: 34px;
+  height: 34px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  background: #f3f4f6;
+  border: none;
+  border-radius: 8px;
+
+  font-size: 16px;
+  line-height: 1;
+
   padding: 0;
+  cursor: pointer;
 }
 
 .call-btn:hover {
