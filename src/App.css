@@ -820,7 +820,6 @@ html, body, #root {
 .client-actions {
   position: fixed;
   top: 80px; /* hauteur du header */
-  left: 0;
   width: 100%;
   z-index: 999;
   background: #ffffff;
