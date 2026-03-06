@@ -701,29 +701,31 @@ return (
         </div>
 
       </div>
-      <div className="header-right">
 
-        {sellerConfig?.calendly && (
-      <button
-        className="call-icon-btn"
-        onClick={() => window.open(sellerConfig.calendly, "_blank")}
-      >
-        📞
-      </button>
-    )}
+    </div>  {/* ← FERME header-left ici */}
 
-        {!isPWAInstalled && (
-          <button
-            className="install-btn"
-            onClick={() => setShowInstallVideo(true)}
-          >
-            Installer l'app
-            <span className="install-badge">⚡ Pour mobile</span>
-          </button>
-        )}
-        </div>
+    <div className="header-right">
 
-      </div>
+      {sellerConfig?.calendly && (
+        <button
+          className="call-icon-btn"
+          onClick={() => window.open(sellerConfig.calendly, "_blank")}
+        >
+          📞
+        </button>
+      )}
+
+      {!isPWAInstalled && (
+        <button
+          className="install-btn"
+          onClick={() => setShowInstallVideo(true)}
+        >
+          Installer l'app
+          <span className="install-badge">⚡ Pour mobile</span>
+        </button>
+      )}
+
+    </div>
 
   </header>
     {isIdentified && topicId && (
