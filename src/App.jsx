@@ -696,6 +696,14 @@ return (
           Voir prestations & services
         </div>
 
+        {sellerConfig?.calendly && (
+          <div
+            className="call-link-header"
+            onClick={() => window.open(sellerConfig.calendly, "_blank")}
+          >
+            📞 Réserver un appel
+          </div>
+        )}
         <div className="powered-by">
           Propulsé par NovaPulse
         </div>
