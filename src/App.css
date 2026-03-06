@@ -819,11 +819,20 @@ html, body, #root {
 
 .client-actions {
   position: fixed;
-  top: 80px; /* hauteur du header */
-  width: 100%;
+  top: 80px;
+
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+
+  width: max-content;
   z-index: 999;
   background: #ffffff;
 }
+
 .chat-area {
   margin-top: 140px; /* header + boutons */
 }
