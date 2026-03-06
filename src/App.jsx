@@ -696,31 +696,39 @@ return (
           Voir prestations & services
         </div>
 
-        {sellerConfig?.calendly && (
-          <div
-            className="call-link-header"
-            onClick={() => window.open(sellerConfig.calendly, "_blank")}
-          >
-            📞 Réserver un appel
-          </div>
-        )}
         <div className="powered-by">
           Propulsé par NovaPulse
         </div>
 
       </div>
+      <div className="header-right">
 
-    </div>  {/* ← CE DIV MANQUAIT */}
+        {sellerConfig?.calendly && (
+          <button
+            className="call-btn"
+            onClick={() =>
+              window.open(
+                `${sellerConfig.calendly}?email=${encodeURIComponent(clientEmail || "")}`,
+                "_blank"
+              )
+            }
+          >
+            📞 Réserver un appel
+          </button>
+        )}
 
-    {!isPWAInstalled && (
-      <button
-        className="install-btn"
-        onClick={() => setShowInstallVideo(true)}
-      >
-        Installer l'app
-        <span className="install-badge">⚡ Pour mobile</span>
-      </button>
-    )}
+        {!isPWAInstalled && (
+          <button
+            className="install-btn"
+            onClick={() => setShowInstallVideo(true)}
+          >
+            Installer l'app
+            <span className="install-badge">⚡ Pour mobile</span>
+          </button>
+        )}
+        </div>
+
+      </div>
 
   </header>
     {isIdentified && topicId && (

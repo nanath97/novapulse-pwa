@@ -909,3 +909,24 @@ html, body, #root {
 .call-link-header:hover {
   opacity: 0.7;
 }
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.call-btn {
+  background: #2f80ed;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.call-btn:hover {
+  opacity: 0.9;
+}
