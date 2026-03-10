@@ -49,6 +49,7 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 async function subscribePush() {
+  window.subscribePush = subscribePush;
   try {
 
     console.log("🔔 Demande permission notification...");

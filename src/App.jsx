@@ -472,7 +472,10 @@ useEffect(() => {
       console.error("❌ registerClient error:", err);
     }
   };
-
+    if (window.subscribePush) {
+  console.log("🔔 Tentative subscription push après login");
+  window.subscribePush();
+}
   // ===============================
   // LOAD HISTORY
   // ===============================
