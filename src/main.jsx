@@ -8,3 +8,17 @@ createRoot(document.getElementById('root')).render(
     <App />
   </StrictMode>,
 )
+// =============================
+// NOVAPULSE - SERVICE WORKER
+// =============================
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", async () => {
+    try {
+      const reg = await navigator.serviceWorker.register("/service-worker.js");
+      console.log("🔧 Service Worker enregistré :", reg.scope);
+    } catch (err) {
+      console.error("❌ Service Worker erreur :", err);
+    }
+  });
+}
