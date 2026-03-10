@@ -17,13 +17,17 @@ if ("serviceWorker" in navigator) {
     try {
       const reg = await navigator.serviceWorker.register("/service-worker.js");
       console.log("🔧 Service Worker enregistré :", reg.scope);
-      subscribePush();
+
+      window.addEventListener("click", () => {
+        console.log("🖱 Interaction utilisateur détectée");
+        subscribePush();
+      }, { once: true });
+
     } catch (err) {
       console.error("❌ Service Worker erreur :", err);
     }
   });
 }
-
 // =============================
 // NOVAPULSE - PUSH SUBSCRIPTION
 // =============================
