@@ -70,6 +70,36 @@ async function subscribePush() {
     });
 
     console.log("📡 Subscription push créée :", subscription);
+    try {
+
+  const email = localStorage.getItem("pwa_client_email");
+
+  const path = window.location.pathname;
+  const sellerSlug = path.replace("/", "").trim().toLowerCase();
+
+  console.log("📨 Envoi subscription au bridge...");
+  console.log("Email:", email);
+  console.log("Seller:", sellerSlug);
+
+  await fetch("https://novapulse-bridge.onrender.com/pwa/subscribe", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email,
+      sellerSlug,
+      subscription
+    })
+  });
+
+  console.log("✅ Subscription envoyée au serveur");
+
+} catch (err) {
+
+  console.error("❌ Erreur envoi subscription :", err);
+
+}
 
   } catch (err) {
     console.error("❌ Erreur subscription push :", err);
