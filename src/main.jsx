@@ -73,6 +73,10 @@ async function subscribePush() {
     try {
 
   const email = localStorage.getItem("pwa_client_email");
+  if (!email) {
+  console.log("⚠️ Pas d'email client, subscription ignorée");
+  return;
+}
 
   const path = window.location.pathname;
   const sellerSlug = path.replace("/", "").trim().toLowerCase();
