@@ -467,6 +467,7 @@ useEffect(() => {
         localStorage.setItem("pwa_client_email", cleanEmail);
         localStorage.setItem("pwa_topic_id", newTopicId);
         localStorage.setItem("pwa_is_new", data.isNew ? "true" : "false");
+        localStorage.setItem("pwa_seller_slug", sellerSlug);
       }
     } catch (err) {
       console.error("❌ registerClient error:", err);

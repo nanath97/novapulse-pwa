@@ -79,8 +79,7 @@ async function subscribePush() {
   return;
 }
 
-  const path = window.location.pathname;
-  const sellerSlug = path.replace("/", "").trim().toLowerCase();
+  const sellerSlug = localStorage.getItem("pwa_seller_slug");
 
   console.log("📨 Envoi subscription au bridge...");
   console.log("Email:", email);
