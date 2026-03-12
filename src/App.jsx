@@ -1078,9 +1078,9 @@ return (
     {!isIdentified && (
       <div className="modal-overlay">
         <div className="modal-box">
-          <h2>Accès à votre espace privé</h2>
+          <h2>Testez l’expérience client NovaPulse</h2>
           <p>
-            Entrez votre email pour accéder à votre espace de suivi personnalisé et confidentiel avec votre professionnel.
+            Entrez votre email pour ouvrir un espace de démonstration et tester l’interface que vos clients utiliseront pour discuter avec vous et accéder à vos contenus.
           </p>
 
           <input
@@ -1092,7 +1092,7 @@ return (
           />
 
                     <button className="send-button" onClick={registerClient}>
-            Accéder au chat
+            Tester la démo
           </button>
           <p className="secure-note">
             🔒 Données et paiements protégés — accès strictement confidentiel
