@@ -1080,7 +1080,7 @@ return (
         <div className="modal-box">
           <h2>Testez l’expérience client NovaPulse</h2>
           <p>
-            Entrez votre email pour ouvrir un espace de démonstration et tester l’interface que vos clients utiliseront pour discuter avec vous et accéder à vos contenus.
+            Entrez votre email pour tester l’interface que vos clients utiliseront pour discuter avec vous et accéder à vos contenus.
           </p>
 
           <input
