@@ -67,6 +67,28 @@ const maskEnvCommand = (text) => {
   if (!text) return "";
   return text.replace(/\/env[\d.,]+/gi, "").trim();
 };
+const renderTextWithLinks = (text) => {
+  if (!text) return "";
+
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+  return text.split(urlRegex).map((part, index) => {
+    if (part.match(urlRegex)) {
+      return (
+        <a
+          key={index}
+          href={part}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: "#2563eb", textDecoration: "underline" }}
+        >
+          {part}
+        </a>
+      );
+    }
+    return part;
+  });
+};
 
 
 
@@ -951,8 +973,9 @@ return (
                 </div>
               ) : (
                 msg.from === "admin"
-                  ? maskEnvCommand(msg.text)
-                  : msg.text
+                  ? renderTextWithLinks(maskEnvCommand(msg.text))
+                  : renderTextWithLinks(msg.text)
+
               )}
             </div>
           </div>
