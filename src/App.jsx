@@ -1083,7 +1083,7 @@ return (
             Entrez votre email et testez comme si vous étiez votre propre client.
           </p>
           <div className="demo-features">
-            ✓ Démo gratuite • ✓ Aucun spam • ✓ Test en 10 secondes
+            ✓ Démo gratuite  • ✓ Test en 10 secondes
           </div>
 
           <input
