@@ -1080,8 +1080,13 @@ return (
         <div className="modal-box">
           <h2>Testez l’expérience client NovaPulse</h2>
           <p>
-            Entrez votre email pour tester l’interface que vos clients utiliseront pour discuter avec vous et accéder à vos contenus.
+            Entrez votre email et testez comme si vous étiez votre propre client.
           </p>
+          <div className="demo-features">
+            <div>✓ Démo gratuite</div>
+            <div>✓ Aucun spam</div>
+            <div>✓ Test en 10 secondes</div>
+          </div>
 
           <input
             type="email"
