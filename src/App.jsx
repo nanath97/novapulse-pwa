@@ -1078,14 +1078,12 @@ return (
     {!isIdentified && (
       <div className="modal-overlay">
         <div className="modal-box">
-          <h2>Testez l’expérience client NovaPulse</h2>
+          <h2><span className="marker">Testez</span> l’expérience client NovaPulse</h2>
           <p>
             Entrez votre email et testez comme si vous étiez votre propre client.
           </p>
           <div className="demo-features">
-            <div>✓ Démo gratuite</div>
-            <div>✓ Aucun spam</div>
-            <div>✓ Test en 10 secondes</div>
+            ✓ Démo gratuite • ✓ Aucun spam • ✓ Test en 10 secondes
           </div>
 
           <input
