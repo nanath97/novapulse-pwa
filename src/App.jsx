@@ -38,7 +38,7 @@ function App() {
   const notificationSoundRef = useRef(null);
   const [showInstallVideo, setShowInstallVideo] = useState(false);
   const [isPWAInstalled, setIsPWAInstalled] = useState(false);
-  const [showActions, setShowActions] = useState(false);
+  const [showActions, setShowActions] = useState(true);
   
 function getDownloadUrl(mediaUrl, fileName, mediaType) {
   if (!mediaUrl) return "";
