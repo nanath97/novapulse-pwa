@@ -1103,7 +1103,7 @@ return (
         <div className="modal-box">
           <h2><span className="marker">Découvrez</span> comment votre activité apparaîtra à vos clients</h2>
           <p>
-            Testez les fonctionalités qui vous feront gagner la confiance de vos clients
+            Messages, paiements, agenda et réservations d'appel dans un seul espace
           </p>
           <div className="demo-features">
             ✓ Démo gratuite  • ✓ Test en 10 secondes
