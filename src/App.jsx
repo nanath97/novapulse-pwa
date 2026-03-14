@@ -1101,9 +1101,9 @@ return (
     {!isIdentified && (
       <div className="modal-overlay">
         <div className="modal-box">
-          <h2><span className="marker">Testez</span> l’expérience client NovaPulse</h2>
+          <h2><span className="marker">Découvrez</span> comment votre activité apparaîtra à vos clients</h2>
           <p>
-            Entrez votre email et testez comme si vous étiez votre propre client.
+            Testez les fonctionalités qui vous feront gagner la confiance de vos clients
           </p>
           <div className="demo-features">
             ✓ Démo gratuite  • ✓ Test en 10 secondes
@@ -1111,7 +1111,7 @@ return (
 
           <input
             type="email"
-            placeholder="votre@email.com"
+            placeholder="Prénom"
             value={emailInput}
             onChange={(e) => setEmailInput(e.target.value)}
             className="input"
