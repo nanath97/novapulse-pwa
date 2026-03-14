@@ -830,7 +830,7 @@ html, body, #root {
 
 .client-actions {
   position: fixed;
-  top: 70px;
+  top: 80px;
 
   left: 0;
   width: 100%;
@@ -845,7 +845,7 @@ html, body, #root {
   background: #ffffff;
 }
 .chat-area {
-  margin-top: 140px; /* header + boutons */
+  margin-top: 160px; /* header + boutons */
 }
 
 /* ===================== INSTALL BUTTON ===================== */
