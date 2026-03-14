@@ -1048,3 +1048,30 @@ html, body, #root {
 .modal-box .send-button{
   animation: demoBounce 3s infinite;
 }
+
+.mobile-toggle{
+  display:none;
+  font-size:20px;
+  cursor:pointer;
+  margin:10px;
+}
+
+/* Mobile only */
+@media (max-width:768px){
+
+.mobile-toggle{
+  display:block;
+  text-align:center;
+}
+
+.mobile-actions{
+  max-height:0;
+  overflow:hidden;
+  transition:0.3s;
+}
+
+.mobile-actions.open{
+  max-height:120px;
+}
+
+}

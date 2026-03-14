@@ -38,7 +38,7 @@ function App() {
   const notificationSoundRef = useRef(null);
   const [showInstallVideo, setShowInstallVideo] = useState(false);
   const [isPWAInstalled, setIsPWAInstalled] = useState(false);
-  
+  const [showActions, setShowActions] = useState(false);
   
 function getDownloadUrl(mediaUrl, fileName, mediaType) {
   if (!mediaUrl) return "";
@@ -754,22 +754,35 @@ return (
     </div>
 
   </header>
-    {isIdentified && topicId && (
+
+{isIdentified && topicId && (
   <div className="client-actions">
 
-    <button
-      className="client-action-button"
-      onClick={loadHistory}
+    <div
+      className="mobile-toggle"
+      onClick={() => setShowActions(!showActions)}
     >
-      📜 Historique des échanges
-    </button>
+      {showActions ? "▲" : "▼"}
+    </div>
 
-    <button
-      className="client-action-button"
-      onClick={loadPayments}
-    >
-      💳 Paiements & facturation
-    </button>
+    {showActions && (
+      <>
+        <button
+          className="client-action-button"
+          onClick={loadHistory}
+        >
+          📜 Historique des échanges
+        </button>
+
+        <button
+          className="client-action-button"
+          onClick={loadPayments}
+        >
+          💳 Paiements & facturation
+        </button>
+      </>
+    )}
+
   </div>
 )}
     
