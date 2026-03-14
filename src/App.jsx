@@ -1101,9 +1101,23 @@ return (
     {!isIdentified && (
       <div className="modal-overlay">
         <div className="modal-box">
-          <h2><span className="marker">Découvrez</span> comment votre activité apparaîtra à vos clients</h2>
+          <div className="tools-logos">
+            <img className="logo-whatsapp" src={`/sellers/${sellerSlug}/logos/whatsapp.svg`} />
+            <img className="logo-gmail" src={`/sellers/${sellerSlug}/logos/gmail.svg`} />
+            <img className="logo-calendar" src={`/sellers/${sellerSlug}/logos/calendar.svg`} />
+            <img className="logo-calendly" src={`/sellers/${sellerSlug}/logos/calendly.svg`} />
+            <img className="logo-stripe" src={`/sellers/${sellerSlug}/logos/stripe.svg`} />
+          </div>
+
+
+
+
+
+
+
+          <h2>Tous réunis dans <span className="marker">NovaPulse</span></h2>
           <p>
-            Messages, paiements, agenda et réservations d'appel dans un seul espace
+            Entrez votre prénom pour voir comment ça fonctionne...
           </p>
           <div className="demo-features">
             ✓ Démo gratuite  • ✓ Test en 10 secondes

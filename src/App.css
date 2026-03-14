@@ -994,3 +994,35 @@ html, body, #root {
   border-radius: 4px;
   transform: rotate(-1deg);
 }
+
+.tools-logos{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.tools-logos img{
+  height:22px;
+  opacity:0.8;
+}
+.logo-whatsapp{
+  color:#25D366;
+}
+
+.logo-gmail{
+  color:#EA4335;
+}
+
+.logo-calendar{
+  color:#4285F4;
+}
+
+.logo-calendly{
+  color:#0069FF;
+}
+
+.logo-stripe{
+  color:#635BFF;
+}
