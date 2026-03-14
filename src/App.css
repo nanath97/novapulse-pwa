@@ -88,10 +88,11 @@ html, body, #root {
   display: flex;
   justify-content: center;
   padding: 30px 15px;
-  background-color: #eaf2ff;
+
+  background-color: #ffffff;
   background-image: url("/business-chat-bg.png");
   background-repeat: repeat;
-  background-size: 220px;
+  background-size: 420px;
 }
 .messages {
   width: 100%;
