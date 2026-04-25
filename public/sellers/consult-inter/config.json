@@ -1,0 +1,22 @@
+{
+  "name": "Consult inter",
+  "meta": {
+    "validated": true
+  },
+  "services": [
+    "ARDDA à 1800€",
+    "ARICE à 1800€",
+    "FSI à 1800€",
+    "LEADER à 3000€",
+    "FEDER à 3000€", 
+    "FEADER à 3000€", 
+    "PIJ à 1200€", 
+    "INITIATIVE GUADELOUPE à 1800€", 
+    "CRÉATION D’ENTREPRISE ( société ) à 800€", 
+    "CRÉATION D’ENTREPRISES ( micro ) à 350€", 
+    "RÉDACTION DE DOCUMENT ADMINISTRATIFS à 25€" 
+  ],
+  "buttonText": "📋 Voir les services et prestations",
+  "calendly": "https://calendly.com/fr",
+  "phone": "+590690055427"
+}
