@@ -530,6 +530,10 @@ useEffect(() => {
         body: JSON.stringify({
           email: cleanEmail,
           sellerSlug,
+          type_client: clientType,
+          entreprise_nom: clientType === "entreprise" ? entrepriseNom : "",
+          siret: clientType === "entreprise" ? siret : "",
+          tva: clientType === "entreprise" ? tva : "",
         }),
       });
 
