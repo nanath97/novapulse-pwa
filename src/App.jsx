@@ -47,6 +47,7 @@ function App() {
   const [entrepriseNom, setEntrepriseNom] = useState("");
   const [siret, setSiret] = useState("");
   const [tva, setTva] = useState("");
+  const [showFullForm, setShowFullForm] = useState(false);
   
 function getDownloadUrl(mediaUrl, fileName, mediaType) {
   if (!mediaUrl) return "";
@@ -98,7 +99,56 @@ const renderTextWithLinks = (text) => {
   });
 };
 
+const checkClientAndContinue = async () => {
+  if (!emailInput.trim()) return;
 
+  try {
+    const res = await fetch(`${BRIDGE_URL}/pwa/check-client`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: emailInput.trim().toLowerCase(),
+        sellerSlug,
+      }),
+    });
+
+    const data = await res.json();
+
+    // 👉 CLIENT EXISTANT
+    if (data.exists) {
+      console.log("✅ Client existant");
+
+      setClientEmail(emailInput.trim().toLowerCase());
+      setIsIdentified(true);
+      setIsNewClient(false);
+
+      // 🔥 important : récupérer topicId
+      const topicRes = await fetch(
+        `${BRIDGE_URL}/pwa/get-topic?email=${encodeURIComponent(emailInput)}&sellerSlug=${sellerSlug}`
+      );
+      const topicData = await topicRes.json();
+
+      if (topicData.topicId) {
+        setTopicId(String(topicData.topicId));
+
+        localStorage.setItem("pwa_client_email", emailInput);
+        localStorage.setItem("pwa_topic_id", topicData.topicId);
+        localStorage.setItem("pwa_is_new", "false");
+      }
+
+      return;
+    }
+
+    // 👉 NOUVEAU CLIENT → afficher formulaire
+    console.log("🆕 Nouveau client");
+    setShowFullForm(true);
+
+  } catch (err) {
+    console.error("❌ checkClient error:", err);
+  }
+};
 
   // Notes (admin mode only)
   const [adminNote, setAdminNote] = useState("");
@@ -1322,46 +1372,53 @@ return (
             className="input"
           />
 
-          <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
-            <button
-              className={clientType === "particulier" ? "selected-btn" : ""}
-              onClick={() => setClientType("particulier")}
-            >
-              👤 Particulier
-            </button>
+          {showFullForm && (
+  <>
+    <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
+      <button
+        className={clientType === "particulier" ? "selected-btn" : ""}
+        onClick={() => setClientType("particulier")}
+      >
+        👤 Particulier
+      </button>
 
-            <button
-              className={clientType === "entreprise" ? "selected-btn" : ""}
-              onClick={() => setClientType("entreprise")}
-            >
-              🏢 Entreprise
-            </button>
-          </div>
+      <button
+        className={clientType === "entreprise" ? "selected-btn" : ""}
+        onClick={() => setClientType("entreprise")}
+      >
+        🏢 Entreprise
+      </button>
+    </div>
 
-          {clientType === "entreprise" && (
-            <div style={{ marginTop: 10 }}>
-              <input
-                placeholder="Nom entreprise"
-                value={entrepriseNom}
-                onChange={(e) => setEntrepriseNom(e.target.value)}
-                className="input"
-              />
-              <input
-                placeholder="SIRET"
-                value={siret}
-                onChange={(e) => setSiret(e.target.value)}
-                className="input"
-              />
-              <input
-                placeholder="TVA"
-                value={tva}
-                onChange={(e) => setTva(e.target.value)}
-                className="input"
-              />
-            </div>
-          )}
+    {clientType === "entreprise" && (
+      <div style={{ marginTop: 10 }}>
+        <input
+          placeholder="Nom entreprise"
+          value={entrepriseNom}
+          onChange={(e) => setEntrepriseNom(e.target.value)}
+          className="input"
+        />
+        <input
+          placeholder="SIRET"
+          value={siret}
+          onChange={(e) => setSiret(e.target.value)}
+          className="input"
+        />
+        <input
+          placeholder="TVA"
+          value={tva}
+          onChange={(e) => setTva(e.target.value)}
+          className="input"
+        />
+      </div>
+    )}
+  </>
+)}
 
-          <button className="send-button" onClick={registerClient}>
+          <button 
+            className="send-button" 
+            onClick={showFullForm ? registerClient : checkClientAndContinue}
+          >
             Tester la démo
           </button>
           <p className="secure-note">
