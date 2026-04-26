@@ -566,7 +566,7 @@ useEffect(() => {
     }
 
     if (clientType === "entreprise") {
-      if (!entrepriseNom || !siret || !tva) {
+      if (!entrepriseNom || !siret) {
         alert("Veuillez remplir toutes les informations entreprise");
         return;
     }
@@ -1405,7 +1405,7 @@ return (
           className="input"
         />
         <input
-          placeholder="TVA"
+          placeholder="TVA (optionnel)"
           value={tva}
           onChange={(e) => setTva(e.target.value)}
           className="input"
