@@ -981,7 +981,7 @@ return (
                 playsInline
                 className="intro-video"
               />
-
+            <div className="intro-buttons">
               <button
                 className="services-button intro-main-btn"
                 onClick={() => setShowServices(true)}
@@ -997,6 +997,7 @@ return (
                   📅 Réserver un appel découverte
                 </button>
               )}
+            </div>
 
               <div className="intro-secure">
                 🔒 Paiements 100% sécurisés avec Stripe

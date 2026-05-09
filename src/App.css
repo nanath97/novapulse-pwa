@@ -1494,3 +1494,11 @@ html, body, #root {
     margin-top: 8px;
   }
 }
+.intro-buttons{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:16px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
