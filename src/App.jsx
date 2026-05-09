@@ -965,8 +965,15 @@ return (
           isNewClient &&
           messages.length === 0 &&
           !showServices && (
-            <div className="intro-block">
-              <h3>Bonjour et bienvenue chez NovaPulse 👋</h3>
+            <div className="intro-block intro-hero">
+              <div className="intro-logo">NovaPulse</div>
+
+              <h1>Bienvenue chez NovaPulse 👋</h1>
+
+              <p className="intro-subtitle">
+                La plateforme tout-en-un pour gérer vos clients, paiements et relances
+                sans quitter vos conversations.
+              </p>
 
               <video
                 src={`/sellers/${sellerSlug}/intro.mp4`}
@@ -976,11 +983,35 @@ return (
               />
 
               <button
-                className="services-button"
+                className="services-button intro-main-btn"
                 onClick={() => setShowServices(true)}
               >
                 📋 Voir les services et prestations
               </button>
+
+              <div className="intro-secure">
+                🔒 Paiements 100% sécurisés avec Stripe
+              </div>
+
+              <div className="intro-benefits">
+                <div className="intro-card">
+                  <div className="intro-icon">⚡</div>
+                  <strong>Tout centralisé</strong>
+                  <span>Conversations, devis, paiements et documents au même endroit.</span>
+                </div>
+
+                <div className="intro-card">
+                  <div className="intro-icon">🛡️</div>
+                  <strong>Plus de ventes</strong>
+                  <span>Ne perdez plus de clients grâce à un suivi fluide.</span>
+                </div>
+
+                <div className="intro-card">
+                  <div className="intro-icon">⏱️</div>
+                  <strong>Gain de temps</strong>
+                  <span>Automatisez vos tâches et concentrez-vous sur l’essentiel.</span>
+                </div>
+              </div>
             </div>
           )}
 
