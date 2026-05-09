@@ -989,6 +989,15 @@ return (
                 📋 Voir les services et prestations
               </button>
 
+              {sellerConfig?.calendly && (
+                <button
+                  className="intro-call-btn"
+                  onClick={() => window.open(sellerConfig.calendly, "_blank")}
+                >
+                  📅 Réserver un appel découverte
+                </button>
+              )}
+
               <div className="intro-secure">
                 🔒 Paiements 100% sécurisés avec Stripe
               </div>

@@ -1458,3 +1458,39 @@ html, body, #root {
     font-size: 12px;
   }
 }
+
+
+
+
+.intro-call-btn {
+  margin-top: 10px;
+  min-width: 300px;
+  padding: 13px 22px;
+  border-radius: 14px;
+  border: 1.5px solid rgba(99, 102, 241, 0.45);
+  background: rgba(255, 255, 255, 0.72);
+  color: #4f46e5;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(79, 70, 229, 0.08);
+  backdrop-filter: blur(12px);
+  transition: all 0.2s ease;
+}
+
+.intro-call-btn:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 14px 30px rgba(79, 70, 229, 0.14);
+}
+
+@media (max-width: 768px) {
+  .intro-call-btn {
+    min-width: 0;
+    width: 100%;
+    max-width: 330px;
+    padding: 11px 14px;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+}
