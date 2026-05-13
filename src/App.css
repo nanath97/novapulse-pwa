@@ -86,23 +86,25 @@ html, body, #root {
   position: fixed;
 
   top: 80px;
-  bottom: 90px;
+  bottom: 105px;
 
   left: 0;
   right: 0;
 
   overflow-y: auto;
+  overflow-x: hidden;
 
   display: flex;
   justify-content: center;
-  padding: 10px 15px;
+  align-items: flex-start;
 
-  background: linear-gradient(
-    180deg,
-    #f9fbff 0%,
-    #eef3ff 50%,
-    #f9fbff 100%
-  );
+  padding: 10px 15px 24px 15px;
+
+  background:
+    radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.18), transparent 32%),
+    radial-gradient(circle at 85% 25%, rgba(59, 130, 246, 0.16), transparent 34%),
+    radial-gradient(circle at 75% 85%, rgba(236, 72, 153, 0.12), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #f5f7ff 48%, #ffffff 100%);
 }
 .messages {
   width: 100%;
@@ -793,9 +795,7 @@ html, body, #root {
     font-size: 16px;
   }
 }
-.chat-area {
-  top: 80px !important;
-}
+
 
 
 
