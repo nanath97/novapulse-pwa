@@ -105,6 +105,8 @@ html, body, #root {
     radial-gradient(circle at 85% 25%, rgba(59, 130, 246, 0.16), transparent 34%),
     radial-gradient(circle at 75% 85%, rgba(236, 72, 153, 0.12), transparent 34%),
     linear-gradient(180deg, #ffffff 0%, #f5f7ff 48%, #ffffff 100%);
+    
+  padding-bottom:120px;
 }
 .messages {
   width: 100%;
@@ -129,9 +131,13 @@ html, body, #root {
   left: 0;
   width: 100%;
 
-  background: #ffffff;
-  border-top: 1px solid #e5e7eb;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  border-top: none;
   padding: 10px 12px 6px 12px;
+  overflow: visible;
 
   display: flex;
   flex-direction: column;
@@ -140,6 +146,24 @@ html, body, #root {
   z-index: 1000;
 }
 
+.input-bar::before{
+  content:"";
+
+  position:absolute;
+  top:-50px;
+  left:0;
+
+  width:100%;
+  height:50px;
+
+  background:linear-gradient(
+    to bottom,
+    rgba(255,255,255,0),
+    rgba(255,255,255,0.92)
+  );
+
+  pointer-events:none;
+}
 /* ===================== COMPOSER ===================== */
 
 .composer {
