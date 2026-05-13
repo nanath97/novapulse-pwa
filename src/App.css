@@ -86,27 +86,23 @@ html, body, #root {
   position: fixed;
 
   top: 80px;
-  bottom: 105px;
+  bottom: 90px;
 
   left: 0;
   right: 0;
 
   overflow-y: auto;
-  overflow-x: hidden;
 
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  padding: 10px 15px;
 
-  padding: 10px 15px 24px 15px;
-
-  background:
-    radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.18), transparent 32%),
-    radial-gradient(circle at 85% 25%, rgba(59, 130, 246, 0.16), transparent 34%),
-    radial-gradient(circle at 75% 85%, rgba(236, 72, 153, 0.12), transparent 34%),
-    linear-gradient(180deg, #ffffff 0%, #f5f7ff 48%, #ffffff 100%);
-    
-  padding-bottom:120px;
+  background: linear-gradient(
+    180deg,
+    #f9fbff 0%,
+    #eef3ff 50%,
+    #f9fbff 100%
+  );
 }
 .messages {
   width: 100%;
@@ -131,13 +127,9 @@ html, body, #root {
   left: 0;
   width: 100%;
 
-  background: rgba(255,255,255,0.88);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-
-  border-top: none;
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
   padding: 10px 12px 6px 12px;
-  overflow: visible;
 
   display: flex;
   flex-direction: column;
@@ -146,24 +138,6 @@ html, body, #root {
   z-index: 1000;
 }
 
-.input-bar::before{
-  content:"";
-
-  position:absolute;
-  top:-50px;
-  left:0;
-
-  width:100%;
-  height:50px;
-
-  background:linear-gradient(
-    to bottom,
-    rgba(255,255,255,0),
-    rgba(255,255,255,0.92)
-  );
-
-  pointer-events:none;
-}
 /* ===================== COMPOSER ===================== */
 
 .composer {
@@ -819,7 +793,9 @@ html, body, #root {
     font-size: 16px;
   }
 }
-
+.chat-area {
+  top: 80px !important;
+}
 
 
 
@@ -1525,4 +1501,29 @@ html, body, #root {
   gap:16px;
   flex-wrap:wrap;
   margin-top:10px;
+}
+
+/* ===================== FIX MOBILE SCROLL INTRO ===================== */
+
+@media (max-width: 768px) {
+  .chat-area {
+    top: 80px !important;
+    bottom: 0 !important;
+
+    padding: 10px 15px 190px 15px !important;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    align-items: flex-start;
+  }
+
+  .intro-block {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .intro-hero {
+    margin-bottom: 40px;
+  }
 }
