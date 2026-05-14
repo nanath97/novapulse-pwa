@@ -976,7 +976,7 @@ return (
               </p>
 
               <video
-                src={`/sellers/${sellerSlug}/intro.mp4`}
+                src={`/sellers/${sellerSlug}/Intro.mp4`}
                 controls
                 playsInline
                 className="intro-video"
