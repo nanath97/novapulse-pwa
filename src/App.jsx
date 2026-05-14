@@ -48,6 +48,7 @@ function App() {
   const [siret, setSiret] = useState("");
   const [tva, setTva] = useState("");
   const [showFullForm, setShowFullForm] = useState(false);
+  const [showCalendly, setShowCalendly] = useState(false);
   
 function getDownloadUrl(mediaUrl, fileName, mediaType) {
   if (!mediaUrl) return "";
@@ -884,7 +885,7 @@ return (
       {sellerConfig?.calendly && (
         <button
           className="call-icon-btn"
-          onClick={() => window.open(sellerConfig.calendly, "_blank")}
+          onClick={() => setShowCalendly(true)}
         >
           📅
         </button>
@@ -992,7 +993,7 @@ return (
               {sellerConfig?.calendly && (
                 <button
                   className="intro-call-btn"
-                  onClick={() => window.open(sellerConfig.calendly, "_blank")}
+                  onClick={() => setShowCalendly(true)}
                 >
                   📅 Réserver un appel découverte
                 </button>
@@ -1494,6 +1495,51 @@ return (
         playsInline
         onEnded={() => setShowInstallVideo(false)}
         style={{ width: "100%", borderRadius: "12px", marginTop: "10px"}}
+      />
+    </div>
+  </div>
+)}
+
+
+{showCalendly && sellerConfig?.calendly && (
+  <div
+    className="modal-overlay"
+    onClick={() => setShowCalendly(false)}
+  >
+    <div
+      className="modal-box"
+      onClick={(e) => e.stopPropagation()}
+      style={{
+        maxWidth: "900px",
+        width: "95%",
+        height: "85vh",
+        padding: 0,
+        overflow: "hidden",
+        position: "relative"
+      }}
+    >
+      <button
+        onClick={() => setShowCalendly(false)}
+        style={{
+          position: "absolute",
+          top: 12,
+          right: 16,
+          zIndex: 10,
+          background: "white",
+          border: "none",
+          fontSize: 28,
+          cursor: "pointer"
+        }}
+      >
+        ×
+      </button>
+
+      <iframe
+        src={`${sellerConfig.calendly}?hide_event_type_details=1&hide_gdpr_banner=1`}
+        width="100%"
+        height="100%"
+        frameBorder="0"
+        title="Réserver un appel"
       />
     </div>
   </div>
