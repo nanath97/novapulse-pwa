@@ -1410,20 +1410,6 @@ return (
             dans une seule conversation.
           </p>
 
-          <div className="beta-benefits">
-            <div>
-              <span>💬</span>
-              <p>Expérience réelle</p>
-            </div>
-            <div>
-              <span>🔒</span>
-              <p>Accès sécurisé</p>
-            </div>
-            <div>
-              <span>🚀</span>
-              <p>Démo privée</p>
-            </div>
-          </div>
 
           <input
             type="email"
