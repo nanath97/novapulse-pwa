@@ -773,11 +773,36 @@ const loadPurchasedContent = async () => {
 const sendMessage = () => {
   const text = inputRef.current?.value?.trim();
   if (!text) return;
+
   setShowServices(false);
 
-  setMessages((prev) => [...prev, { text, from: "client", type: "text", createdTime: new Date().toISOString() }]);
+  const now = new Date().toISOString();
+
+  setMessages((prev) => {
+    const newMessages = [
+      ...prev,
+      {
+        text,
+        from: "client",
+        type: "text",
+        createdTime: now,
+      },
+    ];
+
+    if (!adminOnline) {
+      newMessages.push({
+        text: "Salut, je suis actuellement hors ligne, mais j’ai bien reçu ton message, je te répondrai dès que possible. En attendant, tu peux prendre un rdv pour que je t'explique les fonctionnalités !",
+        from: "admin",
+        type: "text",
+        createdTime: new Date().toISOString(),
+      });
+    }
+
+    return newMessages;
+  });
 
   const socket = socketRef.current;
+
   if (socket && socket.connected) {
     socket.emit("client_message", { text });
   }
