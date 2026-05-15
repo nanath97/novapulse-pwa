@@ -1438,7 +1438,7 @@ return (
 
           <input
             type="email"
-            placeholder="Entrez votre email"
+            placeholder="Entrez votre email pour accéder à NovaPulse"
             value={emailInput}
             onChange={(e) => setEmailInput(e.target.value)}
             className="input beta-input"
@@ -1492,7 +1492,7 @@ return (
             className="send-button" 
             onClick={showFullForm ? registerClient : checkClientAndContinue}
           >
-            Tester la démo
+            Activer mon accès privé
           </button>
           <p className="secure-note">
             🔒 Données et paiements protégés — accès strictement confidentiel
