@@ -791,7 +791,7 @@ const sendMessage = () => {
 
     if (!adminOnline) {
       newMessages.push({
-        text: "Salut, je suis actuellement hors ligne, mais j’ai bien reçu ton message, je te répondrai dès que possible. En attendant, tu peux prendre un rdv pour que je t'explique les fonctionnalités !",
+        text: "Salut, je suis actuellement hors ligne, mais j’ai bien reçu ton message, je te répondrai dès que possible. En attendant, tu peux prendre un rdv pour que je t'explique les fonctionnalités ! C'est le bouton en forme de calendrier.",
         from: "admin",
         type: "text",
         createdTime: new Date().toISOString(),
