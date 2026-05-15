@@ -1389,7 +1389,7 @@ return (
 
     {!isIdentified && (
       <div className="modal-overlay">
-        <div className="modal-box">
+        <div className="modal-box beta-modal">
           <div className="tools-logos">
             <img className="logo-whatsapp" src={`/sellers/${sellerSlug}/logos/whatsapp.svg`} />
             <img className="logo-gmail" src={`/sellers/${sellerSlug}/logos/gmail.svg`} />
@@ -1398,64 +1398,84 @@ return (
             <img className="logo-stripe" src={`/sellers/${sellerSlug}/logos/stripe.svg`} />
           </div>
 
-          <h2>Toutes ces applications réunis dans <span className="marker">NovaPulse</span></h2>
-          <p>
-            Entrez votre mail pour voir comment ça fonctionne...
+          <div className="beta-badge">👥 ACCÈS PRIVÉ BÊTA TESTEUR</div>
+
+          <h2>
+            Rejoignez les bêta testeurs de <span className="marker">NovaPulse</span>
+          </h2>
+
+          <p className="beta-subtitle">
+            Découvrez en avant-première comment vos clients peuvent
+            <strong> réserver, échanger et payer </strong>
+            dans une seule conversation.
           </p>
-          <div className="demo-features">
-            ✓ Démo gratuite  • ✓ Test en 10 secondes
+
+          <div className="beta-benefits">
+            <div>
+              <span>💬</span>
+              <p>Expérience réelle</p>
+            </div>
+            <div>
+              <span>🔒</span>
+              <p>Accès sécurisé</p>
+            </div>
+            <div>
+              <span>🚀</span>
+              <p>Démo privée</p>
+            </div>
           </div>
 
           <input
             type="email"
-            placeholder="Email"
+            placeholder="Entrez votre email"
             value={emailInput}
             onChange={(e) => setEmailInput(e.target.value)}
-            className="input"
+            className="input beta-input"
           />
 
           {showFullForm && (
-  <>
-    <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
-      <button
-        className={clientType === "particulier" ? "selected-btn" : ""}
-        onClick={() => setClientType("particulier")}
-      >
-        👤 Particulier
-      </button>
+            <>
+              <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
+                <button
+                  className={clientType === "particulier" ? "selected-btn" : ""}
+                  onClick={() => setClientType("particulier")}
+                >
+                  👤 Particulier
+                </button>
 
-      <button
-        className={clientType === "entreprise" ? "selected-btn" : ""}
-        onClick={() => setClientType("entreprise")}
-      >
-        🏢 Entreprise
-      </button>
-    </div>
+                <button
+                  className={clientType === "entreprise" ? "selected-btn" : ""}
+                  onClick={() => setClientType("entreprise")}
+                >
+                  🏢 Entreprise
+                </button>
+              </div>
 
-    {clientType === "entreprise" && (
-      <div style={{ marginTop: 10 }}>
-        <input
-          placeholder="Nom entreprise"
-          value={entrepriseNom}
-          onChange={(e) => setEntrepriseNom(e.target.value)}
-          className="input"
-        />
-        <input
-          placeholder="SIRET"
-          value={siret}
-          onChange={(e) => setSiret(e.target.value)}
-          className="input"
-        />
-        <input
-          placeholder="TVA (optionnel)"
-          value={tva}
-          onChange={(e) => setTva(e.target.value)}
-          className="input"
-        />
-      </div>
-    )}
-  </>
-)}
+              {clientType === "entreprise" && (
+                <div style={{ marginTop: 10 }}>
+                  <input
+                    placeholder="Nom entreprise"
+                    value={entrepriseNom}
+                    onChange={(e) => setEntrepriseNom(e.target.value)}
+                    className="input"
+                  />
+                  <input
+                    placeholder="SIRET"
+                    value={siret}
+                    onChange={(e) => setSiret(e.target.value)}
+                    className="input"
+                  />
+                  <input
+                    placeholder="TVA (optionnel)"
+                    value={tva}
+                    onChange={(e) => setTva(e.target.value)}
+                    className="input"
+                  />
+                </div>
+              )}
+            </>
+          )}
+
 
           <button 
             className="send-button" 

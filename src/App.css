@@ -1527,3 +1527,169 @@ html, body, #root {
     margin-bottom: 40px;
   }
 }
+
+
+
+
+
+
+
+
+
+
+/* ===================== BETA ACCESS MODAL ===================== */
+
+.beta-modal {
+  width: 92%;
+  max-width: 430px;
+  padding: 26px 24px 24px;
+  border-radius: 22px;
+}
+
+.beta-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(139, 92, 246, 0.12);
+  color: #6d28d9;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.beta-modal h2 {
+  font-size: 24px;
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+
+.beta-subtitle {
+  font-size: 14px !important;
+  line-height: 1.45;
+  color: #475569 !important;
+  margin-bottom: 18px !important;
+}
+
+.beta-subtitle strong {
+  color: #0f172a;
+}
+
+.beta-benefits {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 14px 0 18px;
+}
+
+.beta-benefits div {
+  background: #f8f5ff;
+  border-radius: 14px;
+  padding: 10px 6px;
+}
+
+.beta-benefits span {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.beta-benefits p {
+  margin: 0 !important;
+  font-size: 11px !important;
+  line-height: 1.25;
+  color: #1e293b !important;
+  font-weight: 700;
+}
+
+.beta-input {
+  margin-bottom: 12px !important;
+}
+
+.beta-cta {
+  border-radius: 14px !important;
+  background: linear-gradient(135deg, #7c3aed, #2563eb) !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+}
+
+.beta-secure {
+  margin-top: 14px !important;
+  margin-bottom: 0 !important;
+  font-size: 13px !important;
+}
+
+/* Fond plus visible derrière la popup */
+.modal-overlay {
+  background: rgba(15, 23, 42, 0.42) !important;
+  backdrop-filter: blur(3px) !important;
+}
+
+/* ===================== MOBILE BETA MODAL ===================== */
+
+@media (max-width: 768px) {
+  .beta-modal {
+    width: 88%;
+    max-width: 360px;
+    padding: 22px 18px 20px;
+    border-radius: 20px;
+  }
+
+  .beta-modal .tools-logos {
+    margin-bottom: 10px;
+  }
+
+  .beta-modal .tools-logos img {
+    height: 21px;
+  }
+
+  .beta-badge {
+    font-size: 11px;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+  }
+
+  .beta-modal h2 {
+    font-size: 21px;
+    line-height: 1.15;
+  }
+
+  .beta-subtitle {
+    font-size: 13px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .beta-benefits {
+    gap: 8px;
+    margin: 12px 0 14px;
+  }
+
+  .beta-benefits div {
+    padding: 8px 4px;
+    border-radius: 12px;
+  }
+
+  .beta-benefits span {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+
+  .beta-benefits p {
+    font-size: 10.5px !important;
+  }
+
+  .modal-box .beta-input {
+    height: 44px;
+    font-size: 16px;
+  }
+
+  .modal-box .beta-cta {
+    height: 46px;
+    margin-top: 10px;
+  }
+
+  .beta-secure {
+    font-size: 12px !important;
+  }
+}
