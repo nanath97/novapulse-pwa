@@ -49,6 +49,8 @@ function App() {
   const [tva, setTva] = useState("");
   const [showFullForm, setShowFullForm] = useState(false);
   const [showCalendly, setShowCalendly] = useState(false);
+  const [appLoading, setAppLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
   
 function getDownloadUrl(mediaUrl, fileName, mediaType) {
   if (!mediaUrl) return "";
@@ -813,8 +815,81 @@ const sendMessage = () => {
 const handleKeyDown = (e) => {
   if (e.key === "Enter") sendMessage();
 };
+useEffect(() => {
+  let progress = 0;
 
-if (isCheckingStorage) return null;
+  const interval = setInterval(() => {
+    progress += Math.random() * 18;
+
+    if (progress >= 100) {
+      progress = 100;
+
+      clearInterval(interval);
+
+      setTimeout(() => {
+        setAppLoading(false);
+      }, 300);
+    }
+
+    setLoadingProgress(Math.floor(progress));
+  }, 120);
+
+  return () => clearInterval(interval);
+}, []);
+
+
+if (isCheckingStorage || appLoading) {
+  return (
+    <div className="loading-screen">
+      <div className="loading-container">
+
+        <div className="loading-circle">
+          <div
+            className="loading-progress"
+            style={{
+              background: `conic-gradient(
+                #3b82f6 ${loadingProgress * 3.6}deg,
+                rgba(255,255,255,0.08) 0deg
+              )`
+            }}
+          >
+            <div className="loading-inner">
+              <img
+                src="/novapulse-icon.png"
+                alt="NovaPulse"
+                className="loading-logo"
+              />
+            </div>
+          </div>
+        </div>
+
+        <h2 className="loading-title">
+          Nova<span>Pulse</span>
+        </h2>
+
+        <p className="loading-text">
+          Chargement de votre expérience...
+        </p>
+
+        <div className="loading-percent">
+          {loadingProgress}%
+        </div>
+
+        <div className="loading-bar">
+          <div
+            className="loading-bar-fill"
+            style={{ width: `${loadingProgress}%` }}
+          />
+        </div>
+
+        <div className="loading-secure">
+          🔒 Accès privé et sécurisé
+        </div>
+
+      </div>
+    </div>
+  );
+}
 const openServices = () => {
   setShowServices(true);
   };
