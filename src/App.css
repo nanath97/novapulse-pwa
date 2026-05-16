@@ -1907,3 +1907,42 @@ html, body, #root {
     font-size: 21px !important;
   }
 }
+
+
+
+
+
+/* ===================== FIX PRODUCT IMAGE + LAYOUT ===================== */
+
+.digital-product-card {
+  align-items: center !important;
+}
+
+.digital-product-image {
+  flex-shrink: 0 !important;
+  width: 110px !important;
+  height: 110px !important;
+  min-width: 110px !important;
+  object-fit: cover !important;
+  overflow: hidden !important;
+}
+
+.digital-product-content {
+  min-width: 0 !important;
+}
+
+.digital-product-description {
+  max-width: 520px !important;
+}
+
+@media (max-width: 768px) {
+  .digital-product-card {
+    align-items: stretch !important;
+  }
+
+  .digital-product-image {
+    width: 100% !important;
+    height: 160px !important;
+    min-width: 0 !important;
+  }
+}
