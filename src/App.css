@@ -1870,3 +1870,40 @@ html, body, #root {
   }
 
 }
+
+
+
+
+
+
+
+/* ===================== FIX SERVICES MODAL WIDTH + SCROLL ===================== */
+
+.services-modal {
+  width: 90% !important;
+  max-width: 760px !important;
+  max-height: 78vh !important;
+  overflow-y: auto !important;
+
+  padding: 32px !important;
+  border-radius: 22px !important;
+}
+
+.services-modal-header h3 {
+  font-size: 28px !important;
+  font-weight: 800 !important;
+  margin-bottom: 20px !important;
+}
+
+@media (max-width: 768px) {
+  .services-modal {
+    width: 94% !important;
+    max-width: 94% !important;
+    max-height: 75vh !important;
+    padding: 22px !important;
+  }
+
+  .services-modal-header h3 {
+    font-size: 21px !important;
+  }
+}
