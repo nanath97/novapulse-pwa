@@ -1947,79 +1947,119 @@ html, body, #root {
   }
 }
 
-/* ===================== MOBILE COMPACT PRODUCTS ===================== */
+
+
+
+
+
+
+
+
+
+
+/* ===================== MOBILE SMALLER SERVICES MODAL ===================== */
 
 @media (max-width: 768px) {
 
   .services-modal {
-    max-height: 72vh !important;
-    padding: 16px !important;
+
+    width: 88% !important;
+    max-width: 88% !important;
+
+    max-height: 68vh !important;
+
+    padding: 14px !important;
+
+    border-radius: 18px !important;
+
+    margin: auto !important;
   }
 
-  .digital-products-section {
-    margin-top: 18px !important;
+  .services-modal-header h3 {
+
+    font-size: 18px !important;
+
+    margin-bottom: 14px !important;
   }
 
-  .digital-title {
-    font-size: 16px !important;
-    margin-bottom: 10px !important;
+  .services-table {
+    gap: 8px !important;
   }
 
-  .digital-products-grid {
-    gap: 10px !important;
-  }
+  .service-row {
 
-  .digital-product-card {
+    padding: 10px 12px !important;
 
-    flex-direction: row !important;
-    align-items: center !important;
-
-    padding: 10px !important;
-    gap: 10px !important;
-
-    border-radius: 14px !important;
-  }
-
-  .digital-product-image {
-
-    width: 72px !important;
-    height: 72px !important;
-
-    min-width: 72px !important;
+    font-size: 12px !important;
 
     border-radius: 10px !important;
   }
 
-  .digital-product-header {
-    margin-bottom: 4px !important;
+  .service-price {
+    font-size: 13px !important;
   }
 
-  .digital-product-header h5 {
+  .digital-products-section {
+    margin-top: 14px !important;
+  }
+
+  .digital-title {
+
     font-size: 15px !important;
-    line-height: 1.2 !important;
-  }
-
-  .digital-product-price {
-    font-size: 16px !important;
-  }
-
-  .digital-product-description {
-
-    font-size: 12px !important;
-    line-height: 1.35 !important;
 
     margin-bottom: 8px !important;
   }
 
+  .digital-products-grid {
+    gap: 8px !important;
+  }
+
+  .digital-product-card {
+
+    padding: 8px !important;
+
+    gap: 8px !important;
+
+    border-radius: 12px !important;
+  }
+
+  .digital-product-image {
+
+    width: 58px !important;
+    height: 58px !important;
+
+    min-width: 58px !important;
+
+    border-radius: 8px !important;
+  }
+
+  .digital-product-header h5 {
+
+    font-size: 13px !important;
+
+    line-height: 1.15 !important;
+  }
+
+  .digital-product-price {
+    font-size: 14px !important;
+  }
+
+  .digital-product-description {
+
+    font-size: 11px !important;
+
+    line-height: 1.25 !important;
+
+    margin-bottom: 6px !important;
+  }
+
   .digital-product-button {
 
-    width: auto !important;
+    padding: 6px 10px !important;
 
-    padding: 7px 12px !important;
+    font-size: 11px !important;
 
-    font-size: 12px !important;
-
-    border-radius: 10px !important;
+    border-radius: 8px !important;
   }
 
 }
