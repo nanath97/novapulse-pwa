@@ -1962,13 +1962,21 @@ html, body, #root {
 @media (max-width: 768px) {
 
   .services-modal {
-    width: 82% !important;
-    max-width: 82% !important;
-    max-height: 58vh !important;
-    padding: 12px !important;
-    border-radius: 16px !important;
-    overflow-y: auto !important;
-  }
+  width: 82% !important;
+  max-width: 82% !important;
+  max-height: 52vh !important;
+
+  padding: 12px !important;
+  padding-bottom: 24px !important;
+
+  border-radius: 16px !important;
+
+  overflow-y: scroll !important;
+  -webkit-overflow-scrolling: touch !important;
+
+  touch-action: pan-y !important;
+  overscroll-behavior: contain !important;
+}
 
   .services-modal-header h3 {
     font-size: 15px !important;
