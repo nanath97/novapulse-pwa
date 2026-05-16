@@ -4,10 +4,38 @@
     "validated": true
   },
   "services": [
-    "Conseil personnalisé",
-    "Accompagnement sur mesure",
-    "Programme transformation",
-    "Suivi premium"
+    {
+      "name": "Conseil personnalisé",
+      "price": "80 €"
+    },
+    {
+      "name": "Accompagnement sur mesure",
+      "price": "150 €"
+    },
+    {
+      "name": "Programme transformation",
+      "price": "299 €"
+    },
+    {
+      "name": "Suivi premium",
+      "price": "99 € / mois"
+    }
+  ],
+  "digitalProducts": [
+    {
+      "title": "5 manières de manger sainement",
+      "description": "Un e-book de 5 pages avec des conseils pratiques pour adopter une alimentation saine au quotidien.",
+      "price": "20 €",
+      "image": "/sellers/coach-matthieu/products/ebook-sante.jpg",
+      "paymentLink": "https://buy.stripe.com/..."
+    },
+    {
+      "title": "Productivité au quotidien",
+      "description": "Optimisez votre temps avec des méthodes simples et faciles à appliquer.",
+      "price": "15 €",
+      "image": "/sellers/coach-matthieu/products/productivite.jpg",
+      "paymentLink": "https://buy.stripe.com/..."
+    }
   ],
   "buttonText": "📋 Voir les services et prestations",
   "calendly": "https://calendly.com/novapulse-online/30min",
