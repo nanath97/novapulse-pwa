@@ -1423,8 +1423,7 @@ return (
             <img className="logo-stripe" src={`/sellers/${sellerSlug}/logos/stripe.svg`} />
           </div>
 
-          <div className="beta-badge">👥 ACCÈS PRIVÉ BÊTA TESTEUR</div>
-
+    
           <h2>
             Rejoignez les bêta testeurs de <span className="marker">NovaPulse</span>
           </h2>
@@ -1492,7 +1491,7 @@ return (
             className="send-button" 
             onClick={showFullForm ? registerClient : checkClientAndContinue}
           >
-            Activer mon accès privé
+           👥 Accès privé bêta testeur
           </button>
           <p className="secure-note">
             🔒 Données et paiements protégés — accès strictement confidentiel
