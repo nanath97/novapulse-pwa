@@ -1437,7 +1437,7 @@ return (
 
           <input
             type="email"
-            placeholder="Entrez votre email pour accéder à NovaPulse"
+            placeholder="Entrez votre email pour vous inscrire"
             value={emailInput}
             onChange={(e) => setEmailInput(e.target.value)}
             className="input beta-input"
