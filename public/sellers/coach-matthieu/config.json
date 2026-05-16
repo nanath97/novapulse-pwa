@@ -27,17 +27,17 @@
       "description": "Un e-book de 5 pages avec des conseils pratiques pour adopter une alimentation saine au quotidien.",
       "price": "20 €",
       "image": "/sellers/coach-matthieu/products/ebook-sante.jpg",
-      "paymentLink": "https://buy.stripe.com/..."
+      "paymentLink": "https://buy.stripe.com/fZuaEW0GpfrF1010nb7AI2e"
     },
     {
       "title": "Productivité au quotidien",
       "description": "Optimisez votre temps avec des méthodes simples et faciles à appliquer.",
       "price": "15 €",
       "image": "/sellers/coach-matthieu/products/productivite.jpg",
-      "paymentLink": "https://buy.stripe.com/..."
+      "paymentLink": "https://buy.stripe.com/fZuaEW0GpfrF1010nb7AI2e"
     }
   ],
   "buttonText": "📋 Voir les services et prestations",
   "calendly": "https://calendly.com/novapulse-online/30min",
-  "phone": "+590691251858"
+  "phone": "+33767303139"
 }
