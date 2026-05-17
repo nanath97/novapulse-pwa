@@ -2181,3 +2181,8 @@ html, body, #root {
   }
 
 }
+
+.beta-right .beta-input{
+  width: 100% !important;
+  min-width: 360px;
+}
