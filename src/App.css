@@ -2159,7 +2159,24 @@ html, body, #root {
 .beta-right{
   display: flex;
   flex-direction: column;
-  align-items: center;
+
+  align-items: stretch;
+
+  width: 100%;
+}
+
+.beta-right .beta-input{
+  width: 100% !important;
+
+  height: 54px !important;
+
+  border-radius: 14px !important;
+
+  padding: 0 18px !important;
+
+  font-size: 18px !important;
+
+  box-sizing: border-box !important;
 }
 
 /* ===================== MOBILE BETA MODAL ===================== */
@@ -2182,9 +2199,3 @@ html, body, #root {
 
 }
 
-.beta-right .beta-input{
-  width: 100% !important;
-  max-width: 100% !important;
-  height: 46px !important;
-  padding: 0 16px !important;
-}
