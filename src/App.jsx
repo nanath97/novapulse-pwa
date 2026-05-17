@@ -1485,6 +1485,24 @@ return (
       <div className="modal-overlay">
         <div className="modal-box beta-modal">
           <div className="tools-logos">
+          <div className="beta-video-wrapper">
+
+            <video
+              className="beta-video"
+              src={`/sellers/${sellerSlug}/beta-video.mp4`}
+              autoPlay
+              muted
+              loop
+              playsInline
+            />
+
+            <div className="beta-video-overlay">
+              <div className="beta-video-badge">
+                ▶ Démo rapide
+              </div>
+            </div>
+
+          </div>
             <img className="logo-whatsapp" src={`/sellers/${sellerSlug}/logos/whatsapp.svg`} />
             <img className="logo-gmail" src={`/sellers/${sellerSlug}/logos/gmail.svg`} />
             <img className="logo-calendar" src={`/sellers/${sellerSlug}/logos/calendar.svg`} />
