@@ -1482,110 +1482,115 @@ return (
     </footer>
 
     {!isIdentified && (
-      <div className="modal-overlay">
-        <div className="modal-box beta-modal">
-          <div className="tools-logos">
-          <div className="beta-video-wrapper">
+  <div className="modal-overlay">
+    <div className="modal-box beta-modal">
 
-            <video
-              className="beta-video"
-              src={`/sellers/${sellerSlug}/beta-video.mp4`}
-              autoPlay
-              muted
-              loop
-              playsInline
-            />
-
-            <div className="beta-video-overlay">
-              <div className="beta-video-badge">
-                ▶ Démo rapide
-              </div>
-            </div>
-
-          </div>
-            <img className="logo-whatsapp" src={`/sellers/${sellerSlug}/logos/whatsapp.svg`} />
-            <img className="logo-gmail" src={`/sellers/${sellerSlug}/logos/gmail.svg`} />
-            <img className="logo-calendar" src={`/sellers/${sellerSlug}/logos/calendar.svg`} />
-            <img className="logo-calendly" src={`/sellers/${sellerSlug}/logos/calendly.svg`} />
-            <img className="logo-stripe" src={`/sellers/${sellerSlug}/logos/stripe.svg`} />
-          </div>
-
-    
-          <h2>
-            Rejoignez les bêta testeurs de <span className="marker">NovaPulse</span>
-          </h2>
-
-          <p className="beta-subtitle">
-            Découvrez en avant-première comment vos clients peuvent
-            <strong> réserver, échanger et payer </strong>
-            dans une seule conversation.
-          </p>
-
-
-          <input
-            type="email"
-            placeholder="Entrez votre email pour vous inscrire"
-            value={emailInput}
-            onChange={(e) => setEmailInput(e.target.value)}
-            className="input beta-input"
+      <div className="beta-left">
+        <div className="beta-video-wrapper">
+          <video
+            className="beta-video"
+            src={`/sellers/${sellerSlug}/beta-video.mp4`}
+            autoPlay
+            muted
+            loop
+            playsInline
           />
 
-          {showFullForm && (
-            <>
-              <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
-                <button
-                  className={clientType === "particulier" ? "selected-btn" : ""}
-                  onClick={() => setClientType("particulier")}
-                >
-                  👤 Particulier
-                </button>
-
-                <button
-                  className={clientType === "entreprise" ? "selected-btn" : ""}
-                  onClick={() => setClientType("entreprise")}
-                >
-                  🏢 Entreprise
-                </button>
-              </div>
-
-              {clientType === "entreprise" && (
-                <div style={{ marginTop: 10 }}>
-                  <input
-                    placeholder="Nom entreprise"
-                    value={entrepriseNom}
-                    onChange={(e) => setEntrepriseNom(e.target.value)}
-                    className="input"
-                  />
-                  <input
-                    placeholder="SIRET"
-                    value={siret}
-                    onChange={(e) => setSiret(e.target.value)}
-                    className="input"
-                  />
-                  <input
-                    placeholder="TVA (optionnel)"
-                    value={tva}
-                    onChange={(e) => setTva(e.target.value)}
-                    className="input"
-                  />
-                </div>
-              )}
-            </>
-          )}
-
-
-          <button 
-            className="send-button" 
-            onClick={showFullForm ? registerClient : checkClientAndContinue}
-          >
-           👥 Accès privé bêta testeur
-          </button>
-          <p className="secure-note">
-            🔒 Données et paiements protégés — accès strictement confidentiel
-          </p>
+          <div className="beta-video-overlay">
+            <div className="beta-video-badge">
+              ▶ Démo rapide
+            </div>
+          </div>
         </div>
       </div>
-    )}
+
+      <div className="beta-right">
+        <div className="tools-logos">
+          <img className="logo-whatsapp" src={`/sellers/${sellerSlug}/logos/whatsapp.svg`} />
+          <img className="logo-gmail" src={`/sellers/${sellerSlug}/logos/gmail.svg`} />
+          <img className="logo-calendar" src={`/sellers/${sellerSlug}/logos/calendar.svg`} />
+          <img className="logo-calendly" src={`/sellers/${sellerSlug}/logos/calendly.svg`} />
+          <img className="logo-stripe" src={`/sellers/${sellerSlug}/logos/stripe.svg`} />
+        </div>
+
+        <h2>
+          Rejoignez les bêta testeurs de <span className="marker">NovaPulse</span>
+        </h2>
+
+        <p className="beta-subtitle">
+          Découvrez en avant-première comment vos clients peuvent
+          <strong> réserver, échanger et payer </strong>
+          dans une seule conversation.
+        </p>
+
+        <input
+          type="email"
+          placeholder="Entrez votre email pour vous inscrire"
+          value={emailInput}
+          onChange={(e) => setEmailInput(e.target.value)}
+          className="input beta-input"
+        />
+
+        {showFullForm && (
+          <>
+            <div style={{ display: "flex", gap: 10, marginTop: 10, width: "100%" }}>
+              <button
+                className={clientType === "particulier" ? "selected-btn" : ""}
+                onClick={() => setClientType("particulier")}
+              >
+                👤 Particulier
+              </button>
+
+              <button
+                className={clientType === "entreprise" ? "selected-btn" : ""}
+                onClick={() => setClientType("entreprise")}
+              >
+                🏢 Entreprise
+              </button>
+            </div>
+
+            {clientType === "entreprise" && (
+              <div style={{ marginTop: 10, width: "100%" }}>
+                <input
+                  placeholder="Nom entreprise"
+                  value={entrepriseNom}
+                  onChange={(e) => setEntrepriseNom(e.target.value)}
+                  className="input"
+                />
+
+                <input
+                  placeholder="SIRET"
+                  value={siret}
+                  onChange={(e) => setSiret(e.target.value)}
+                  className="input"
+                />
+
+                <input
+                  placeholder="TVA (optionnel)"
+                  value={tva}
+                  onChange={(e) => setTva(e.target.value)}
+                  className="input"
+                />
+              </div>
+            )}
+          </>
+        )}
+
+        <button 
+          className="send-button" 
+          onClick={showFullForm ? registerClient : checkClientAndContinue}
+        >
+          👥 Accès privé bêta testeur
+        </button>
+
+        <p className="secure-note">
+          🔒 Données et paiements protégés — accès strictement confidentiel
+        </p>
+      </div>
+
+    </div>
+  </div>
+)}
     {showInstallVideo && (
   <div
     className="modal-overlay"

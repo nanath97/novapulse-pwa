@@ -2123,3 +2123,61 @@ html, body, #root {
   }
 
 }
+
+
+
+
+/* ===================== BETA MODAL DESKTOP SPLIT ===================== */
+
+.beta-modal{
+  max-width: 760px !important;
+  width: 90% !important;
+
+  display: grid !important;
+  grid-template-columns: 300px 1fr;
+  gap: 28px;
+
+  align-items: center;
+
+  text-align: center;
+}
+
+.beta-left,
+.beta-right{
+  min-width: 0;
+}
+
+.beta-video-wrapper{
+  margin-bottom: 0 !important;
+}
+
+.beta-video{
+  height: 360px !important;
+  border-radius: 20px;
+}
+
+.beta-right{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ===================== MOBILE BETA MODAL ===================== */
+
+@media (max-width:768px){
+
+  .beta-modal{
+    display: flex !important;
+    flex-direction: column !important;
+
+    max-width: 360px !important;
+    width: 88% !important;
+
+    gap: 14px;
+  }
+
+  .beta-video{
+    height: 190px !important;
+  }
+
+}
