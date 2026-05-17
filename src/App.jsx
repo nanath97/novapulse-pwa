@@ -1494,6 +1494,7 @@ return (
             muted
             loop
             playsInline
+            controls
           />
 
           <div className="beta-video-overlay">
