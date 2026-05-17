@@ -2165,20 +2165,6 @@ html, body, #root {
   width: 100%;
 }
 
-.beta-right .beta-input{
-  width: 100% !important;
-
-  height: 54px !important;
-
-  border-radius: 14px !important;
-
-  padding: 0 18px !important;
-
-  font-size: 18px !important;
-
-  box-sizing: border-box !important;
-}
-
 /* ===================== MOBILE BETA MODAL ===================== */
 
 @media (max-width:768px){
@@ -2199,3 +2185,42 @@ html, body, #root {
 
 }
 
+
+
+.beta-right .beta-input{
+  width: 100% !important;
+  max-width: 100% !important;
+
+  height: 50px !important;
+  min-height: 50px !important;
+
+  padding: 0 18px !important;
+
+  font-size: 16px !important;
+  line-height: 50px !important;
+
+  border-radius: 14px !important;
+  box-sizing: border-box !important;
+
+  display: block !important;
+  flex: none !important;
+}
+
+@media (max-width:768px){
+  .beta-modal{
+    max-width: 360px !important;
+    width: 88% !important;
+  }
+
+  .beta-right{
+    width: 100% !important;
+    align-items: stretch !important;
+  }
+
+  .beta-right .beta-input{
+    width: 100% !important;
+    font-size: 16px !important;
+    height: 52px !important;
+    line-height: normal !important;
+  }
+}
