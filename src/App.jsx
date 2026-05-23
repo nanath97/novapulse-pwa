@@ -1360,12 +1360,10 @@ return (
               ) : (
                 <>
                   {msg.from === "admin"
-                    ? renderTextWithLinks(
-                        maskEnvCommand(msg.text?.replace("👉 Laisser un avis : REVIEW_BUTTON", ""))
-                      )
+                    ? renderTextWithLinks(maskEnvCommand(msg.text))
                     : renderTextWithLinks(msg.text)}
 
-                  {msg.text?.includes("REVIEW_BUTTON") && (
+                  {msg.from === "admin" && msg.text?.includes("Merci pour votre paiement") && (
                     <button
                       onClick={() => setShowReviewModal(true)}
                       style={{
