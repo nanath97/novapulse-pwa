@@ -1201,36 +1201,79 @@ return (
 
               {/* VALIDATION EN BAS */}
               {isValidated && (
-                <div style={{
-                  marginTop: 20,
-                  paddingTop: 12,
-                  borderTop: "1px solid #eee",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  fontSize: 14
-                }}>
-                  
-                  <span style={{ color: "#16a34a", fontWeight: 500 }}>
-                    ✔ Validé par NovaPulse
-                  </span>
-
-                  <span style={{
+                <>
+                  <div style={{
+                    marginTop: 20,
+                    paddingTop: 12,
+                    borderTop: "1px solid #eee",
                     display: "flex",
+                    justifyContent: "space-between",
                     alignItems: "center",
-                    gap: 4,
-                    color: "#f59e0b"
+                    fontSize: 14
                   }}>
-                    <span>⭐</span>
-                    <span style={{ fontWeight: 600 }}>5.0</span>
-                    {sellerPaidCount > 0 && (
-                      <span style={{ color: "#6b7280" }}>
-                        ({sellerPaidCount})
-                      </span>
-                    )}
-                  </span>
+                    
+                    <span style={{ color: "#16a34a", fontWeight: 500 }}>
+                      ✔ Validé par NovaPulse
+                    </span>
 
-                </div>
+                    <span style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 4,
+                      color: "#f59e0b"
+                    }}>
+                      <span>⭐</span>
+                      <span style={{ fontWeight: 600 }}>5.0</span>
+                      {sellerPaidCount > 0 && (
+                        <span style={{ color: "#6b7280" }}>
+                          ({sellerPaidCount})
+                        </span>
+                      )}
+                    </span>
+
+                  </div>
+
+                  {reviews.length > 0 && (
+                    <div style={{ marginTop: 16 }}>
+
+                      {reviews.map((review, index) => (
+                        <div
+                          key={index}
+                          style={{
+                            background: "#f9fafb",
+                            border: "1px solid #e5e7eb",
+                            borderRadius: 14,
+                            padding: 14,
+                            marginBottom: 10,
+                          }}
+                        >
+                          <div
+                            style={{
+                              fontSize: 13,
+                              color: "#6b7280",
+                              marginBottom: 6,
+                              fontWeight: 500,
+                            }}
+                          >
+                            {review.email}
+                          </div>
+
+                          <div
+                            style={{
+                              fontSize: 14,
+                              lineHeight: 1.5,
+                              color: "#111827",
+                            }}
+                          >
+                            {review.avis}
+                          </div>
+                        </div>
+                      ))}
+
+                    </div>
+                  )}
+
+                </>
               )}
 
             </div>
