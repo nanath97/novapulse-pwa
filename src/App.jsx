@@ -52,6 +52,7 @@ function App() {
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [reviewText, setReviewText] = useState("");
   const [isSendingReview, setIsSendingReview] = useState(false);
+  const [reviews, setReviews] = useState([]);
     
 function getDownloadUrl(mediaUrl, fileName, mediaType) {
   if (!mediaUrl) return "";
@@ -337,6 +338,7 @@ useEffect(() => {
   };
 
   loadSellerConfig();
+  loadReviews();
 }, [sellerSlug]);
 
 useEffect(() => {
@@ -801,6 +803,19 @@ const sendReview = async () => {
     alert("Erreur serveur lors de l’envoi de l’avis.");
   } finally {
     setIsSendingReview(false);
+  }
+};
+
+const loadReviews = async () => {
+  try {
+    const res = await fetch(`${BRIDGE_URL}/pwa/reviews/${sellerSlug}`);
+    const data = await res.json();
+
+    if (data?.reviews) {
+      setReviews(data.reviews);
+    }
+  } catch (err) {
+    console.error("❌ loadReviews error:", err);
   }
 };
 
