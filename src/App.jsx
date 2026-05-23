@@ -49,7 +49,10 @@ function App() {
   const [tva, setTva] = useState("");
   const [showFullForm, setShowFullForm] = useState(false);
   const [showCalendly, setShowCalendly] = useState(false);
-  
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [reviewText, setReviewText] = useState("");
+  const [isSendingReview, setIsSendingReview] = useState(false);
+    
 function getDownloadUrl(mediaUrl, fileName, mediaType) {
   if (!mediaUrl) return "";
 
@@ -766,6 +769,49 @@ const loadPurchasedContent = async () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topicId, isAdminMode]);
 
+const sendReview = async () => {
+  if (!reviewText.trim()) return;
+
+  try {
+    setIsSendingReview(true);
+
+    const res = await fetch(`${BRIDGE_URL}/pwa/review`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sellerSlug,
+        email: clientEmail,
+        review: reviewText.trim(),
+      }),
+    });
+
+    const data = await res.json();
+
+    if (data?.success) {
+      setReviewText("");
+      setShowReviewModal(false);
+      alert("Merci pour votre avis !");
+    } else {
+      alert("Impossible d’envoyer l’avis pour le moment.");
+    }
+  } catch (err) {
+    console.error("❌ sendReview error:", err);
+    alert("Erreur serveur lors de l’envoi de l’avis.");
+  } finally {
+    setIsSendingReview(false);
+  }
+};
+
+
+
+
+
+
+
+
+
 // ===============================
 // SEND MESSAGE
 // ===============================
@@ -1312,10 +1358,31 @@ return (
                   )}
                 </div>
               ) : (
-                msg.from === "admin"
-                  ? renderTextWithLinks(maskEnvCommand(msg.text))
-                  : renderTextWithLinks(msg.text)
+                <>
+                  {msg.from === "admin"
+                    ? renderTextWithLinks(
+                        maskEnvCommand(msg.text?.replace("👉 Laisser un avis : REVIEW_BUTTON", ""))
+                      )
+                    : renderTextWithLinks(msg.text)}
 
+                  {msg.text?.includes("REVIEW_BUTTON") && (
+                    <button
+                      onClick={() => setShowReviewModal(true)}
+                      style={{
+                        marginTop: 10,
+                        background: "#2563eb",
+                        color: "white",
+                        border: "none",
+                        borderRadius: 10,
+                        padding: "10px 14px",
+                        cursor: "pointer",
+                        fontWeight: 600,
+                      }}
+                    >
+                      ⭐ Laisser un avis
+                    </button>
+                  )}
+                </>
               )}
                 {msg.createdTime && (
                   <div className="message-time">
@@ -1664,12 +1731,66 @@ return (
         frameBorder="0"
         title="Réserver un appel"
       />
-    </div>
-  </div>
-)}
-  </div>
-);
-}
+        </div>
+      </div>
+    )}
+
+    {showReviewModal && (
+      <div
+        className="modal-overlay"
+        onClick={() => setShowReviewModal(false)}
+      >
+        <div
+          className="modal-box"
+          onClick={(e) => e.stopPropagation()}
+          style={{ maxWidth: "420px", width: "92%" }}
+        >
+          <h3>Laisser un avis</h3>
+
+          <p style={{ fontSize: 14, color: "#6b7280", marginBottom: 12 }}>
+            Votre retour aide ce professionnel à inspirer confiance aux prochains clients.
+          </p>
+
+          <textarea
+            value={reviewText}
+            onChange={(e) => setReviewText(e.target.value)}
+            placeholder="Écrivez votre avis ici..."
+            rows={5}
+            style={{
+              width: "100%",
+              resize: "none",
+              borderRadius: 12,
+              padding: 12,
+              border: "1px solid #ddd",
+              outline: "none",
+              fontFamily: "inherit",
+              fontSize: 14,
+            }}
+          />
+
+          <button
+            className="pay-button"
+            onClick={sendReview}
+            disabled={isSendingReview || !reviewText.trim()}
+            style={{ width: "100%", marginTop: 12 }}
+          >
+            {isSendingReview ? "Envoi..." : "Valider mon avis"}
+          </button>
+
+          <button
+            className="history-button"
+            onClick={() => setShowReviewModal(false)}
+            style={{ width: "100%", marginTop: 8 }}
+          >
+            Annuler
+          </button>
+        </div>
+      </div>
+    )}
+
+      </div>
+    );
+    }
 
 
 export default App;
