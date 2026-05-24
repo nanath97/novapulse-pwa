@@ -1277,7 +1277,7 @@ return (
                           }}
                         >
                           <div style={{ fontWeight: 700, marginBottom: 6 }}>
-                            {review.email}
+                            {review.email?.replace(/(.{4}).+(@.+)/, "$1•••$2")}
                             <span style={{
                               marginLeft: 10,
                               fontSize: 12,
