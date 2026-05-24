@@ -104,8 +104,16 @@ const renderTextWithLinks = (text) => {
   });
 };
 
+const isValidEmail = (email) => {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim().toLowerCase());
+};
 const checkClientAndContinue = async () => {
   if (!emailInput.trim()) return;
+
+if (!isValidEmail(emailInput)) {
+  alert("Veuillez entrer une adresse email valide.");
+  return;
+}
 
   try {
     const res = await fetch(`${BRIDGE_URL}/pwa/check-client`, {
@@ -565,6 +573,10 @@ useEffect(() => {
   // ===============================
   const registerClient = async () => {
     if (!emailInput.trim()) return;
+    if (!isValidEmail(emailInput)) {
+  alert("Veuillez entrer une adresse email valide.");
+  return;
+}
 
     if (!clientType) {
       alert("Veuillez choisir votre statut");
