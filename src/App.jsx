@@ -1688,15 +1688,27 @@ return (
           <>
             <div style={{ display: "flex", gap: 10, marginTop: 10, width: "100%" }}>
               <button
+                type="button"
                 className={clientType === "particulier" ? "selected-btn" : ""}
                 onClick={() => setClientType("particulier")}
+                style={{
+                  border: clientType === "particulier" ? "2px solid #111827" : "1px solid #eee",
+                  background: clientType === "particulier" ? "#fff" : "#f9fafb",
+                  fontWeight: clientType === "particulier" ? 700 : 500,
+                }}
               >
                 👤 Particulier
               </button>
 
               <button
+                type="button"
                 className={clientType === "entreprise" ? "selected-btn" : ""}
                 onClick={() => setClientType("entreprise")}
+                style={{
+                  border: clientType === "entreprise" ? "2px solid #111827" : "1px solid #eee",
+                  background: clientType === "entreprise" ? "#fff" : "#f9fafb",
+                  fontWeight: clientType === "entreprise" ? 700 : 500,
+                }}
               >
                 🏢 Entreprise
               </button>
