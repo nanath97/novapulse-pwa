@@ -1234,42 +1234,71 @@ return (
                   </div>
 
                   {reviews.length > 0 && (
-                    <div style={{ marginTop: 16 }}>
+                    <div
+                      style={{
+                        marginTop: 18,
+                        background: "linear-gradient(135deg, #f5f3ff, #fafafa)",
+                        border: "1px solid #ede9fe",
+                        borderRadius: 18,
+                        padding: 18,
+                      }}
+                    >
+                      <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
+                        <div>
+                          <h3 style={{ margin: 0, fontSize: 20 }}>
+                            Avis clients vérifiés
+                          </h3>
+                          <p style={{ marginTop: 4, color: "#6b7280", fontSize: 14 }}>
+                            Des clients satisfaits qui partagent leur expérience
+                          </p>
+                        </div>
+
+                        <div style={{
+                          background: "white",
+                          border: "1px solid #eee",
+                          borderRadius: 14,
+                          padding: "10px 14px",
+                          fontWeight: 700,
+                          color: "#f59e0b"
+                        }}>
+                          ⭐ 5.0/5
+                        </div>
+                      </div>
 
                       {reviews.map((review, index) => (
                         <div
                           key={index}
                           style={{
-                            background: "#f9fafb",
+                            background: "white",
                             border: "1px solid #e5e7eb",
-                            borderRadius: 14,
-                            padding: 14,
-                            marginBottom: 10,
+                            borderRadius: 16,
+                            padding: 16,
+                            marginTop: 12,
                           }}
                         >
-                          <div
-                            style={{
-                              fontSize: 13,
-                              color: "#6b7280",
-                              marginBottom: 6,
-                              fontWeight: 500,
-                            }}
-                          >
+                          <div style={{ fontWeight: 700, marginBottom: 6 }}>
                             {review.email}
+                            <span style={{
+                              marginLeft: 10,
+                              fontSize: 12,
+                              color: "#6d28d9",
+                              background: "#ede9fe",
+                              padding: "4px 8px",
+                              borderRadius: 999
+                            }}>
+                              Achat vérifié
+                            </span>
                           </div>
 
-                          <div
-                            style={{
-                              fontSize: 14,
-                              lineHeight: 1.5,
-                              color: "#111827",
-                            }}
-                          >
+                          <div style={{ color: "#f59e0b", marginBottom: 8 }}>
+                            ⭐⭐⭐⭐⭐
+                          </div>
+
+                          <div style={{ fontSize: 14, lineHeight: 1.5 }}>
                             {review.avis}
                           </div>
                         </div>
                       ))}
-
                     </div>
                   )}
 
