@@ -455,10 +455,8 @@ useEffect(() => {
   // ✅ récupère le nombre de messages manqués
   const n = await loadMissedCount();
 
-  // ✅ si on a raté des messages -> recharge l’historique automatiquement
-  if (n > 0) {
-    await loadHistory();
-  }
+  await loadHistory();
+  await loadMissedCount();
 
   // 💓 HEARTBEAT
   if (heartbeatInterval) clearInterval(heartbeatInterval);
