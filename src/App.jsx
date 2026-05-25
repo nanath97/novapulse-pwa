@@ -1665,6 +1665,36 @@ return (
               background: "#fff",
             }}
           >
+
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                background:
+                  item.mediaType === "video"
+                    ? "#fee2e2"
+                    : item.mediaType === "document"
+                    ? "#dbeafe"
+                    : "#dcfce7",
+                color:
+                  item.mediaType === "video"
+                    ? "#b91c1c"
+                    : item.mediaType === "document"
+                    ? "#1d4ed8"
+                    : "#15803d",
+                padding: "6px 10px",
+                borderRadius: 999,
+                fontSize: 12,
+                fontWeight: 700,
+                marginBottom: 12,
+              }}
+            >
+              {item.mediaType === "video" && "🎥 Vidéo"}
+              {item.mediaType === "document" && "📄 Document"}
+              {item.mediaType === "photo" && "🖼️ Image"}
+            </div>
+
             <div
               style={{
                 fontWeight: 700,
@@ -1672,6 +1702,7 @@ return (
               }}
             >
               Achat du{" "}
+            
               {item.paid_at
                 ? new Date(item.paid_at).toLocaleDateString("fr-FR")
                 : "-"}
@@ -1685,9 +1716,13 @@ return (
               <img
                 src={item.mediaUrl}
                 alt="contenu"
+                onClick={() => window.open(item.mediaUrl, "_blank")}
                 style={{
                   width: "100%",
+                  maxHeight: 320,
+                  objectFit: "cover",
                   borderRadius: 12,
+                  cursor: "pointer",
                 }}
               />
             )}
@@ -1698,6 +1733,8 @@ return (
                 controls
                 style={{
                   width: "100%",
+                  maxHeight: 320,
+                  objectFit: "cover",
                   borderRadius: 12,
                 }}
               />
