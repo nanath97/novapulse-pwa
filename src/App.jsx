@@ -32,6 +32,10 @@ function App() {
   const isValidated = sellerConfig?.meta?.validated === true;
   const [isNewClient, setIsNewClient] = useState(false);
   const [showPayments, setShowPayments] = useState(false);
+  const [showPurchased, setShowPurchased] = useState(false);
+  const [purchasedLoading, setPurchasedLoading] = useState(false);
+  const [purchasedItems, setPurchasedItems] = useState([]);
+  const [purchasedError, setPurchasedError] = useState("");
   const [paymentsLoading, setPaymentsLoading] = useState(false);
   const [paymentsError, setPaymentsError] = useState("");
   const [paymentsPending, setPaymentsPending] = useState([]);
@@ -53,6 +57,7 @@ function App() {
   const [reviewText, setReviewText] = useState("");
   const [isSendingReview, setIsSendingReview] = useState(false);
   const [reviews, setReviews] = useState([]);
+  
     
 function getDownloadUrl(mediaUrl, fileName, mediaType) {
   if (!mediaUrl) return "";
@@ -450,8 +455,6 @@ useEffect(() => {
 
   socket.emit("init", { email: clientEmail, sellerSlug });
 
-  loadPurchasedContent();
-
   // ✅ récupère le nombre de messages manqués
   const n = await loadMissedCount();
 
@@ -566,6 +569,59 @@ useEffect(() => {
     socketRef.current = null;
   };
 }, [isIdentified, clientEmail, sellerSlug, historyLoaded]);
+
+const loadPurchasedGallery = async () => {
+  if (!clientEmail) return;
+
+  try {
+    setPurchasedLoading(true);
+    setPurchasedError("");
+    setPurchasedItems([]);
+
+    const url = `${BRIDGE_URL}/pwa/purchases?email=${encodeURIComponent(
+      clientEmail
+    )}`;
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (!data?.success || !Array.isArray(data.purchases)) {
+      setPurchasedError("Impossible de charger les contenus achetés.");
+      setShowPurchased(true);
+      return;
+    }
+
+    const enrichedPurchases = [];
+
+    for (const p of data.purchases) {
+      const contentRes = await fetch(
+        `${BRIDGE_URL}/pwa/content?contentId=${encodeURIComponent(
+          p.content_id
+        )}`
+      );
+
+      const contentData = await contentRes.json();
+
+      if (contentData?.success && contentData.media?.mediaUrl) {
+        enrichedPurchases.push({
+          ...p,
+          mediaUrl: contentData.media.mediaUrl,
+          mediaType: contentData.media.mediaType || "photo",
+          fileName: contentData.media.fileName || "contenu",
+        });
+      }
+    }
+
+    setPurchasedItems(enrichedPurchases);
+    setShowPurchased(true);
+  } catch (err) {
+    console.error("❌ loadPurchasedGallery error:", err);
+    setPurchasedError("Erreur serveur lors du chargement des contenus.");
+    setShowPurchased(true);
+  } finally {
+    setPurchasedLoading(false);
+  }
+};
   // ===============================
   // REGISTER CLIENT (FIRST ACCESS)
   // ===============================
@@ -731,6 +787,7 @@ const loadPurchasedContent = async () => {
       setPaymentsLoading(false);
     }
   };
+
   // ===============================
   // NOTES (ADMIN MODE ONLY)
   // ===============================
@@ -1569,6 +1626,110 @@ return (
     </div>
   </div>
 )}
+  {showPurchased && (
+  <div
+    className="modal-overlay"
+    onClick={() => setShowPurchased(false)}
+  >
+    <div
+      className="modal-box"
+      onClick={(e) => e.stopPropagation()}
+      style={{ maxWidth: "700px", width: "95%" }}
+    >
+      <h3>📁 Contenus achetés</h3>
+
+      {purchasedLoading && <p>Chargement...</p>}
+
+      {purchasedError && (
+        <p style={{ color: "red" }}>{purchasedError}</p>
+      )}
+
+      {!purchasedLoading && purchasedItems.length === 0 && (
+        <p>Aucun contenu acheté.</p>
+      )}
+
+      <div
+        style={{
+          display: "grid",
+          gap: 16,
+          marginTop: 20,
+        }}
+      >
+        {purchasedItems.map((item, index) => (
+          <div
+            key={index}
+            style={{
+              border: "1px solid #eee",
+              borderRadius: 14,
+              padding: 14,
+              background: "#fff",
+            }}
+          >
+            <div
+              style={{
+                fontWeight: 700,
+                marginBottom: 10,
+              }}
+            >
+              Achat du{" "}
+              {item.paid_at
+                ? new Date(item.paid_at).toLocaleDateString("fr-FR")
+                : "-"}
+            </div>
+
+            <div style={{ marginBottom: 10 }}>
+              💳 {(item.amount_cents / 100).toFixed(2)} €
+            </div>
+
+            {item.mediaType === "photo" && (
+              <img
+                src={item.mediaUrl}
+                alt="contenu"
+                style={{
+                  width: "100%",
+                  borderRadius: 12,
+                }}
+              />
+            )}
+
+            {item.mediaType === "video" && (
+              <video
+                src={item.mediaUrl}
+                controls
+                style={{
+                  width: "100%",
+                  borderRadius: 12,
+                }}
+              />
+            )}
+
+            {item.mediaType === "document" && (
+              <a
+                href={`${BRIDGE_URL}/pwa/download?url=${encodeURIComponent(
+                  item.mediaUrl
+                )}&name=${encodeURIComponent(item.fileName || "document.pdf")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="pay-button"
+              >
+                📄 Télécharger le document
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div style={{ textAlign: "center", marginTop: 20 }}>
+        <button
+          className="history-button"
+          onClick={() => setShowPurchased(false)}
+        >
+          Fermer
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     <footer className="input-bar">
 
       <div className="composer">
@@ -1616,10 +1777,10 @@ return (
               💳 Paiements & facturation
             </button>
 
-            
+
             <button
       onClick={() => {
-        loadPurchasedContent();
+        loadPurchasedGallery();
         setShowMenu(false);
       }}
     >
