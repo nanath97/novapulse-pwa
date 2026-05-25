@@ -1615,6 +1615,17 @@ return (
             >
               💳 Paiements & facturation
             </button>
+
+            
+            <button
+      onClick={() => {
+        loadPurchasedContent();
+        setShowMenu(false);
+      }}
+    >
+      📁 Contenus achetés
+    </button>
+
           </div>
         )}
       </div>
