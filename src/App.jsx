@@ -11,7 +11,7 @@ import { io } from "socket.io-client";
 
 
 
-const BRIDGE_URL = "https://novapulse-bridge.onrender.com";
+const BRIDGE_URL = "https://mini-jessie-bot-1.onrender.com";
 
 function App() {
   
