@@ -1,8 +1,17 @@
 {
   "name": "Coach Matthieu",
+  "company": {
+    "name": "Coach Matthieu",
+    "siret": "34567894555",
+    "address": "2 Rue des voirons",
+    "email": "correadosnajosn@gmail.com",
+    "phone": "+33767303139",
+    "logo": "/sellers/coach-matthieu/avatar.jpg"
+  },
   "meta": {
     "validated": true
   },
+
   "services": [
     {
       "name": "Conseil personnalisé",
@@ -41,3 +50,5 @@
   "calendly": "https://calendly.com/novapulse-online/nouvelle-reunion",
   "phone": "+33767303139"
 }
+
+
