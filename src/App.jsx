@@ -1965,7 +1965,7 @@ return (
           className="send-button" 
           onClick={showFullForm ? registerClient : checkClientAndContinue}
         >
-          👥 Accès privé bêta testeur
+          👥 Accès privé
         </button>
 
         <p className="secure-note">
