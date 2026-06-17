@@ -1887,7 +1887,7 @@ return (
         </div>
 
         <h2>
-          Rejoignez les bêta testeurs de <span className="marker">NovaPulse</span>
+          Rejoignez<span className="marker">NovaPulse</span>
         </h2>
 
         <p className="beta-subtitle">
