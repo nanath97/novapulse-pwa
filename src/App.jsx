@@ -1505,10 +1505,13 @@ return (
                     
                   ) && (
                     <a
-                      href={getDownloadUrl(msg.url, msg.fileName, "document")}
-                      download={msg.fileName || "document.pdf"}
+                      href={`${BRIDGE_URL}/pwa/download?url=${encodeURIComponent(
+                        msg.url
+                      )}&name=${encodeURIComponent(msg.fileName || "apercu.pdf")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
-                      📄 Télécharger le document : {msg.fileName || ""}
+                      📄 Télécharger le document : {msg.fileName || "apercu.pdf"}
                     </a>
                   )}
                 </div>
