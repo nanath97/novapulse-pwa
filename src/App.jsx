@@ -58,6 +58,9 @@ function App() {
   const [reviewText, setReviewText] = useState("");
   const [isSendingReview, setIsSendingReview] = useState(false);
   const [reviews, setReviews] = useState([]);
+  const [quoteModal, setQuoteModal] = useState(null);
+  const [quoteSignerName, setQuoteSignerName] = useState("");
+  const [quoteConsent, setQuoteConsent] = useState(false);
   
     
 function getDownloadUrl(mediaUrl, fileName, mediaType) {
@@ -1531,7 +1534,9 @@ return (
                             marginTop: 10,
                           }}
                           onClick={() => {
-                            console.log("📄 Devis à accepter :", msg.quoteId);
+                            setQuoteModal(msg);
+                            setQuoteSignerName("");
+                            setQuoteConsent(false);
                           }}
                         >
                           ✅ Accepter et signer le devis
@@ -2132,7 +2137,120 @@ return (
         </div>
       </div>
     )}
+    {quoteModal && (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      background: "rgba(0,0,0,0.45)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 9999,
+      padding: 20,
+    }}
+  >
+    <div
+      style={{
+        background: "white",
+        borderRadius: 18,
+        padding: 24,
+        width: "100%",
+        maxWidth: 430,
+      }}
+    >
+      <h2 style={{ marginTop: 0 }}>Accepter le devis</h2>
 
+      <p style={{ fontSize: 14 }}>
+        Devis : <strong>{quoteModal.quoteId}</strong>
+      </p>
+
+      <input
+        type="text"
+        placeholder="Nom et prénom"
+        value={quoteSignerName}
+        onChange={(e) => setQuoteSignerName(e.target.value)}
+        style={{
+          width: "100%",
+          padding: 12,
+          boxSizing: "border-box",
+          marginBottom: 14,
+        }}
+      />
+
+      <input
+        type="email"
+        value={email || ""}
+        readOnly
+        style={{
+          width: "100%",
+          padding: 12,
+          boxSizing: "border-box",
+          marginBottom: 14,
+          background: "#f3f3f3",
+        }}
+      />
+
+      <label
+        style={{
+          display: "flex",
+          gap: 10,
+          alignItems: "flex-start",
+          fontSize: 14,
+          marginBottom: 20,
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={quoteConsent}
+          onChange={(e) => setQuoteConsent(e.target.checked)}
+        />
+
+        <span>
+          J'ai lu le devis et j'accepte son contenu et ses conditions.
+        </span>
+      </label>
+
+      <button
+        type="button"
+        disabled={!quoteSignerName.trim() || !quoteConsent}
+        onClick={() => {
+          console.log("SIGNATURE TEST", {
+            quoteId: quoteModal.quoteId,
+            name: quoteSignerName,
+            email,
+            consent: quoteConsent,
+          });
+        }}
+        style={{
+          width: "100%",
+          padding: 13,
+          border: 0,
+          borderRadius: 10,
+          fontWeight: 700,
+          cursor: "pointer",
+        }}
+      >
+        Confirmer l'acceptation
+      </button>
+
+      <button
+        type="button"
+        onClick={() => setQuoteModal(null)}
+        style={{
+          width: "100%",
+          marginTop: 10,
+          padding: 10,
+          border: 0,
+          background: "transparent",
+          cursor: "pointer",
+        }}
+      >
+        Annuler
+      </button>
+    </div>
+  </div>
+)}
       </div>
     );
     }
