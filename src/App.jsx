@@ -2214,13 +2214,37 @@ return (
       <button
         type="button"
         disabled={!quoteSignerName.trim() || !quoteConsent}
-        onClick={() => {
-          console.log("SIGNATURE TEST", {
-            quoteId: quoteModal.quoteId,
-            name: quoteSignerName,
-            email: clientEmail,
-            consent: quoteConsent,
-          });
+        onClick={async () => {
+          try {
+            const res = await fetch(`${BRIDGE_URL}/pwa/quote/accept`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                quoteId: quoteModal.quoteId,
+                signerName: quoteSignerName.trim(),
+                email: clientEmail,
+                consent: quoteConsent,
+              }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok || !data?.success) {
+              console.error("❌ Acceptation devis échouée :", data);
+              alert("Impossible d'accepter le devis.");
+              return;
+            }
+
+            console.log("✅ Devis accepté :", data);
+
+            setQuoteModal(null);
+            alert("✅ Devis accepté avec succès");
+          } catch (err) {
+            console.error("❌ Erreur acceptation devis :", err);
+            alert("Erreur lors de l'acceptation du devis.");
+          }
         }}
         style={{
           width: "100%",
