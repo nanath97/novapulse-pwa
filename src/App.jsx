@@ -495,6 +495,10 @@ useEffect(() => {
   const fileName = data?.fileName;
   const text = data?.text ?? "";
 
+  // 📄 Informations spécifiques aux devis
+  const quoteId = data?.quoteId || null;
+  const isQuote = data?.isQuote === true;
+
   setMessages((prev) => [
     ...prev,
     {
@@ -504,8 +508,11 @@ useEffect(() => {
       url,
       fileName,
       text,
+      quoteId,
+      isQuote,
     },
   ]);
+
   playNotificationSound();
   setMissedCount((c) => c + 1);
 });
@@ -1499,20 +1506,38 @@ return (
 
                   {(
                   
+                    
                     msg.mediaType === "document" ||
                     msg.url?.toLowerCase().includes(".pdf") ||
                     msg.fileName?.toLowerCase().includes(".pdf")
-                    
                   ) && (
-                    <a
-                      href={`${BRIDGE_URL}/pwa/download?url=${encodeURIComponent(
-                        msg.url
-                      )}&name=${encodeURIComponent(msg.fileName || "apercu.pdf")}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      📄 Télécharger le document : {msg.fileName || "apercu.pdf"}
-                    </a>
+                    <>
+                      <a
+                        href={`${BRIDGE_URL}/pwa/download?url=${encodeURIComponent(
+                          msg.url
+                        )}&name=${encodeURIComponent(msg.fileName || "apercu.pdf")}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        📄 Télécharger le document : {msg.fileName || "apercu.pdf"}
+                      </a>
+
+                      {msg.isQuote && msg.quoteId && (
+                        <button
+                          type="button"
+                          className="pay-button"
+                          style={{
+                            width: "100%",
+                            marginTop: 10,
+                          }}
+                          onClick={() => {
+                            console.log("📄 Devis à accepter :", msg.quoteId);
+                          }}
+                        >
+                          ✅ Accepter et signer le devis
+                        </button>
+                      )}
+                    </>
                   )}
                 </div>
               ) : (
