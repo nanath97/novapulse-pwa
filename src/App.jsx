@@ -2180,7 +2180,7 @@ return (
 
       <input
         type="email"
-        value={email || ""}
+        value={clientEmail || ""}
         readOnly
         style={{
           width: "100%",
@@ -2218,7 +2218,7 @@ return (
           console.log("SIGNATURE TEST", {
             quoteId: quoteModal.quoteId,
             name: quoteSignerName,
-            email,
+            email: clientEmail,
             consent: quoteConsent,
           });
         }}
