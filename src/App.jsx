@@ -1526,21 +1526,37 @@ return (
                       </a>
 
                       {msg.isQuote && msg.quoteId && (
-                        <button
-                          type="button"
-                          className="pay-button"
-                          style={{
-                            width: "100%",
-                            marginTop: 10,
-                          }}
-                          onClick={() => {
-                            setQuoteModal(msg);
-                            setQuoteSignerName("");
-                            setQuoteConsent(false);
-                          }}
-                        >
-                          ✅ Accepter et signer le devis
-                        </button>
+                        msg.quoteStatus === "accepted" ? (
+                          <div
+                            style={{
+                              marginTop: 10,
+                              padding: "10px 12px",
+                              borderRadius: 10,
+                              background: "#dcfce7",
+                              color: "#166534",
+                              fontWeight: 700,
+                              textAlign: "center",
+                            }}
+                          >
+                            ✅ Devis accepté
+                          </div>
+                        ) : (
+                          <button
+                            type="button"
+                            className="pay-button"
+                            style={{
+                              width: "100%",
+                              marginTop: 10,
+                            }}
+                            onClick={() => {
+                              setQuoteModal(msg);
+                              setQuoteSignerName("");
+                              setQuoteConsent(false);
+                            }}
+                          >
+                            ✅ Accepter et signer le devis
+                          </button>
+                        )
                       )}
                     </>
                   )}
@@ -2238,6 +2254,16 @@ return (
             }
 
             console.log("✅ Devis accepté :", data);
+            setMessages((prev) =>
+              prev.map((msg) =>
+                msg.quoteId === quoteModal.quoteId
+                  ? {
+                      ...msg,
+                      quoteStatus: "accepted",
+                    }
+                  : msg
+              )
+            );
 
             setQuoteModal(null);
             alert("✅ Devis accepté avec succès");
