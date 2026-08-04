@@ -2211,7 +2211,7 @@ return (
         style={{
           display: "flex",
           gap: 10,
-          alignItems: "flex-start",
+          alignItems: "center",
           fontSize: 14,
           marginBottom: 20,
         }}
