@@ -6,8 +6,8 @@
 
   "legal_status": "micro_entrepreneur",
 
-  "siren": "XXXXXXXXX",
-  "siret": "XXXXXXXXXXXXXX",
+  "siren": "1233567",
+  "siret": "12345678909",
 
   "address": "2 Rue des Voirons",
   "postal_code": "XXXXX",
@@ -17,9 +17,10 @@
   "email": "correadosnajosn@gmail.com",
   "phone": "+33767303139",
 
-  "vat_status": "franchise_base",
-  "default_vat_rate": 0,
-  "vat_number": "",
+  "vat_status": "vat_registered",
+  "default_vat_rate": 20,
+  "vat_number": "FR00000000000",
+
 
   "logo": "/sellers/coach-matthieu/avatar.jpg"
 },
