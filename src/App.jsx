@@ -1985,30 +1985,67 @@ return (
                 🏢 Entreprise
               </button>
             </div>
-
             {clientType === "entreprise" && (
-              <div style={{ marginTop: 10, width: "100%" }}>
-                <input
-                  placeholder="Nom entreprise"
-                  value={entrepriseNom}
-                  onChange={(e) => setEntrepriseNom(e.target.value)}
-                  className="input"
-                />
+              <>
+                <div
+                  style={{
+                    marginTop: 10,
+                    width: "100%",
+                    fontSize: 13,
+                    lineHeight: 1.4,
+                    color: "#374151",
+                    background: "#f9fafb",
+                    border: "1px solid #e5e7eb",
+                    borderRadius: 10,
+                    padding: "10px 12px",
+                    boxSizing: "border-box",
+                  }}
+                >
+                  <strong>Entreprise ?</strong>
+                  <br />
+                  Vérifiez que vous disposez d’une adresse électronique de facturation active avant de continuer. Si vous n'en avez pas, vous ne pourrez pas effectuer d'achats.
 
-                <input
-                  placeholder="SIRET"
-                  value={siret}
-                  onChange={(e) => setSiret(e.target.value)}
-                  className="input"
-                />
+                  <br />
 
-                <input
-                  placeholder="TVA (optionnel)"
-                  value={tva}
-                  onChange={(e) => setTva(e.target.value)}
-                  className="input"
-                />
-              </div>
+                  <a
+                    href="https://facturation.chorus-pro.gouv.fr/annuaire/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "inline-block",
+                      marginTop: 6,
+                      fontSize: 12,
+                      fontWeight: 600,
+                      textDecoration: "underline",
+                    }}
+                  >
+                    Vérifier dans l’annuaire officiel
+                  </a>
+                </div>
+
+                <div style={{ marginTop: 10, width: "100%" }}>
+                  <input
+                    placeholder="Nom entreprise"
+                    value={entrepriseNom}
+                    onChange={(e) => setEntrepriseNom(e.target.value)}
+                    className="input"
+                  />
+
+                  <input
+                    placeholder="SIRET"
+                    value={siret}
+                    onChange={(e) => setSiret(e.target.value)}
+                    className="input"
+                  />
+
+                  <input
+                    placeholder="TVA (optionnel)"
+                    value={tva}
+                    onChange={(e) => setTva(e.target.value)}
+                    className="input"
+                  />
+                </div>
+              </>
             )}
           </>
         )}
