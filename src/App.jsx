@@ -52,6 +52,7 @@ function App() {
   const [entrepriseNom, setEntrepriseNom] = useState("");
   const [siret, setSiret] = useState("");
   const [tva, setTva] = useState("");
+  const [electronicBillingAddress, setElectronicBillingAddress] = useState("");
   const [showFullForm, setShowFullForm] = useState(false);
   const [showCalendly, setShowCalendly] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
@@ -667,6 +668,8 @@ const loadPurchasedGallery = async () => {
           entreprise_nom: clientType === "entreprise" ? entrepriseNom : "",
           siret: clientType === "entreprise" ? siret : "",
           tva: clientType === "entreprise" ? tva : "",
+          electronic_billing_address:
+            clientType === "entreprise" ? electronicBillingAddress : "",
         }),
       });
 
