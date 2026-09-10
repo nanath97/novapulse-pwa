@@ -2008,175 +2008,186 @@ return (
 
         
 
-        {showFullForm && (
-          <>
-            <div style={{ display: "flex", gap: 10, marginTop: 10, width: "100%" }}>
-              <button
-                type="button"
-                className={clientType === "particulier" ? "selected-btn" : ""}
-                onClick={() => setClientType("particulier")}
-                style={{
-                  border: clientType === "particulier" ? "2px solid #111827" : "1px solid #eee",
-                  background: clientType === "particulier" ? "#fff" : "#f9fafb",
-                  fontWeight: clientType === "particulier" ? 700 : 500,
-                }}
-              >
-                👤 Particulier
-              </button>
-
-              <button
-                type="button"
-                className={clientType === "entreprise" ? "selected-btn" : ""}
-                onClick={() => setClientType("entreprise")}
-                style={{
-                  border: clientType === "entreprise" ? "2px solid #111827" : "1px solid #eee",
-                  background: clientType === "entreprise" ? "#fff" : "#f9fafb",
-                  fontWeight: clientType === "entreprise" ? 700 : 500,
-                }}
-              >
-                🏢 Entreprise
-              </button>
-            </div>
-            {clientType === "entreprise" && (
-              <>
-                <div
-                  style={{
-                    marginTop: 10,
-                    width: "100%",
-                    fontSize: 13,
-                    lineHeight: 1.4,
-                    color: "#374151",
-                    background: "#f9fafb",
-                    border: "1px solid #e5e7eb",
-                    borderRadius: 10,
-                    padding: "10px 12px",
-                    boxSizing: "border-box",
-                  }}
-                >
-                  <strong>Entreprise ?</strong>
-                  <br />
-                  Vérifiez que vous disposez d’une adresse électronique de facturation active avant de continuer. Si vous n'en avez pas, vous ne pourrez pas effectuer d'achats.
-
-                  <br />
-
-                  <a
-                    href="https://facturation.chorus-pro.gouv.fr/annuaire/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: "inline-block",
-                      marginTop: 6,
-                      fontSize: 12,
-                      fontWeight: 600,
-                      textDecoration: "underline",
-                    }}
-                  >
-                    Vérifier dans l’annuaire officiel
-                  </a>
-                </div>
-
-                <div style={{ marginTop: 10, width: "100%" }}>
-                  <input
-                    placeholder="Nom entreprise"
-                    value={entrepriseNom}
-                    onChange={(e) => setEntrepriseNom(e.target.value)}
-                    className="input"
-                  />
-
-                  <input
-                    placeholder="SIRET"
-                    value={siret}
-                    onChange={(e) => setSiret(e.target.value)}
-                    className="input"
-                  />
-
-                  <input
-                    placeholder="TVA (optionnel)"
-                    value={tva}
-                    onChange={(e) => setTva(e.target.value)}
-                    className="input"
-                  />
-                </div>
-              </>
-            )}
-          </>
-        )}
+        
 
         {!showLoginCode ? (
+  <>
+    <input
+      type="email"
+      placeholder="Entrez votre email pour vous inscrire"
+      value={emailInput}
+      onChange={(e) => setEmailInput(e.target.value)}
+      className="input beta-input"
+    />
+
+    {showFullForm && (
+      <>
+        <div
+          style={{
+            display: "flex",
+            gap: 10,
+            marginTop: 10,
+            width: "100%",
+          }}
+        >
+          <button
+            type="button"
+            className={clientType === "particulier" ? "selected-btn" : ""}
+            onClick={() => setClientType("particulier")}
+            style={{
+              border:
+                clientType === "particulier"
+                  ? "2px solid #111827"
+                  : "1px solid #eee",
+              background:
+                clientType === "particulier" ? "#fff" : "#f9fafb",
+              fontWeight: clientType === "particulier" ? 700 : 500,
+            }}
+          >
+            👤 Particulier
+          </button>
+
+          <button
+            type="button"
+            className={clientType === "entreprise" ? "selected-btn" : ""}
+            onClick={() => setClientType("entreprise")}
+            style={{
+              border:
+                clientType === "entreprise"
+                  ? "2px solid #111827"
+                  : "1px solid #eee",
+              background:
+                clientType === "entreprise" ? "#fff" : "#f9fafb",
+              fontWeight: clientType === "entreprise" ? 700 : 500,
+            }}
+          >
+            🏢 Entreprise
+          </button>
+        </div>
+
+        {clientType === "entreprise" && (
           <>
-            <input
-              type="email"
-              placeholder="Entrez votre email pour vous inscrire"
-              value={emailInput}
-              onChange={(e) => setEmailInput(e.target.value)}
-              className="input beta-input"
-            />
-
-            {showFullForm && (
-              <>
-                {/* garde ici exactement ton formulaire particulier / entreprise actuel */}
-              </>
-            )}
-
-            <button
-              className="send-button"
-              onClick={showFullForm ? registerClient : checkClientAndContinue}
-            >
-              👥 Accès privé
-            </button>
-          </>
-        ) : (
-          <>
-            <p style={{ marginBottom: 10 }}>
-              Un code à 6 chiffres a été envoyé à
-              <br />
-              <strong>{emailInput}</strong>
-            </p>
-
-            <input
-              type="text"
-              inputMode="numeric"
-              maxLength={6}
-              placeholder="000000"
-              value={loginCode}
-              onChange={(e) =>
-                setLoginCode(
-                  e.target.value.replace(/\D/g, "").slice(0, 6)
-                )
-              }
-              className="input beta-input"
-              style={{
-                textAlign: "center",
-                letterSpacing: "8px",
-                fontSize: "22px",
-              }}
-            />
-
-            <button
-              className="send-button"
-              onClick={verifyLoginCode}
-            >
-              Se connecter
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                setShowLoginCode(false);
-                setLoginCode("");
-              }}
+            <div
               style={{
                 marginTop: 10,
-                background: "transparent",
-                border: "none",
-                cursor: "pointer",
-                textDecoration: "underline",
+                width: "100%",
+                fontSize: 13,
+                lineHeight: 1.4,
+                color: "#374151",
+                background: "#f9fafb",
+                border: "1px solid #e5e7eb",
+                borderRadius: 10,
+                padding: "10px 12px",
+                boxSizing: "border-box",
               }}
             >
-              Modifier l'adresse e-mail
-            </button>
+              <strong>Entreprise ?</strong>
+              <br />
+              Vérifiez que vous disposez d’une adresse électronique de facturation active avant de continuer. Si vous n'en avez pas, vous ne pourrez pas effectuer d'achats.
+              <br />
+
+              <a
+                href="https://facturation.chorus-pro.gouv.fr/annuaire/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-block",
+                  marginTop: 6,
+                  fontSize: 12,
+                  fontWeight: 600,
+                  textDecoration: "underline",
+                }}
+              >
+                Vérifier dans l’annuaire officiel
+              </a>
+            </div>
+
+            <div style={{ marginTop: 10, width: "100%" }}>
+              <input
+                placeholder="Nom entreprise"
+                value={entrepriseNom}
+                onChange={(e) => setEntrepriseNom(e.target.value)}
+                className="input"
+              />
+
+              <input
+                placeholder="SIRET"
+                value={siret}
+                onChange={(e) => setSiret(e.target.value)}
+                className="input"
+              />
+
+              <input
+                placeholder="TVA (optionnel)"
+                value={tva}
+                onChange={(e) => setTva(e.target.value)}
+                className="input"
+              />
+            </div>
           </>
         )}
+      </>
+    )}
+
+    <button
+      className="send-button"
+      onClick={showFullForm ? registerClient : checkClientAndContinue}
+    >
+      👥 Accès privé
+    </button>
+  </>
+) : (
+  <>
+    <p style={{ marginBottom: 10 }}>
+      Un code à 6 chiffres a été envoyé à
+      <br />
+      <strong>{emailInput}</strong>
+    </p>
+
+    <input
+      type="text"
+      inputMode="numeric"
+      maxLength={6}
+      placeholder="000000"
+      value={loginCode}
+      onChange={(e) =>
+        setLoginCode(
+          e.target.value.replace(/\D/g, "").slice(0, 6)
+        )
+      }
+      className="input beta-input"
+      style={{
+        textAlign: "center",
+        letterSpacing: "8px",
+        fontSize: "22px",
+      }}
+    />
+
+    <button
+      className="send-button"
+      onClick={verifyLoginCode}
+    >
+      Se connecter
+    </button>
+
+    <button
+      type="button"
+      onClick={() => {
+        setShowLoginCode(false);
+        setLoginCode("");
+      }}
+      style={{
+        marginTop: 10,
+        background: "transparent",
+        border: "none",
+        cursor: "pointer",
+        textDecoration: "underline",
+      }}
+    >
+      Modifier l'adresse e-mail
+    </button>
+  </>
+)}
 
         <p className="secure-note">
           🔒 Données et paiements protégés — accès strictement confidentiel
