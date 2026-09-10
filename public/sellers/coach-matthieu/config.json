@@ -15,20 +15,25 @@
                     "default_vat_rate":  0,
                     "vat_number":  "",
                     "logo":  "/sellers/coach-matthieu/avatar.jpg"
+                    
                 },
-    "facturx":  {
-                    "business_process_by_type":  {
-                                                     "normal":  "S2",
-                                                     "deposit":  "S2",
-                                                     "balance":  "S2"
-                                                 },
-                    "payment_date_convention":  "paid_at_utc_date",
-                    "b2b_notes":  {
-                                      "PMT":  "Indemnité forfaitaire pour frais de recouvrement : 40 EUR en cas de retard de paiement.",
-                                      "PMD":  "Pénalités de retard exigibles dès le jour suivant la date d\u0027échéance, au taux de refinancement semestriel de la BCE en vigueur majoré de 10 points.",
-                                      "AAB":  "Escompte pour paiement anticipé : néant."
-                                  }
-                },
+    "facturx": {
+                    "seller_electronic_address": {
+                        "value": "908582307",
+                        "scheme_id": "0225"
+                    },
+                    "business_process_by_type": {
+                        "normal": "S2",
+                        "deposit": "S2",
+                        "balance": "S2"
+                    },
+                    "payment_date_convention": "paid_at_utc_date",
+                    "b2b_notes": {
+                        "PMT": "Indemnité forfaitaire pour frais de recouvrement : 40 EUR en cas de retard de paiement.",
+                        "PMD": "Pénalités de retard exigibles dès le jour suivant la date d'échéance, au taux de refinancement semestriel de la BCE en vigueur majoré de 10 points.",
+                        "AAB": "Escompte pour paiement anticipé : néant."
+                    }
+                    },
     "meta":  {
                  "validated":  true
              },
@@ -52,15 +57,15 @@
                  ],
     "digitalProducts":  [
                             {
-                                "title":  "5 maniÃƒÂ¨res de manger sainement",
+                                "title":  "5 manieres de manger sainement",
                                 "description":  "Un e-book de 5 pages avec des conseils pratiques pour adopter une alimentation saine au quotidien.",
                                 "price":  "20 Ã¢â€šÂ¬",
                                 "image":  "/sellers/coach-matthieu/products/ebook-sante.jpg",
                                 "paymentLink":  "https://buy.stripe.com/fZuaEW0GpfrF1010nb7AI2e"
                             },
                             {
-                                "title":  "ProductivitÃƒÂ© au quotidien",
-                                "description":  "Optimisez votre temps avec des mÃƒÂ©thodes simples et faciles ÃƒÂ  appliquer.",
+                                "title":  "Productivité au quotidien",
+                                "description":  "Optimisez votre temps avec des méthodes simples et faciles à appliquer.",
                                 "price":  "15 Ã¢â€šÂ¬",
                                 "image":  "/sellers/coach-matthieu/products/productivite.jpg",
                                 "paymentLink":  "https://buy.stripe.com/fZuaEW0GpfrF1010nb7AI2e"
