@@ -1186,68 +1186,6 @@ return (
     )}
 
     <main className="chat-area">
-    {showLoginCode && !isIdentified && (
-  <div
-    style={{
-      maxWidth: 420,
-      margin: "40px auto",
-      padding: 24,
-      background: "white",
-      borderRadius: 16,
-      boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
-    }}
-  >
-    <h2 style={{ marginTop: 0 }}>
-      Vérification de connexion
-    </h2>
-
-    <p style={{ color: "#6b7280" }}>
-      Un code à 6 chiffres a été envoyé à
-      <br />
-      <strong>{emailInput}</strong>
-    </p>
-
-    <input
-      type="text"
-      inputMode="numeric"
-      maxLength={6}
-      value={loginCode}
-      onChange={(e) =>
-        setLoginCode(
-          e.target.value.replace(/\D/g, "").slice(0, 6)
-        )
-      }
-      placeholder="000000"
-      style={{
-        width: "100%",
-        padding: "14px 16px",
-        fontSize: 24,
-        textAlign: "center",
-        letterSpacing: 8,
-        borderRadius: 12,
-        border: "1px solid #d1d5db",
-        marginTop: 12,
-        boxSizing: "border-box",
-      }}
-    />
-
-    <button
-      type="button"
-      onClick={verifyLoginCode}
-      style={{
-        width: "100%",
-        marginTop: 16,
-        padding: "13px 16px",
-        border: "none",
-        borderRadius: 12,
-        cursor: "pointer",
-        fontWeight: 700,
-      }}
-    >
-      Se connecter
-    </button>
-  </div>
-)}
       <div className="messages">
         {isIdentified &&
           isNewClient &&
@@ -2170,12 +2108,81 @@ return (
           </>
         )}
 
-        <button 
-          className="send-button" 
-          onClick={showFullForm ? registerClient : checkClientAndContinue}
-        >
-          👥 Accès privé
-        </button>
+        {!showLoginCode ? (
+          <>
+            <input
+              type="email"
+              placeholder="Entrez votre email pour vous inscrire"
+              value={emailInput}
+              onChange={(e) => setEmailInput(e.target.value)}
+              className="input beta-input"
+            />
+
+            {showFullForm && (
+              <>
+                {/* garde ici exactement ton formulaire particulier / entreprise actuel */}
+              </>
+            )}
+
+            <button
+              className="send-button"
+              onClick={showFullForm ? registerClient : checkClientAndContinue}
+            >
+              👥 Accès privé
+            </button>
+          </>
+        ) : (
+          <>
+            <p style={{ marginBottom: 10 }}>
+              Un code à 6 chiffres a été envoyé à
+              <br />
+              <strong>{emailInput}</strong>
+            </p>
+
+            <input
+              type="text"
+              inputMode="numeric"
+              maxLength={6}
+              placeholder="000000"
+              value={loginCode}
+              onChange={(e) =>
+                setLoginCode(
+                  e.target.value.replace(/\D/g, "").slice(0, 6)
+                )
+              }
+              className="input beta-input"
+              style={{
+                textAlign: "center",
+                letterSpacing: "8px",
+                fontSize: "22px",
+              }}
+            />
+
+            <button
+              className="send-button"
+              onClick={verifyLoginCode}
+            >
+              Se connecter
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setShowLoginCode(false);
+                setLoginCode("");
+              }}
+              style={{
+                marginTop: 10,
+                background: "transparent",
+                border: "none",
+                cursor: "pointer",
+                textDecoration: "underline",
+              }}
+            >
+              Modifier l'adresse e-mail
+            </button>
+          </>
+        )}
 
         <p className="secure-note">
           🔒 Données et paiements protégés — accès strictement confidentiel
