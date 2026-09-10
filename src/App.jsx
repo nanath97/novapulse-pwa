@@ -2006,13 +2006,7 @@ return (
           dans une seule conversation.
         </p>
 
-        <input
-          type="email"
-          placeholder="Entrez votre email pour vous inscrire"
-          value={emailInput}
-          onChange={(e) => setEmailInput(e.target.value)}
-          className="input beta-input"
-        />
+        
 
         {showFullForm && (
           <>
