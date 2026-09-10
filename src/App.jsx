@@ -62,6 +62,8 @@ function App() {
   const [quoteModal, setQuoteModal] = useState(null);
   const [quoteSignerName, setQuoteSignerName] = useState("");
   const [quoteConsent, setQuoteConsent] = useState(false);
+  const [showLoginCode, setShowLoginCode] = useState(false);
+  const [loginCode, setLoginCode] = useState("");
   
     
 function getDownloadUrl(mediaUrl, fileName, mediaType) {
@@ -140,26 +142,30 @@ if (!isValidEmail(emailInput)) {
     const data = await res.json();
 
     // 👉 CLIENT EXISTANT
-    if (data.exists) {
-      console.log("✅ Client existant");
+    if (data.exists && data.requiresVerification) {
+      console.log("🔐 Client existant → vérification requise");
 
-      setClientEmail(emailInput.trim().toLowerCase());
-      setIsIdentified(true);
-      setIsNewClient(false);
+      const codeRes = await fetch(`${BRIDGE_URL}/pwa/request-login-code`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: emailInput.trim().toLowerCase(),
+          sellerSlug,
+        }),
+      });
 
-      // 🔥 important : récupérer topicId
-      const topicRes = await fetch(
-        `${BRIDGE_URL}/pwa/get-topic?email=${encodeURIComponent(emailInput)}&sellerSlug=${sellerSlug}`
-      );
-      const topicData = await topicRes.json();
+      const codeData = await codeRes.json();
 
-      if (topicData.topicId) {
-        setTopicId(String(topicData.topicId));
-
-        localStorage.setItem("pwa_client_email", emailInput);
-        localStorage.setItem("pwa_topic_id", topicData.topicId);
-        localStorage.setItem("pwa_is_new", "false");
+      if (!codeRes.ok || !codeData.success) {
+        alert("Impossible d’envoyer le code de connexion.");
+        return;
       }
+
+      setShowLoginCode(true);
+      setIsIdentified(false);
+      setIsNewClient(false);
 
       return;
     }
@@ -170,6 +176,58 @@ if (!isValidEmail(emailInput)) {
 
   } catch (err) {
     console.error("❌ checkClient error:", err);
+  }
+};
+  const verifyLoginCode = async () => {
+  const code = loginCode.trim();
+
+  if (!/^\d{6}$/.test(code)) {
+    alert("Veuillez entrer le code à 6 chiffres.");
+    return;
+  }
+
+  try {
+    const res = await fetch(`${BRIDGE_URL}/pwa/verify-login-code`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: emailInput.trim().toLowerCase(),
+        sellerSlug,
+        code,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || !data.success || !data.verified) {
+      alert("Code invalide ou expiré.");
+      return;
+    }
+
+    const client = data.clientData || {};
+    const cleanEmail = emailInput.trim().toLowerCase();
+
+    setClientEmail(cleanEmail);
+    setIsIdentified(true);
+    setIsNewClient(false);
+    setShowLoginCode(false);
+
+    if (client.topic_id) {
+      setTopicId(String(client.topic_id));
+
+      localStorage.setItem("pwa_client_email", cleanEmail);
+      localStorage.setItem("pwa_topic_id", String(client.topic_id));
+      localStorage.setItem("pwa_is_new", "false");
+      localStorage.setItem("pwa_seller_slug", sellerSlug);
+    }
+
+    console.log("✅ Reconnexion PWA vérifiée");
+
+  } catch (err) {
+    console.error("❌ verifyLoginCode error:", err);
+    alert("Erreur lors de la vérification du code.");
   }
 };
 
@@ -1128,6 +1186,68 @@ return (
     )}
 
     <main className="chat-area">
+    {showLoginCode && !isIdentified && (
+  <div
+    style={{
+      maxWidth: 420,
+      margin: "40px auto",
+      padding: 24,
+      background: "white",
+      borderRadius: 16,
+      boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
+    }}
+  >
+    <h2 style={{ marginTop: 0 }}>
+      Vérification de connexion
+    </h2>
+
+    <p style={{ color: "#6b7280" }}>
+      Un code à 6 chiffres a été envoyé à
+      <br />
+      <strong>{emailInput}</strong>
+    </p>
+
+    <input
+      type="text"
+      inputMode="numeric"
+      maxLength={6}
+      value={loginCode}
+      onChange={(e) =>
+        setLoginCode(
+          e.target.value.replace(/\D/g, "").slice(0, 6)
+        )
+      }
+      placeholder="000000"
+      style={{
+        width: "100%",
+        padding: "14px 16px",
+        fontSize: 24,
+        textAlign: "center",
+        letterSpacing: 8,
+        borderRadius: 12,
+        border: "1px solid #d1d5db",
+        marginTop: 12,
+        boxSizing: "border-box",
+      }}
+    />
+
+    <button
+      type="button"
+      onClick={verifyLoginCode}
+      style={{
+        width: "100%",
+        marginTop: 16,
+        padding: "13px 16px",
+        border: "none",
+        borderRadius: 12,
+        cursor: "pointer",
+        fontWeight: 700,
+      }}
+    >
+      Se connecter
+    </button>
+  </div>
+)}
       <div className="messages">
         {isIdentified &&
           isNewClient &&
