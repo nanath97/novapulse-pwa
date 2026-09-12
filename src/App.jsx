@@ -67,6 +67,9 @@ function App() {
   const [showActivationIntro, setShowActivationIntro] = useState(false);
   const [openActivationStep, setOpenActivationStep] = useState(null);
   const [activationScreen, setActivationScreen] = useState("intro");
+  const [sellerLogo, setSellerLogo] = useState(null);
+  const [sellerIntroVideo, setSellerIntroVideo] = useState(null);
+  const [sellerWelcomeVideo, setSellerWelcomeVideo] = useState(null);
 
 
 
@@ -2480,6 +2483,7 @@ return (
             </button>
 
             <button
+              onClick={() => setActivationScreen("media")}
               style={{
                 flex: 2,
                 height: 46,
@@ -2501,6 +2505,219 @@ return (
   </div>
 )}
 
+{activationScreen === "media" && (
+  <>
+    <div style={{ textAlign: "center", marginBottom: 20 }}>
+      <div style={{ fontSize: 30, marginBottom: 8 }}>
+        🎨
+      </div>
+
+      <h2 style={{ marginBottom: 8 }}>
+        Votre identité NovaPulse
+      </h2>
+
+      <p
+        style={{
+          margin: 0,
+          color: "#64748b",
+          lineHeight: 1.5,
+        }}
+      >
+        Ajoutez les éléments qui personnaliseront votre espace NovaPulse.
+      </p>
+    </div>
+
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 14,
+      }}
+    >
+
+      {/* LOGO */}
+
+      <div
+        style={{
+          border: "1px solid #e5e7eb",
+          borderRadius: 14,
+          padding: 16,
+          background: "#f8fafc",
+        }}
+      >
+        <strong>🖼️ Logo ou photo professionnelle</strong>
+
+        <div
+          style={{
+            fontSize: 13,
+            color: "#64748b",
+            lineHeight: 1.5,
+            marginTop: 5,
+            marginBottom: 12,
+          }}
+        >
+          512 × 512 px minimum · PNG, JPG ou WebP · 2 Mo maximum
+        </div>
+
+        <input
+          type="file"
+          accept="image/png,image/jpeg,image/webp"
+          onChange={(e) => setSellerLogo(e.target.files?.[0] || null)}
+        />
+
+        {sellerLogo && (
+          <div
+            style={{
+              marginTop: 10,
+              fontSize: 13,
+              color: "#16a34a",
+              fontWeight: 600,
+            }}
+          >
+            ✓ {sellerLogo.name}
+          </div>
+        )}
+      </div>
+
+
+      {/* VIDEO PRESENTATION */}
+
+      <div
+        style={{
+          border: "1px solid #e5e7eb",
+          borderRadius: 14,
+          padding: 16,
+          background: "#f8fafc",
+        }}
+      >
+        <strong>🎥 Vidéo de présentation</strong>
+
+        <div
+          style={{
+            fontSize: 13,
+            color: "#64748b",
+            lineHeight: 1.5,
+            marginTop: 5,
+            marginBottom: 12,
+          }}
+        >
+          1920 × 1080 px · 16:9 · MP4
+          <br />
+          60 secondes maximum · 50 Mo maximum
+        </div>
+
+        <input
+          type="file"
+          accept="video/mp4"
+          onChange={(e) =>
+            setSellerIntroVideo(e.target.files?.[0] || null)
+          }
+        />
+
+        {sellerIntroVideo && (
+          <div
+            style={{
+              marginTop: 10,
+              fontSize: 13,
+              color: "#16a34a",
+              fontWeight: 600,
+            }}
+          >
+            ✓ {sellerIntroVideo.name}
+          </div>
+        )}
+      </div>
+
+
+      {/* VIDEO ACCUEIL */}
+
+      <div
+        style={{
+          border: "1px solid #e5e7eb",
+          borderRadius: 14,
+          padding: 16,
+          background: "#f8fafc",
+        }}
+      >
+        <strong>📱 Vidéo d’accueil</strong>
+
+        <div
+          style={{
+            fontSize: 13,
+            color: "#64748b",
+            lineHeight: 1.5,
+            marginTop: 5,
+            marginBottom: 12,
+          }}
+        >
+          Vertical 1080 × 1920 px · 9:16 · MP4
+          <br />
+          30 à 60 secondes · 50 Mo maximum
+        </div>
+
+        <input
+          type="file"
+          accept="video/mp4"
+          onChange={(e) =>
+            setSellerWelcomeVideo(e.target.files?.[0] || null)
+          }
+        />
+
+        {sellerWelcomeVideo && (
+          <div
+            style={{
+              marginTop: 10,
+              fontSize: 13,
+              color: "#16a34a",
+              fontWeight: 600,
+            }}
+          >
+            ✓ {sellerWelcomeVideo.name}
+          </div>
+        )}
+      </div>
+
+    </div>
+
+    <div
+      style={{
+        display: "flex",
+        gap: 10,
+        marginTop: 20,
+      }}
+    >
+      <button
+        onClick={() => setActivationScreen("company")}
+        style={{
+          flex: 1,
+          height: 46,
+          borderRadius: 12,
+          border: "1px solid #d1d5db",
+          background: "white",
+          cursor: "pointer",
+          fontWeight: 600,
+        }}
+      >
+        ← Retour
+      </button>
+
+      <button
+        style={{
+          flex: 2,
+          height: 46,
+          borderRadius: 12,
+          border: "none",
+          background: "linear-gradient(135deg, #7c3aed, #2563eb)",
+          color: "white",
+          cursor: "pointer",
+          fontWeight: 700,
+        }}
+      >
+        Continuer →
+      </button>
+    </div>
+  </>
+)}
     <footer className="input-bar">
 
       <div className="composer">
