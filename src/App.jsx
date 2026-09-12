@@ -13,6 +13,7 @@ import { io } from "socket.io-client";
 
 
 const BRIDGE_URL = "https://mini-jessie-bot-1.onrender.com";
+const NOVAPULSE_ACTIVATION_CALENDLY = "https://calendly.com/novapulse-online/nouvelle-reunion";
 
 function App() {
   
@@ -181,6 +182,7 @@ function App() {
     city: "",
     country: "FR",
     email: "",
+    calendly: "",
     phone: "",
     vat_status: "",
     vat_number: "",
@@ -2502,6 +2504,19 @@ return (
 
             <input
               className="input"
+              type="url"
+              placeholder="Lien Calendly"
+              value={sellerForm.calendly}
+              onChange={(e) =>
+                setSellerForm({
+                  ...sellerForm,
+                  calendly: e.target.value,
+                })
+              }
+            />
+
+            <input
+              className="input"
               placeholder="Téléphone"
               value={sellerForm.phone}
               onChange={(e) =>
@@ -2890,6 +2905,9 @@ return (
       <button
         type="button"
         disabled={!telegramActivationConsent}
+        onClick={() => {
+          window.open(NOVAPULSE_ACTIVATION_CALENDLY, "_blank", "noopener,noreferrer");
+        }}
         style={{ flex: 2, minHeight: 46, borderRadius: 12, border: "none", background: "linear-gradient(135deg, #7c3aed, #2563eb)", color: "white", opacity: telegramActivationConsent ? 1 : 0.5, cursor: telegramActivationConsent ? "pointer" : "not-allowed", fontWeight: 700 }}
       >
         Réserver mon appel d’activation
