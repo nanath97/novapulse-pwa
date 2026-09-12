@@ -1927,13 +1927,21 @@ return (
 
 
             <button
-      onClick={() => {
-        loadPurchasedGallery();
-        setShowMenu(false);
-      }}
-    >
-      📁 Contenus achetés
-    </button>
+              onClick={() => {
+                loadPurchasedGallery();
+                setShowMenu(false);
+              }}
+            >
+              📁 Contenus achetés
+            </button>
+
+            <button
+              onClick={() => {
+                setShowMenu(false);
+              }}
+            >
+              ⚡ Activer NovaPulse
+            </button>
 
           </div>
         )}
