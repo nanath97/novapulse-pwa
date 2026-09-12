@@ -64,6 +64,7 @@ function App() {
   const [quoteConsent, setQuoteConsent] = useState(false);
   const [showLoginCode, setShowLoginCode] = useState(false);
   const [loginCode, setLoginCode] = useState("");
+  const [showActivationIntro, setShowActivationIntro] = useState(false);
   
     
 function getDownloadUrl(mediaUrl, fileName, mediaType) {
@@ -1878,6 +1879,154 @@ return (
     </div>
   </div>
 )}
+
+
+
+
+
+
+{showActivationIntro && (
+  <div
+    className="modal-overlay"
+    onClick={() => setShowActivationIntro(false)}
+  >
+    <div
+      className="modal-box"
+      onClick={(e) => e.stopPropagation()}
+      style={{
+        maxWidth: "540px",
+        width: "92%",
+        textAlign: "left",
+      }}
+    >
+      <div style={{ textAlign: "center", marginBottom: 20 }}>
+        <div
+          style={{
+            fontSize: 36,
+            marginBottom: 10,
+          }}
+        >
+          ⚡
+        </div>
+
+        <h2 style={{ marginBottom: 8 }}>
+          Activez votre NovaPulse
+        </h2>
+
+        <p
+          style={{
+            margin: 0,
+            color: "#64748b",
+            lineHeight: 1.5,
+          }}
+        >
+          Configurez votre espace professionnel pour commencer à vendre,
+          envoyer vos devis et gérer vos paiements directement depuis vos
+          conversations.
+        </p>
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 12,
+          marginBottom: 22,
+        }}
+      >
+        <div
+          style={{
+            padding: 14,
+            borderRadius: 14,
+            background: "#f8fafc",
+            border: "1px solid #e5e7eb",
+          }}
+        >
+          <strong>1. Vos informations professionnelles</strong>
+
+          <div
+            style={{
+              fontSize: 13,
+              color: "#64748b",
+              marginTop: 5,
+              lineHeight: 1.4,
+            }}
+          >
+            Préparez votre SIREN/SIRET, adresse, coordonnées et informations
+            de facturation.
+          </div>
+        </div>
+
+        <div
+          style={{
+            padding: 14,
+            borderRadius: 14,
+            background: "#f8fafc",
+            border: "1px solid #e5e7eb",
+          }}
+        >
+          <strong>2. Votre identité NovaPulse</strong>
+
+          <div
+            style={{
+              fontSize: 13,
+              color: "#64748b",
+              marginTop: 5,
+              lineHeight: 1.4,
+            }}
+          >
+            Préparez votre logo ainsi que vos vidéos de présentation.
+          </div>
+        </div>
+
+        <div
+          style={{
+            padding: 14,
+            borderRadius: 14,
+            background: "#f8fafc",
+            border: "1px solid #e5e7eb",
+          }}
+        >
+          <strong>3. Activation avec NovaPulse</strong>
+
+          <div
+            style={{
+              fontSize: 13,
+              color: "#64748b",
+              marginTop: 5,
+              lineHeight: 1.4,
+            }}
+          >
+            Une fois votre dossier complété, vous pourrez réserver un appel
+            pour finaliser la configuration de Telegram et activer votre
+            espace.
+          </div>
+        </div>
+      </div>
+
+      <button
+        className="send-button"
+        onClick={() => {
+          setShowActivationIntro(false);
+        }}
+        style={{
+          width: "100%",
+          height: 48,
+          borderRadius: 14,
+          background: "linear-gradient(135deg, #7c3aed, #2563eb)",
+          color: "white",
+          border: "none",
+          fontSize: 15,
+          fontWeight: 700,
+          cursor: "pointer",
+        }}
+      >
+        C’est parti →
+      </button>
+    </div>
+  </div>
+)}
+
     <footer className="input-bar">
 
       <div className="composer">
@@ -1938,6 +2087,7 @@ return (
             <button
               onClick={() => {
                 setShowMenu(false);
+                setShowActivationIntro(true);
               }}
             >
               ⚡ Activer NovaPulse
