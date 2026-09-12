@@ -1927,82 +1927,121 @@ return (
       </div>
 
       <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 12,
-          marginBottom: 22,
-        }}
-      >
-        <div
-          style={{
-            padding: 14,
-            borderRadius: 14,
-            background: "#f8fafc",
-            border: "1px solid #e5e7eb",
-          }}
-        >
-          <strong>1. Vos informations professionnelles</strong>
+  style={{
+    display: "flex",
+    flexDirection: "column",
+    gap: 12,
+    marginBottom: 22,
+  }}
+>
+  <div
+    style={{
+      padding: 14,
+      borderRadius: 14,
+      background: "#f8fafc",
+      border: "1px solid #e5e7eb",
+    }}
+  >
+    <strong>1. Préparez vos informations professionnelles</strong>
 
-          <div
-            style={{
-              fontSize: 13,
-              color: "#64748b",
-              marginTop: 5,
-              lineHeight: 1.4,
-            }}
-          >
-            Préparez votre SIREN/SIRET, adresse, coordonnées et informations
-            de facturation.
-          </div>
-        </div>
+    <div
+      style={{
+        fontSize: 13,
+        color: "#64748b",
+        marginTop: 7,
+        lineHeight: 1.5,
+      }}
+    >
+      Avant de commencer, préparez :
+      <br />• Nom commercial
+      <br />• Raison sociale
+      <br />• Statut juridique
+      <br />• SIREN
+      <br />• SIRET
+      <br />• Adresse complète
+      <br />• Code postal et ville
+      <br />• Pays
+      <br />• Email professionnel
+      <br />• Numéro de téléphone
+      <br />• Situation vis-à-vis de la TVA
+      <br />• Numéro de TVA intracommunautaire si applicable
+      <br />• Taux de TVA habituel
+    </div>
+  </div>
 
-        <div
-          style={{
-            padding: 14,
-            borderRadius: 14,
-            background: "#f8fafc",
-            border: "1px solid #e5e7eb",
-          }}
-        >
-          <strong>2. Votre identité NovaPulse</strong>
+  <div
+    style={{
+      padding: 14,
+      borderRadius: 14,
+      background: "#f8fafc",
+      border: "1px solid #e5e7eb",
+    }}
+  >
+    <strong>2. Préparez votre identité NovaPulse</strong>
 
-          <div
-            style={{
-              fontSize: 13,
-              color: "#64748b",
-              marginTop: 5,
-              lineHeight: 1.4,
-            }}
-          >
-            Préparez votre logo ainsi que vos vidéos de présentation.
-          </div>
-        </div>
+    <div
+      style={{
+        fontSize: 13,
+        color: "#64748b",
+        marginTop: 7,
+        lineHeight: 1.5,
+      }}
+    >
+      Vous devrez envoyer :
+      <br />
+      <br />🖼️ <strong>Votre logo ou photo professionnelle</strong>
+      <br />Format carré recommandé : 512 × 512 px minimum
+      <br />Formats acceptés : PNG, JPG ou WebP
+      <br />Poids maximum : 2 Mo
+      <br />Gardez votre logo ou votre visage bien centré.
+      <br />
+      <br />🎥 <strong>Votre vidéo de présentation</strong>
+      <br />Format recommandé : 1920 × 1080 px — 16:9
+      <br />Format vidéo : MP4
+      <br />Durée maximale : 60 secondes
+      <br />Poids maximum : 50 Mo
+      <br />
+      <br />📱 <strong>Votre vidéo d’accueil</strong>
+      <br />Format recommandé : vertical 1080 × 1920 px — 9:16
+      <br />Format vidéo : MP4
+      <br />Durée recommandée : 30 à 60 secondes
+      <br />Poids maximum : 50 Mo
+    </div>
+  </div>
 
-        <div
-          style={{
-            padding: 14,
-            borderRadius: 14,
-            background: "#f8fafc",
-            border: "1px solid #e5e7eb",
-          }}
-        >
-          <strong>3. Activation avec NovaPulse</strong>
+  <div
+    style={{
+      padding: 14,
+      borderRadius: 14,
+      background: "#f8fafc",
+      border: "1px solid #e5e7eb",
+    }}
+  >
+    <strong>3. Réservez votre appel d’activation</strong>
 
-          <div
-            style={{
-              fontSize: 13,
-              color: "#64748b",
-              marginTop: 5,
-              lineHeight: 1.4,
-            }}
-          >
-            Une fois votre dossier complété, vous pourrez réserver un appel
-            pour finaliser la configuration de Telegram et activer votre
-            espace.
-          </div>
-        </div>
-      </div>
+    <div
+      style={{
+        fontSize: 13,
+        color: "#64748b",
+        marginTop: 7,
+        lineHeight: 1.5,
+      }}
+    >
+      Une fois toutes vos informations et vos médias envoyés,
+      vous pourrez réserver un appel d’activation avec NovaPulse.
+      <br />
+      <br />
+      Pendant cet appel, nous finaliserons avec vous la configuration
+      de Telegram, la création du supergroupe et le branchement
+      nécessaire à votre espace NovaPulse.
+      <br />
+      <br />
+      Vous resterez présent pendant toute la configuration.
+      NovaPulse ne vous demandera pas de transmettre ni de conserver
+      votre mot de passe Telegram ou vos codes de sécurité.
+    </div>
+  </div>
+</div>
 
       <button
         className="send-button"
