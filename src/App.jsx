@@ -71,6 +71,28 @@ function App() {
   const [telegramActivationConsent, setTelegramActivationConsent] = useState(false);
   const [activationCalendlyOpened, setActivationCalendlyOpened] = useState(false);
   const [activationCallConfirmed, setActivationCallConfirmed] = useState(false);
+  const [sellerActivationToken, setSellerActivationToken] = useState("");
+  const [sellerSaving, setSellerSaving] = useState(false);
+  const [sellerSaveError, setSellerSaveError] = useState("");
+  const [sellerFormTouched, setSellerFormTouched] = useState({});
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("activation_token");
+    if (token && token.trim()) {
+      setSellerActivationToken(token);
+    }
+    if (params.has("activation_token")) {
+      params.delete("activation_token");
+      const query = params.toString();
+      window.history.replaceState(
+        window.history.state,
+        "",
+        window.location.pathname + (query ? "?" + query : "") + window.location.hash
+      );
+    }
+  }, []);
+
   const [sellerLogo, setSellerLogo] = useState(null);
   const [sellerIntroVideo, setSellerIntroVideo] = useState(null);
   const [sellerWelcomeVideo, setSellerWelcomeVideo] = useState(null);
@@ -192,6 +214,116 @@ function App() {
   });
   
     
+  const sellerCompanyErrors = {};
+  const requiredSellerFields = {
+    company_name: "Renseignez votre nom commercial.",
+    legal_name: "Renseignez votre raison sociale.",
+    legal_status: "Renseignez votre statut juridique.",
+    address: "Renseignez votre adresse.",
+    city: "Renseignez votre ville.",
+    country: "Renseignez votre pays.",
+    phone: "Renseignez votre numéro de téléphone.",
+  };
+  for (const [field, message] of Object.entries(requiredSellerFields)) {
+    if (!sellerForm[field].trim()) sellerCompanyErrors[field] = message;
+  }
+  if (!/^\d{9}$/.test(sellerForm.siren.replace(/\s/g, ""))) sellerCompanyErrors.siren = "Le SIREN doit contenir 9 chiffres.";
+  if (!/^\d{14}$/.test(sellerForm.siret.replace(/\s/g, ""))) sellerCompanyErrors.siret = "Le SIRET doit contenir 14 chiffres.";
+  if (!/^\d{5}$/.test(sellerForm.postal_code.trim())) sellerCompanyErrors.postal_code = "Le code postal doit contenir 5 chiffres.";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sellerForm.email.trim())) sellerCompanyErrors.email = "Renseignez une adresse email valide.";
+  if (!["franchise_base", "vat_registered"].includes(sellerForm.vat_status)) sellerCompanyErrors.vat_status = "Sélectionnez votre situation vis-à-vis de la TVA.";
+  const sellerVatRate = Number(sellerForm.default_vat_rate);
+  if (!String(sellerForm.default_vat_rate).trim() || !Number.isFinite(sellerVatRate) || sellerVatRate < 0 || (sellerForm.vat_status === "franchise_base" && sellerVatRate !== 0)) {
+    sellerCompanyErrors.default_vat_rate = "Renseignez un taux de TVA valide.";
+  }
+  if (sellerForm.vat_status === "vat_registered" && !sellerForm.vat_number.trim()) sellerCompanyErrors.vat_number = "Renseignez votre numéro de TVA intracommunautaire.";
+  if (sellerForm.calendly.trim()) {
+    try {
+      const url = new URL(sellerForm.calendly.trim());
+      if (url.protocol !== "https:" || !(url.hostname === "calendly.com" || url.hostname.endsWith(".calendly.com")) || url.username || url.password) throw new Error();
+    } catch {
+      sellerCompanyErrors.calendly = "Renseignez une URL Calendly valide.";
+    }
+  }
+  const sellerCompanyFormValid = Object.keys(sellerCompanyErrors).length === 0;
+
+  function sellerCompanyFieldError(field) {
+    return sellerFormTouched[field] && sellerCompanyErrors[field] ? (
+      <div role="alert" style={{ color: "#dc2626", fontSize: 13 }}>
+        {sellerCompanyErrors[field]}
+      </div>
+    ) : null;
+  }
+
+  async function saveSellerProfessionalInfo() {
+    if (sellerSaving) return;
+    setSellerSaveError("");
+    if (!sellerCompanyFormValid) {
+      setSellerFormTouched(Object.fromEntries(Object.keys(sellerForm).map(field => [field, true])));
+      setSellerSaveError("Vérifiez les informations obligatoires avant de continuer.");
+      return;
+    }
+    if (!sellerActivationToken.trim()) {
+      setSellerSaveError("Votre lien d’activation n’est plus valide. Veuillez utiliser le lien d’activation NovaPulse reçu.");
+      return;
+    }
+    setSellerSaving(true);
+    try {
+      const response = await fetch(BRIDGE_URL + "/sellers", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + sellerActivationToken,
+        },
+        body: JSON.stringify({
+          company_name: sellerForm.company_name,
+          legal_name: sellerForm.legal_name,
+          legal_status: sellerForm.legal_status,
+          siren: sellerForm.siren,
+          siret: sellerForm.siret,
+          address: sellerForm.address,
+          postal_code: sellerForm.postal_code,
+          city: sellerForm.city,
+          country: sellerForm.country,
+          email: sellerForm.email,
+          phone: sellerForm.phone,
+          vat_status: sellerForm.vat_status,
+          vat_number: sellerForm.vat_number,
+          default_vat_rate: sellerForm.default_vat_rate,
+          calendly: sellerForm.calendly,
+        }),
+      });
+      if (response.ok) {
+        setActivationScreen("media");
+        return;
+      }
+      let message = "Impossible d’enregistrer vos informations. Veuillez réessayer.";
+      if (response.status === 401 || response.status === 403) {
+        message = "Votre lien d’activation est invalide ou a expiré.";
+      } else if (response.status === 404) {
+        message = "Votre profil vendeur NovaPulse est introuvable.";
+      } else if (response.status === 409) {
+        message = "Une anomalie a été détectée sur votre profil vendeur. Contactez NovaPulse.";
+      } else if (response.status >= 500) {
+        message = "Le service est momentanément indisponible. Veuillez réessayer.";
+      } else if (response.status === 400) {
+        const data = await response.json().catch(() => null);
+        const errors = {
+          INVALID_COUNTRY_OR_EMAIL: "Renseignez un pays et une adresse email valide.",
+          INVALID_VAT_RATE: "Renseignez un taux de TVA numérique supérieur ou égal à zéro.",
+          INVALID_CALENDLY: "Renseignez un lien HTTPS valide sur calendly.com ou laissez ce champ vide.",
+          INVALID_FIELD: "Vérifiez le format et la longueur des informations saisies.",
+        };
+        if (data && Object.hasOwn(errors, data.error)) message = errors[data.error];
+      }
+      setSellerSaveError(message);
+    } catch {
+      setSellerSaveError("Impossible d’enregistrer vos informations. Veuillez réessayer.");
+    } finally {
+      setSellerSaving(false);
+    }
+  }
+
 function getDownloadUrl(mediaUrl, fileName, mediaType) {
   if (!mediaUrl) return "";
 
@@ -2389,6 +2521,7 @@ return (
               className="input"
               placeholder="Nom commercial"
               value={sellerForm.company_name}
+              onBlur={() => setSellerFormTouched(previous => ({ ...previous, company_name: true }))}
               onChange={(e) =>
                 setSellerForm({
                   ...sellerForm,
@@ -2396,11 +2529,13 @@ return (
                 })
               }
             />
+            {sellerCompanyFieldError("company_name")}
 
             <input
               className="input"
               placeholder="Raison sociale"
               value={sellerForm.legal_name}
+              onBlur={() => setSellerFormTouched(previous => ({ ...previous, legal_name: true }))}
               onChange={(e) =>
                 setSellerForm({
                   ...sellerForm,
@@ -2408,11 +2543,13 @@ return (
                 })
               }
             />
+            {sellerCompanyFieldError("legal_name")}
 
             <input
               className="input"
               placeholder="Statut juridique"
               value={sellerForm.legal_status}
+              onBlur={() => setSellerFormTouched(previous => ({ ...previous, legal_status: true }))}
               onChange={(e) =>
                 setSellerForm({
                   ...sellerForm,
@@ -2420,11 +2557,13 @@ return (
                 })
               }
             />
+            {sellerCompanyFieldError("legal_status")}
 
             <input
               className="input"
               placeholder="SIREN"
               value={sellerForm.siren}
+              onBlur={() => setSellerFormTouched(previous => ({ ...previous, siren: true }))}
               onChange={(e) =>
                 setSellerForm({
                   ...sellerForm,
@@ -2432,11 +2571,13 @@ return (
                 })
               }
             />
+            {sellerCompanyFieldError("siren")}
 
             <input
               className="input"
               placeholder="SIRET"
               value={sellerForm.siret}
+              onBlur={() => setSellerFormTouched(previous => ({ ...previous, siret: true }))}
               onChange={(e) =>
                 setSellerForm({
                   ...sellerForm,
@@ -2444,11 +2585,13 @@ return (
                 })
               }
             />
+            {sellerCompanyFieldError("siret")}
 
             <input
               className="input"
               placeholder="Adresse"
               value={sellerForm.address}
+              onBlur={() => setSellerFormTouched(previous => ({ ...previous, address: true }))}
               onChange={(e) =>
                 setSellerForm({
                   ...sellerForm,
@@ -2456,11 +2599,13 @@ return (
                 })
               }
             />
+            {sellerCompanyFieldError("address")}
 
             <input
               className="input"
               placeholder="Code postal"
               value={sellerForm.postal_code}
+              onBlur={() => setSellerFormTouched(previous => ({ ...previous, postal_code: true }))}
               onChange={(e) =>
                 setSellerForm({
                   ...sellerForm,
@@ -2468,11 +2613,13 @@ return (
                 })
               }
             />
+            {sellerCompanyFieldError("postal_code")}
 
             <input
               className="input"
               placeholder="Ville"
               value={sellerForm.city}
+              onBlur={() => setSellerFormTouched(previous => ({ ...previous, city: true }))}
               onChange={(e) =>
                 setSellerForm({
                   ...sellerForm,
@@ -2480,11 +2627,13 @@ return (
                 })
               }
             />
+            {sellerCompanyFieldError("city")}
 
             <input
               className="input"
               placeholder="Pays"
               value={sellerForm.country}
+              onBlur={() => setSellerFormTouched(previous => ({ ...previous, country: true }))}
               onChange={(e) =>
                 setSellerForm({
                   ...sellerForm,
@@ -2492,12 +2641,14 @@ return (
                 })
               }
             />
+            {sellerCompanyFieldError("country")}
 
             <input
               className="input"
               type="email"
               placeholder="Email professionnel"
               value={sellerForm.email}
+              onBlur={() => setSellerFormTouched(previous => ({ ...previous, email: true }))}
               onChange={(e) =>
                 setSellerForm({
                   ...sellerForm,
@@ -2505,12 +2656,14 @@ return (
                 })
               }
             />
+            {sellerCompanyFieldError("email")}
 
             <input
               className="input"
               type="url"
               placeholder="Lien Calendly"
               value={sellerForm.calendly}
+              onBlur={() => setSellerFormTouched(previous => ({ ...previous, calendly: true }))}
               onChange={(e) =>
                 setSellerForm({
                   ...sellerForm,
@@ -2518,11 +2671,13 @@ return (
                 })
               }
             />
+            {sellerCompanyFieldError("calendly")}
 
             <input
               className="input"
               placeholder="Téléphone"
               value={sellerForm.phone}
+              onBlur={() => setSellerFormTouched(previous => ({ ...previous, phone: true }))}
               onChange={(e) =>
                 setSellerForm({
                   ...sellerForm,
@@ -2530,14 +2685,17 @@ return (
                 })
               }
             />
+            {sellerCompanyFieldError("phone")}
 
             <select
               className="input"
               value={sellerForm.vat_status}
+              onBlur={() => setSellerFormTouched(previous => ({ ...previous, vat_status: true }))}
               onChange={(e) =>
                 setSellerForm({
                   ...sellerForm,
                   vat_status: e.target.value,
+                  default_vat_rate: e.target.value === "franchise_base" ? "0" : sellerForm.default_vat_rate,
                 })
               }
             >
@@ -2549,11 +2707,13 @@ return (
                 Assujetti à la TVA
               </option>
             </select>
+            {sellerCompanyFieldError("vat_status")}
 
             <input
               className="input"
               placeholder="Numéro TVA intracommunautaire"
               value={sellerForm.vat_number}
+              onBlur={() => setSellerFormTouched(previous => ({ ...previous, vat_number: true }))}
               onChange={(e) =>
                 setSellerForm({
                   ...sellerForm,
@@ -2561,12 +2721,15 @@ return (
                 })
               }
             />
+            {sellerCompanyFieldError("vat_number")}
 
             <input
               className="input"
               type="number"
               placeholder="Taux de TVA habituel (%)"
               value={sellerForm.default_vat_rate}
+              disabled={sellerForm.vat_status === "franchise_base"}
+              onBlur={() => setSellerFormTouched(previous => ({ ...previous, default_vat_rate: true }))}
               onChange={(e) =>
                 setSellerForm({
                   ...sellerForm,
@@ -2574,6 +2737,7 @@ return (
                 })
               }
             />
+            {sellerCompanyFieldError("default_vat_rate")}
           </div>
 
           <div
@@ -2599,7 +2763,8 @@ return (
             </button>
 
             <button
-              onClick={() => setActivationScreen("media")}
+              onClick={saveSellerProfessionalInfo}
+              disabled={!sellerCompanyFormValid || sellerSaving}
               style={{
                 flex: 2,
                 height: 46,
@@ -2607,13 +2772,19 @@ return (
                 border: "none",
                 background: "linear-gradient(135deg, #7c3aed, #2563eb)",
                 color: "white",
-                cursor: "pointer",
+                cursor: sellerCompanyFormValid && !sellerSaving ? "pointer" : "not-allowed",
+                opacity: sellerCompanyFormValid && !sellerSaving ? 1 : 0.5,
                 fontWeight: 700,
               }}
             >
-              Continuer →
+              {sellerSaving ? "Enregistrement..." : "Continuer →"}
             </button>
           </div>
+          {sellerSaveError && (
+            <div role="alert" style={{ marginTop: 10, fontSize: 13, color: "#dc2626" }}>
+              {sellerSaveError}
+            </div>
+          )}
         </>
       )}
 
