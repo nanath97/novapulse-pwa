@@ -65,6 +65,7 @@ function App() {
   const [quoteConsent, setQuoteConsent] = useState(false);
   const [showLoginCode, setShowLoginCode] = useState(false);
   const [loginCode, setLoginCode] = useState("");
+  const [pwaClientSessionToken, setPwaClientSessionToken] = useState("");
   const [showActivationIntro, setShowActivationIntro] = useState(false);
   const [openActivationStep, setOpenActivationStep] = useState(null);
   const [activationScreen, setActivationScreen] = useState("intro");
@@ -72,6 +73,8 @@ function App() {
   const [activationCalendlyOpened, setActivationCalendlyOpened] = useState(false);
   const [activationCallConfirmed, setActivationCallConfirmed] = useState(false);
   const [sellerActivationToken, setSellerActivationToken] = useState("");
+  const [sellerActivationStarting, setSellerActivationStarting] = useState(false);
+  const [sellerActivationStartError, setSellerActivationStartError] = useState("");
   const [sellerSaving, setSellerSaving] = useState(false);
   const [sellerSaveError, setSellerSaveError] = useState("");
   const [sellerFormTouched, setSellerFormTouched] = useState({});
@@ -98,6 +101,74 @@ function App() {
       );
     }
   }, []);
+
+  useEffect(() => {
+    const storedToken = sessionStorage.getItem("novapulse_pwa_client_session_token");
+    if (storedToken && storedToken.trim()) {
+      setPwaClientSessionToken(storedToken);
+    }
+  }, []);
+
+  function clearPwaClientSessionToken() {
+    setPwaClientSessionToken("");
+    sessionStorage.removeItem("novapulse_pwa_client_session_token");
+  }
+
+  async function startSellerActivation() {
+    if (sellerActivationStarting) return;
+    setSellerActivationStartError("");
+    try {
+      const existingToken = sellerActivationToken.trim()
+        ? sellerActivationToken
+        : sessionStorage.getItem("novapulse_seller_activation_token");
+      if (existingToken && existingToken.trim()) {
+        setSellerActivationToken(existingToken);
+        setActivationScreen("intro");
+        setShowActivationIntro(true);
+        setShowMenu(false);
+        return;
+      }
+      if (!pwaClientSessionToken.trim()) {
+        setSellerActivationStartError("Votre session a expiré. Veuillez vous reconnecter avant d’activer NovaPulse.");
+        return;
+      }
+      setSellerActivationStarting(true);
+      const response = await fetch(BRIDGE_URL + "/seller-activation/start", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + pwaClientSessionToken,
+        },
+      });
+      if (!response.ok) {
+        const message = response.status === 401 || response.status === 403
+          ? "Votre session a expiré. Veuillez vous reconnecter."
+          : response.status === 404
+          ? "Votre profil client NovaPulse est introuvable."
+          : response.status === 409
+          ? "Une anomalie a été détectée sur votre profil. Contactez NovaPulse."
+          : response.status >= 500
+          ? "Le service est momentanément indisponible. Veuillez réessayer."
+          : "Impossible de démarrer l’activation NovaPulse. Veuillez réessayer.";
+        setSellerActivationStartError(message);
+        return;
+      }
+      const data = await response.json();
+      if (typeof data?.activation_token !== "string" || !data.activation_token.trim()) {
+        setSellerActivationStartError("Impossible de démarrer l’activation NovaPulse. Veuillez réessayer.");
+        return;
+      }
+      sessionStorage.setItem("novapulse_seller_activation_token", data.activation_token);
+      setSellerActivationToken(data.activation_token);
+      setActivationScreen("intro");
+      setShowActivationIntro(true);
+      setShowMenu(false);
+    } catch {
+      setSellerActivationStartError("Impossible de démarrer l’activation NovaPulse. Veuillez réessayer.");
+    } finally {
+      setSellerActivationStarting(false);
+    }
+  }
 
   function clearSellerActivationToken() {
     setSellerActivationToken("");
@@ -473,6 +544,11 @@ if (!isValidEmail(emailInput)) {
     if (!res.ok || !data.success || !data.verified) {
       alert("Code invalide ou expiré.");
       return;
+    }
+
+    if (typeof data.client_session_token === "string" && data.client_session_token.trim()) {
+      setPwaClientSessionToken(data.client_session_token);
+      sessionStorage.setItem("novapulse_pwa_client_session_token", data.client_session_token);
     }
 
     const client = data.clientData || {};
@@ -3216,13 +3292,16 @@ return (
             </button>
 
             <button
-              onClick={() => {
-                setShowMenu(false);
-                setShowActivationIntro(true);
-              }}
+              onClick={startSellerActivation}
+              disabled={sellerActivationStarting}
             >
-              ⚡ Activer NovaPulse
+              {sellerActivationStarting ? "Activation..." : "⚡ Activer NovaPulse"}
             </button>
+            {sellerActivationStartError && (
+              <p role="alert" style={{ color: "#b91c1c", margin: "8px 12px", fontSize: 13 }}>
+                {sellerActivationStartError}
+              </p>
+            )}
 
           </div>
         )}
