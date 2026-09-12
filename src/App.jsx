@@ -81,6 +81,12 @@ function App() {
     const token = params.get("activation_token");
     if (token && token.trim()) {
       setSellerActivationToken(token);
+      sessionStorage.setItem("novapulse_seller_activation_token", token);
+    } else if (!params.has("activation_token")) {
+      const storedToken = sessionStorage.getItem("novapulse_seller_activation_token");
+      if (storedToken && storedToken.trim()) {
+        setSellerActivationToken(storedToken);
+      }
     }
     if (params.has("activation_token")) {
       params.delete("activation_token");
@@ -92,6 +98,11 @@ function App() {
       );
     }
   }, []);
+
+  function clearSellerActivationToken() {
+    setSellerActivationToken("");
+    sessionStorage.removeItem("novapulse_seller_activation_token");
+  }
 
   const [sellerLogo, setSellerLogo] = useState(null);
   const [sellerIntroVideo, setSellerIntroVideo] = useState(null);
@@ -3135,6 +3146,7 @@ return (
         setTelegramActivationConsent(false);
         setActivationCalendlyOpened(false);
         setActivationCallConfirmed(false);
+        clearSellerActivationToken();
       }}
       style={{ width: "100%", minHeight: 46, marginTop: 20, borderRadius: 12, border: "none", background: "linear-gradient(135deg, #7c3aed, #2563eb)", color: "white", cursor: "pointer", fontWeight: 700 }}
     >
