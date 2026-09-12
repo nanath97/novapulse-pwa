@@ -2501,10 +2501,6 @@ return (
         </>
       )}
 
-    </div>
-  </div>
-)}
-
 {activationScreen === "media" && (
   <>
     <div style={{ textAlign: "center", marginBottom: 20 }}>
@@ -2718,6 +2714,10 @@ return (
     </div>
   </>
 )}
+    </div>
+  </div>
+)}
+
     <footer className="input-bar">
 
       <div className="composer">
