@@ -65,6 +65,7 @@ function App() {
   const [showLoginCode, setShowLoginCode] = useState(false);
   const [loginCode, setLoginCode] = useState("");
   const [showActivationIntro, setShowActivationIntro] = useState(false);
+  const [openActivationStep, setOpenActivationStep] = useState(null);
   
     
 function getDownloadUrl(mediaUrl, fileName, mediaType) {
@@ -1934,6 +1935,8 @@ return (
     marginBottom: 22,
   }}
 >
+
+  {/* ÉTAPE 1 */}
   <div
     style={{
       padding: 14,
@@ -1942,33 +1945,72 @@ return (
       border: "1px solid #e5e7eb",
     }}
   >
-    <strong>1. Préparez vos informations professionnelles</strong>
+    <div
+      onClick={() =>
+        setOpenActivationStep(openActivationStep === 1 ? null : 1)
+      }
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        cursor: "pointer",
+      }}
+    >
+      <strong>1. Vos informations professionnelles</strong>
+
+      <span
+        style={{
+          fontSize: 18,
+          transform:
+            openActivationStep === 1 ? "rotate(180deg)" : "rotate(0deg)",
+          transition: "0.2s",
+        }}
+      >
+        ⌄
+      </span>
+    </div>
 
     <div
       style={{
         fontSize: 13,
         color: "#64748b",
-        marginTop: 7,
-        lineHeight: 1.5,
+        marginTop: 5,
       }}
     >
-      Avant de commencer, préparez :
-      <br />• Nom commercial
-      <br />• Raison sociale
-      <br />• Statut juridique
-      <br />• SIREN
-      <br />• SIRET
-      <br />• Adresse complète
-      <br />• Code postal et ville
-      <br />• Pays
-      <br />• Email professionnel
-      <br />• Numéro de téléphone
-      <br />• Situation vis-à-vis de la TVA
-      <br />• Numéro de TVA intracommunautaire si applicable
-      <br />• Taux de TVA habituel
+      Préparez les informations nécessaires à la création de votre espace.
     </div>
+
+    {openActivationStep === 1 && (
+      <div
+        style={{
+          marginTop: 12,
+          paddingTop: 12,
+          borderTop: "1px solid #e5e7eb",
+          fontSize: 13,
+          color: "#64748b",
+          lineHeight: 1.6,
+        }}
+      >
+        • Nom commercial
+        <br />• Raison sociale
+        <br />• Statut juridique
+        <br />• SIREN
+        <br />• SIRET
+        <br />• Adresse complète
+        <br />• Code postal
+        <br />• Ville
+        <br />• Pays
+        <br />• Email professionnel
+        <br />• Numéro de téléphone
+        <br />• Situation vis-à-vis de la TVA
+        <br />• Numéro de TVA intracommunautaire si applicable
+        <br />• Taux de TVA habituel
+      </div>
+    )}
   </div>
 
+
+  {/* ÉTAPE 2 */}
   <div
     style={{
       padding: 14,
@@ -1977,38 +2019,91 @@ return (
       border: "1px solid #e5e7eb",
     }}
   >
-    <strong>2. Préparez votre identité NovaPulse</strong>
+    <div
+      onClick={() =>
+        setOpenActivationStep(openActivationStep === 2 ? null : 2)
+      }
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        cursor: "pointer",
+      }}
+    >
+      <strong>2. Votre identité NovaPulse</strong>
+
+      <span
+        style={{
+          fontSize: 18,
+          transform:
+            openActivationStep === 2 ? "rotate(180deg)" : "rotate(0deg)",
+          transition: "0.2s",
+        }}
+      >
+        ⌄
+      </span>
+    </div>
 
     <div
       style={{
         fontSize: 13,
         color: "#64748b",
-        marginTop: 7,
-        lineHeight: 1.5,
+        marginTop: 5,
       }}
     >
-      Vous devrez envoyer :
-      <br />
-      <br />🖼️ <strong>Votre logo ou photo professionnelle</strong>
-      <br />Format carré recommandé : 512 × 512 px minimum
-      <br />Formats acceptés : PNG, JPG ou WebP
-      <br />Poids maximum : 2 Mo
-      <br />Gardez votre logo ou votre visage bien centré.
-      <br />
-      <br />🎥 <strong>Votre vidéo de présentation</strong>
-      <br />Format recommandé : 1920 × 1080 px — 16:9
-      <br />Format vidéo : MP4
-      <br />Durée maximale : 60 secondes
-      <br />Poids maximum : 50 Mo
-      <br />
-      <br />📱 <strong>Votre vidéo d’accueil</strong>
-      <br />Format recommandé : vertical 1080 × 1920 px — 9:16
-      <br />Format vidéo : MP4
-      <br />Durée recommandée : 30 à 60 secondes
-      <br />Poids maximum : 50 Mo
+      Préparez votre logo et vos vidéos de présentation.
     </div>
+
+    {openActivationStep === 2 && (
+      <div
+        style={{
+          marginTop: 12,
+          paddingTop: 12,
+          borderTop: "1px solid #e5e7eb",
+          fontSize: 13,
+          color: "#64748b",
+          lineHeight: 1.6,
+        }}
+      >
+        <strong>🖼️ Logo ou photo professionnelle</strong>
+        <br />
+        512 × 512 px minimum
+        <br />
+        PNG, JPG ou WebP
+        <br />
+        2 Mo maximum
+        <br />
+        Logo ou visage bien centré.
+        <br />
+        <br />
+
+        <strong>🎥 Vidéo de présentation</strong>
+        <br />
+        1920 × 1080 px — 16:9
+        <br />
+        MP4
+        <br />
+        60 secondes maximum
+        <br />
+        50 Mo maximum
+        <br />
+        <br />
+
+        <strong>📱 Vidéo d’accueil</strong>
+        <br />
+        1080 × 1920 px — 9:16
+        <br />
+        MP4
+        <br />
+        30 à 60 secondes
+        <br />
+        50 Mo maximum
+      </div>
+    )}
   </div>
 
+
+  {/* ÉTAPE 3 */}
   <div
     style={{
       padding: 14,
@@ -2017,30 +2112,67 @@ return (
       border: "1px solid #e5e7eb",
     }}
   >
-    <strong>3. Réservez votre appel d’activation</strong>
+    <div
+      onClick={() =>
+        setOpenActivationStep(openActivationStep === 3 ? null : 3)
+      }
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        cursor: "pointer",
+      }}
+    >
+      <strong>3. Activation avec NovaPulse</strong>
+
+      <span
+        style={{
+          fontSize: 18,
+          transform:
+            openActivationStep === 3 ? "rotate(180deg)" : "rotate(0deg)",
+          transition: "0.2s",
+        }}
+      >
+        ⌄
+      </span>
+    </div>
 
     <div
       style={{
         fontSize: 13,
         color: "#64748b",
-        marginTop: 7,
-        lineHeight: 1.5,
+        marginTop: 5,
       }}
     >
-      Une fois toutes vos informations et vos médias envoyés,
-      vous pourrez réserver un appel d’activation avec NovaPulse.
-      <br />
-      <br />
-      Pendant cet appel, nous finaliserons avec vous la configuration
-      de Telegram, la création du supergroupe et le branchement
-      nécessaire à votre espace NovaPulse.
-      <br />
-      <br />
-      Vous resterez présent pendant toute la configuration.
-      NovaPulse ne vous demandera pas de transmettre ni de conserver
-      votre mot de passe Telegram ou vos codes de sécurité.
+      Réservez votre appel pour finaliser votre installation.
     </div>
+
+    {openActivationStep === 3 && (
+      <div
+        style={{
+          marginTop: 12,
+          paddingTop: 12,
+          borderTop: "1px solid #e5e7eb",
+          fontSize: 13,
+          color: "#64748b",
+          lineHeight: 1.6,
+        }}
+      >
+        Une fois vos informations et vos médias envoyés, vous pourrez
+        réserver votre appel d’activation.
+        <br />
+        <br />
+        Pendant cet appel, NovaPulse vous accompagnera dans la
+        configuration de Telegram, la création du supergroupe et le
+        branchement de votre espace.
+        <br />
+        <br />
+        Vous restez présent pendant toute la configuration. Aucun mot de
+        passe ni code de sécurité Telegram ne sera conservé.
+      </div>
+    )}
   </div>
+
 </div>
 
       <button
