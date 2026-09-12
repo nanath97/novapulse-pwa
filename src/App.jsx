@@ -67,6 +67,7 @@ function App() {
   const [showActivationIntro, setShowActivationIntro] = useState(false);
   const [openActivationStep, setOpenActivationStep] = useState(null);
   const [activationScreen, setActivationScreen] = useState("intro");
+  const [telegramActivationConsent, setTelegramActivationConsent] = useState(false);
   const [sellerLogo, setSellerLogo] = useState(null);
   const [sellerIntroVideo, setSellerIntroVideo] = useState(null);
   const [sellerWelcomeVideo, setSellerWelcomeVideo] = useState(null);
@@ -2011,6 +2012,7 @@ return (
     onClick={() => {
       setShowActivationIntro(false);
       setActivationScreen("intro");
+      setTelegramActivationConsent(false);
     }}
   >
     <div
@@ -2814,6 +2816,7 @@ return (
 
       <button
         disabled={!sellerMediaValid}
+        onClick={() => setActivationScreen("activation")}
         style={{
           flex: 2,
           height: 46,
@@ -2827,6 +2830,69 @@ return (
         }}
       >
         Continuer →
+      </button>
+    </div>
+  </>
+)}
+
+{activationScreen === "activation" && (
+  <>
+    <div style={{ textAlign: "center", marginBottom: 20 }}>
+      <div style={{ fontSize: 30, marginBottom: 8 }}>✅</div>
+      <h2 style={{ marginBottom: 8 }}>Votre dossier est prêt</h2>
+      <p style={{ margin: 0, color: "#64748b", lineHeight: 1.5 }}>
+        Vos informations professionnelles et vos médias sont prêts pour l’activation de votre espace NovaPulse.
+      </p>
+    </div>
+
+    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+      <div style={{ border: "1px solid #e5e7eb", borderRadius: 14, padding: 16, background: "#f8fafc" }}>
+        <strong>✓ Informations professionnelles</strong>
+        <p style={{ margin: "8px 0 0", color: "#64748b", lineHeight: 1.5 }}>
+          Vos informations d’entreprise ont été renseignées.
+        </p>
+      </div>
+      <div style={{ border: "1px solid #e5e7eb", borderRadius: 14, padding: 16, background: "#f8fafc" }}>
+        <strong>✓ Identité NovaPulse</strong>
+        <p style={{ margin: "8px 0 0", color: "#64748b", lineHeight: 1.5 }}>
+          Votre logo et vos deux vidéos sont prêts.
+        </p>
+      </div>
+      <div style={{ border: "1px solid #e5e7eb", borderRadius: 14, padding: 16, background: "#f8fafc" }}>
+        <strong>📞 Dernière étape : l’appel d’activation</strong>
+        <p style={{ margin: "8px 0 0", color: "#64748b", lineHeight: 1.5 }}>
+          La dernière étape consiste à réserver un appel avec NovaPulse. Pendant cet appel, nous finaliserons avec vous la configuration de Telegram, la création du supergroupe et le branchement de votre espace NovaPulse.
+        </p>
+      </div>
+    </div>
+
+    <div style={{ marginTop: 16, padding: 14, borderRadius: 12, background: "#f8fafc", color: "#64748b", fontSize: 13, lineHeight: 1.5 }}>
+      Vous restez présent pendant toute la configuration. NovaPulse ne vous demandera pas de transmettre ni ne conservera votre mot de passe Telegram ou vos codes de sécurité.
+    </div>
+
+    <label style={{ display: "flex", alignItems: "flex-start", gap: 10, marginTop: 16, fontSize: 14, lineHeight: 1.5, cursor: "pointer" }}>
+      <input
+        type="checkbox"
+        checked={telegramActivationConsent}
+        onChange={(e) => setTelegramActivationConsent(e.target.checked)}
+      />
+      <span>J’autorise NovaPulse à m’accompagner dans la configuration de mon compte Telegram pendant l’appel d’activation.</span>
+    </label>
+
+    <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
+      <button
+        type="button"
+        onClick={() => setActivationScreen("media")}
+        style={{ flex: 1, height: 46, borderRadius: 12, border: "1px solid #d1d5db", background: "white", cursor: "pointer", fontWeight: 600 }}
+      >
+        ← Retour
+      </button>
+      <button
+        type="button"
+        disabled={!telegramActivationConsent}
+        style={{ flex: 2, minHeight: 46, borderRadius: 12, border: "none", background: "linear-gradient(135deg, #7c3aed, #2563eb)", color: "white", opacity: telegramActivationConsent ? 1 : 0.5, cursor: telegramActivationConsent ? "pointer" : "not-allowed", fontWeight: 700 }}
+      >
+        Réserver mon appel d’activation
       </button>
     </div>
   </>
