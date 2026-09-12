@@ -66,6 +66,27 @@ function App() {
   const [loginCode, setLoginCode] = useState("");
   const [showActivationIntro, setShowActivationIntro] = useState(false);
   const [openActivationStep, setOpenActivationStep] = useState(null);
+  const [activationScreen, setActivationScreen] = useState("intro");
+
+
+
+
+  const [sellerForm, setSellerForm] = useState({
+    company_name: "",
+    legal_name: "",
+    legal_status: "",
+    siren: "",
+    siret: "",
+    address: "",
+    postal_code: "",
+    city: "",
+    country: "FR",
+    email: "",
+    phone: "",
+    vat_status: "",
+    vat_number: "",
+    default_vat_rate: "",
+  });
   
     
 function getDownloadUrl(mediaUrl, fileName, mediaType) {
@@ -1889,7 +1910,10 @@ return (
 {showActivationIntro && (
   <div
     className="modal-overlay"
-    onClick={() => setShowActivationIntro(false)}
+    onClick={() => {
+      setShowActivationIntro(false);
+      setActivationScreen("intro");
+    }}
   >
     <div
       className="modal-box"
@@ -1898,302 +1922,581 @@ return (
         maxWidth: "540px",
         width: "92%",
         textAlign: "left",
+        maxHeight: "90vh",
+        overflowY: "auto",
       }}
     >
-      <div style={{ textAlign: "center", marginBottom: 20 }}>
-        <div
-          style={{
-            fontSize: 36,
-            marginBottom: 10,
-          }}
-        >
-          ⚡
-        </div>
 
-        <h2 style={{ marginBottom: 8 }}>
-          Activez votre NovaPulse
-        </h2>
+      {/* ========================= */}
+      {/* ÉCRAN 1 : INTRODUCTION */}
+      {/* ========================= */}
 
-        <p
-          style={{
-            margin: 0,
-            color: "#64748b",
-            lineHeight: 1.5,
-          }}
-        >
-          Configurez votre espace professionnel pour commencer à vendre,
-          envoyer vos devis et gérer vos paiements directement depuis vos
-          conversations.
-        </p>
-      </div>
+      {activationScreen === "intro" && (
+        <>
+          <div style={{ textAlign: "center", marginBottom: 20 }}>
+            <div
+              style={{
+                fontSize: 36,
+                marginBottom: 10,
+              }}
+            >
+              ⚡
+            </div>
 
-      <div
-  style={{
-    display: "flex",
-    flexDirection: "column",
-    gap: 12,
-    marginBottom: 22,
-  }}
->
+            <h2 style={{ marginBottom: 8 }}>
+              Activez votre NovaPulse
+            </h2>
 
-  {/* ÉTAPE 1 */}
-  <div
-    style={{
-      padding: 14,
-      borderRadius: 14,
-      background: "#f8fafc",
-      border: "1px solid #e5e7eb",
-    }}
-  >
-    <div
-      onClick={() =>
-        setOpenActivationStep(openActivationStep === 1 ? null : 1)
-      }
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        cursor: "pointer",
-      }}
-    >
-      <strong>1. Vos informations professionnelles</strong>
+            <p
+              style={{
+                margin: 0,
+                color: "#64748b",
+                lineHeight: 1.5,
+              }}
+            >
+              Configurez votre espace professionnel pour commencer à vendre,
+              envoyer vos devis et gérer vos paiements directement depuis vos
+              conversations.
+            </p>
+          </div>
 
-      <span
-        style={{
-          fontSize: 18,
-          transform:
-            openActivationStep === 1 ? "rotate(180deg)" : "rotate(0deg)",
-          transition: "0.2s",
-        }}
-      >
-        ⌄
-      </span>
-    </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 12,
+              marginBottom: 22,
+            }}
+          >
 
-    <div
-      style={{
-        fontSize: 13,
-        color: "#64748b",
-        marginTop: 5,
-      }}
-    >
-      Préparez les informations nécessaires à la création de votre espace.
-    </div>
+            {/* ÉTAPE 1 */}
 
-    {openActivationStep === 1 && (
-      <div
-        style={{
-          marginTop: 12,
-          paddingTop: 12,
-          borderTop: "1px solid #e5e7eb",
-          fontSize: 13,
-          color: "#64748b",
-          lineHeight: 1.6,
-        }}
-      >
-        • Nom commercial
-        <br />• Raison sociale
-        <br />• Statut juridique
-        <br />• SIREN
-        <br />• SIRET
-        <br />• Adresse complète
-        <br />• Code postal
-        <br />• Ville
-        <br />• Pays
-        <br />• Email professionnel
-        <br />• Numéro de téléphone
-        <br />• Situation vis-à-vis de la TVA
-        <br />• Numéro de TVA intracommunautaire si applicable
-        <br />• Taux de TVA habituel
-      </div>
-    )}
-  </div>
+            <div
+              style={{
+                padding: 14,
+                borderRadius: 14,
+                background: "#f8fafc",
+                border: "1px solid #e5e7eb",
+              }}
+            >
+              <div
+                onClick={() =>
+                  setOpenActivationStep(
+                    openActivationStep === 1 ? null : 1
+                  )
+                }
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  cursor: "pointer",
+                }}
+              >
+                <strong>1. Vos informations professionnelles</strong>
 
+                <span
+                  style={{
+                    fontSize: 18,
+                    transform:
+                      openActivationStep === 1
+                        ? "rotate(180deg)"
+                        : "rotate(0deg)",
+                    transition: "0.2s",
+                  }}
+                >
+                  ⌄
+                </span>
+              </div>
 
-  {/* ÉTAPE 2 */}
-  <div
-    style={{
-      padding: 14,
-      borderRadius: 14,
-      background: "#f8fafc",
-      border: "1px solid #e5e7eb",
-    }}
-  >
-    <div
-      onClick={() =>
-        setOpenActivationStep(openActivationStep === 2 ? null : 2)
-      }
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        cursor: "pointer",
-      }}
-    >
-      <strong>2. Votre identité NovaPulse</strong>
+              <div
+                style={{
+                  fontSize: 13,
+                  color: "#64748b",
+                  marginTop: 5,
+                }}
+              >
+                Préparez les informations nécessaires à la création de votre espace.
+              </div>
 
-      <span
-        style={{
-          fontSize: 18,
-          transform:
-            openActivationStep === 2 ? "rotate(180deg)" : "rotate(0deg)",
-          transition: "0.2s",
-        }}
-      >
-        ⌄
-      </span>
-    </div>
+              {openActivationStep === 1 && (
+                <div
+                  style={{
+                    marginTop: 12,
+                    paddingTop: 12,
+                    borderTop: "1px solid #e5e7eb",
+                    fontSize: 13,
+                    color: "#64748b",
+                    lineHeight: 1.6,
+                  }}
+                >
+                  • Nom commercial
+                  <br />• Raison sociale
+                  <br />• Statut juridique
+                  <br />• SIREN
+                  <br />• SIRET
+                  <br />• Adresse complète
+                  <br />• Code postal
+                  <br />• Ville
+                  <br />• Pays
+                  <br />• Email professionnel
+                  <br />• Numéro de téléphone
+                  <br />• Situation vis-à-vis de la TVA
+                  <br />• Numéro de TVA intracommunautaire si applicable
+                  <br />• Taux de TVA habituel
+                </div>
+              )}
+            </div>
 
-    <div
-      style={{
-        fontSize: 13,
-        color: "#64748b",
-        marginTop: 5,
-      }}
-    >
-      Préparez votre logo et vos vidéos de présentation.
-    </div>
+            {/* ÉTAPE 2 */}
 
-    {openActivationStep === 2 && (
-      <div
-        style={{
-          marginTop: 12,
-          paddingTop: 12,
-          borderTop: "1px solid #e5e7eb",
-          fontSize: 13,
-          color: "#64748b",
-          lineHeight: 1.6,
-        }}
-      >
-        <strong>🖼️ Logo ou photo professionnelle</strong>
-        <br />
-        512 × 512 px minimum
-        <br />
-        PNG, JPG ou WebP
-        <br />
-        2 Mo maximum
-        <br />
-        Logo ou visage bien centré.
-        <br />
-        <br />
+            <div
+              style={{
+                padding: 14,
+                borderRadius: 14,
+                background: "#f8fafc",
+                border: "1px solid #e5e7eb",
+              }}
+            >
+              <div
+                onClick={() =>
+                  setOpenActivationStep(
+                    openActivationStep === 2 ? null : 2
+                  )
+                }
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  cursor: "pointer",
+                }}
+              >
+                <strong>2. Votre identité NovaPulse</strong>
 
-        <strong>🎥 Vidéo de présentation</strong>
-        <br />
-        1920 × 1080 px — 16:9
-        <br />
-        MP4
-        <br />
-        60 secondes maximum
-        <br />
-        50 Mo maximum
-        <br />
-        <br />
+                <span
+                  style={{
+                    fontSize: 18,
+                    transform:
+                      openActivationStep === 2
+                        ? "rotate(180deg)"
+                        : "rotate(0deg)",
+                    transition: "0.2s",
+                  }}
+                >
+                  ⌄
+                </span>
+              </div>
 
-        <strong>📱 Vidéo d’accueil</strong>
-        <br />
-        1080 × 1920 px — 9:16
-        <br />
-        MP4
-        <br />
-        30 à 60 secondes
-        <br />
-        50 Mo maximum
-      </div>
-    )}
-  </div>
+              <div
+                style={{
+                  fontSize: 13,
+                  color: "#64748b",
+                  marginTop: 5,
+                }}
+              >
+                Préparez votre logo et vos vidéos de présentation.
+              </div>
 
+              {openActivationStep === 2 && (
+                <div
+                  style={{
+                    marginTop: 12,
+                    paddingTop: 12,
+                    borderTop: "1px solid #e5e7eb",
+                    fontSize: 13,
+                    color: "#64748b",
+                    lineHeight: 1.6,
+                  }}
+                >
+                  <strong>🖼️ Logo ou photo professionnelle</strong>
+                  <br />
+                  512 × 512 px minimum
+                  <br />
+                  PNG, JPG ou WebP
+                  <br />
+                  2 Mo maximum
+                  <br />
+                  Logo ou visage bien centré.
 
-  {/* ÉTAPE 3 */}
-  <div
-    style={{
-      padding: 14,
-      borderRadius: 14,
-      background: "#f8fafc",
-      border: "1px solid #e5e7eb",
-    }}
-  >
-    <div
-      onClick={() =>
-        setOpenActivationStep(openActivationStep === 3 ? null : 3)
-      }
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        cursor: "pointer",
-      }}
-    >
-      <strong>3. Activation avec NovaPulse</strong>
+                  <br />
+                  <br />
 
-      <span
-        style={{
-          fontSize: 18,
-          transform:
-            openActivationStep === 3 ? "rotate(180deg)" : "rotate(0deg)",
-          transition: "0.2s",
-        }}
-      >
-        ⌄
-      </span>
-    </div>
+                  <strong>🎥 Vidéo de présentation</strong>
+                  <br />
+                  1920 × 1080 px — 16:9
+                  <br />
+                  MP4
+                  <br />
+                  60 secondes maximum
+                  <br />
+                  50 Mo maximum
 
-    <div
-      style={{
-        fontSize: 13,
-        color: "#64748b",
-        marginTop: 5,
-      }}
-    >
-      Réservez votre appel pour finaliser votre installation.
-    </div>
+                  <br />
+                  <br />
 
-    {openActivationStep === 3 && (
-      <div
-        style={{
-          marginTop: 12,
-          paddingTop: 12,
-          borderTop: "1px solid #e5e7eb",
-          fontSize: 13,
-          color: "#64748b",
-          lineHeight: 1.6,
-        }}
-      >
-        Une fois vos informations et vos médias envoyés, vous pourrez
-        réserver votre appel d’activation.
-        <br />
-        <br />
-        Pendant cet appel, NovaPulse vous accompagnera dans la
-        configuration de Telegram, la création du supergroupe et le
-        branchement de votre espace.
-        <br />
-        <br />
-        Vous restez présent pendant toute la configuration. Aucun mot de
-        passe ni code de sécurité Telegram ne sera conservé.
-      </div>
-    )}
-  </div>
+                  <strong>📱 Vidéo d’accueil</strong>
+                  <br />
+                  1080 × 1920 px — 9:16
+                  <br />
+                  MP4
+                  <br />
+                  30 à 60 secondes
+                  <br />
+                  50 Mo maximum
+                </div>
+              )}
+            </div>
 
-</div>
+            {/* ÉTAPE 3 */}
 
-      <button
-        className="send-button"
-        onClick={() => {
-          setShowActivationIntro(false);
-        }}
-        style={{
-          width: "100%",
-          height: 48,
-          borderRadius: 14,
-          background: "linear-gradient(135deg, #7c3aed, #2563eb)",
-          color: "white",
-          border: "none",
-          fontSize: 15,
-          fontWeight: 700,
-          cursor: "pointer",
-        }}
-      >
-        C’est parti →
-      </button>
+            <div
+              style={{
+                padding: 14,
+                borderRadius: 14,
+                background: "#f8fafc",
+                border: "1px solid #e5e7eb",
+              }}
+            >
+              <div
+                onClick={() =>
+                  setOpenActivationStep(
+                    openActivationStep === 3 ? null : 3
+                  )
+                }
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  cursor: "pointer",
+                }}
+              >
+                <strong>3. Activation avec NovaPulse</strong>
+
+                <span
+                  style={{
+                    fontSize: 18,
+                    transform:
+                      openActivationStep === 3
+                        ? "rotate(180deg)"
+                        : "rotate(0deg)",
+                    transition: "0.2s",
+                  }}
+                >
+                  ⌄
+                </span>
+              </div>
+
+              <div
+                style={{
+                  fontSize: 13,
+                  color: "#64748b",
+                  marginTop: 5,
+                }}
+              >
+                Réservez votre appel pour finaliser votre installation.
+              </div>
+
+              {openActivationStep === 3 && (
+                <div
+                  style={{
+                    marginTop: 12,
+                    paddingTop: 12,
+                    borderTop: "1px solid #e5e7eb",
+                    fontSize: 13,
+                    color: "#64748b",
+                    lineHeight: 1.6,
+                  }}
+                >
+                  Une fois vos informations et vos médias envoyés, vous pourrez
+                  réserver votre appel d’activation.
+
+                  <br />
+                  <br />
+
+                  Pendant cet appel, NovaPulse vous accompagnera dans la
+                  configuration de Telegram, la création du supergroupe et le
+                  branchement de votre espace.
+
+                  <br />
+                  <br />
+
+                  Vous restez présent pendant toute la configuration.
+                  Aucun mot de passe ni code de sécurité Telegram ne sera conservé.
+                </div>
+              )}
+            </div>
+          </div>
+
+          <button
+            onClick={() => setActivationScreen("company")}
+            style={{
+              width: "100%",
+              height: 48,
+              borderRadius: 14,
+              background: "linear-gradient(135deg, #7c3aed, #2563eb)",
+              color: "white",
+              border: "none",
+              fontSize: 15,
+              fontWeight: 700,
+              cursor: "pointer",
+            }}
+          >
+            C’est parti →
+          </button>
+        </>
+      )}
+
+      {/* ========================= */}
+      {/* ÉCRAN 2 : ENTREPRISE */}
+      {/* ========================= */}
+
+      {activationScreen === "company" && (
+        <>
+          <div style={{ textAlign: "center", marginBottom: 20 }}>
+            <div style={{ fontSize: 30, marginBottom: 8 }}>
+              🏢
+            </div>
+
+            <h2 style={{ marginBottom: 8 }}>
+              Vos informations professionnelles
+            </h2>
+
+            <p
+              style={{
+                margin: 0,
+                color: "#64748b",
+                lineHeight: 1.5,
+              }}
+            >
+              Renseignez les informations utilisées pour votre espace,
+              vos devis et votre facturation.
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: 12,
+            }}
+          >
+            <input
+              className="input"
+              placeholder="Nom commercial"
+              value={sellerForm.company_name}
+              onChange={(e) =>
+                setSellerForm({
+                  ...sellerForm,
+                  company_name: e.target.value,
+                })
+              }
+            />
+
+            <input
+              className="input"
+              placeholder="Raison sociale"
+              value={sellerForm.legal_name}
+              onChange={(e) =>
+                setSellerForm({
+                  ...sellerForm,
+                  legal_name: e.target.value,
+                })
+              }
+            />
+
+            <input
+              className="input"
+              placeholder="Statut juridique"
+              value={sellerForm.legal_status}
+              onChange={(e) =>
+                setSellerForm({
+                  ...sellerForm,
+                  legal_status: e.target.value,
+                })
+              }
+            />
+
+            <input
+              className="input"
+              placeholder="SIREN"
+              value={sellerForm.siren}
+              onChange={(e) =>
+                setSellerForm({
+                  ...sellerForm,
+                  siren: e.target.value,
+                })
+              }
+            />
+
+            <input
+              className="input"
+              placeholder="SIRET"
+              value={sellerForm.siret}
+              onChange={(e) =>
+                setSellerForm({
+                  ...sellerForm,
+                  siret: e.target.value,
+                })
+              }
+            />
+
+            <input
+              className="input"
+              placeholder="Adresse"
+              value={sellerForm.address}
+              onChange={(e) =>
+                setSellerForm({
+                  ...sellerForm,
+                  address: e.target.value,
+                })
+              }
+            />
+
+            <input
+              className="input"
+              placeholder="Code postal"
+              value={sellerForm.postal_code}
+              onChange={(e) =>
+                setSellerForm({
+                  ...sellerForm,
+                  postal_code: e.target.value,
+                })
+              }
+            />
+
+            <input
+              className="input"
+              placeholder="Ville"
+              value={sellerForm.city}
+              onChange={(e) =>
+                setSellerForm({
+                  ...sellerForm,
+                  city: e.target.value,
+                })
+              }
+            />
+
+            <input
+              className="input"
+              placeholder="Pays"
+              value={sellerForm.country}
+              onChange={(e) =>
+                setSellerForm({
+                  ...sellerForm,
+                  country: e.target.value,
+                })
+              }
+            />
+
+            <input
+              className="input"
+              type="email"
+              placeholder="Email professionnel"
+              value={sellerForm.email}
+              onChange={(e) =>
+                setSellerForm({
+                  ...sellerForm,
+                  email: e.target.value,
+                })
+              }
+            />
+
+            <input
+              className="input"
+              placeholder="Téléphone"
+              value={sellerForm.phone}
+              onChange={(e) =>
+                setSellerForm({
+                  ...sellerForm,
+                  phone: e.target.value,
+                })
+              }
+            />
+
+            <select
+              className="input"
+              value={sellerForm.vat_status}
+              onChange={(e) =>
+                setSellerForm({
+                  ...sellerForm,
+                  vat_status: e.target.value,
+                })
+              }
+            >
+              <option value="">Situation TVA</option>
+              <option value="franchise_base">
+                Franchise en base de TVA
+              </option>
+              <option value="vat_registered">
+                Assujetti à la TVA
+              </option>
+            </select>
+
+            <input
+              className="input"
+              placeholder="Numéro TVA intracommunautaire"
+              value={sellerForm.vat_number}
+              onChange={(e) =>
+                setSellerForm({
+                  ...sellerForm,
+                  vat_number: e.target.value,
+                })
+              }
+            />
+
+            <input
+              className="input"
+              type="number"
+              placeholder="Taux de TVA habituel (%)"
+              value={sellerForm.default_vat_rate}
+              onChange={(e) =>
+                setSellerForm({
+                  ...sellerForm,
+                  default_vat_rate: e.target.value,
+                })
+              }
+            />
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              gap: 10,
+              marginTop: 20,
+            }}
+          >
+            <button
+              onClick={() => setActivationScreen("intro")}
+              style={{
+                flex: 1,
+                height: 46,
+                borderRadius: 12,
+                border: "1px solid #d1d5db",
+                background: "white",
+                cursor: "pointer",
+                fontWeight: 600,
+              }}
+            >
+              ← Retour
+            </button>
+
+            <button
+              style={{
+                flex: 2,
+                height: 46,
+                borderRadius: 12,
+                border: "none",
+                background: "linear-gradient(135deg, #7c3aed, #2563eb)",
+                color: "white",
+                cursor: "pointer",
+                fontWeight: 700,
+              }}
+            >
+              Continuer →
+            </button>
+          </div>
+        </>
+      )}
+
     </div>
   </div>
 )}
