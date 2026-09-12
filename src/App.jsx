@@ -70,6 +70,101 @@ function App() {
   const [sellerLogo, setSellerLogo] = useState(null);
   const [sellerIntroVideo, setSellerIntroVideo] = useState(null);
   const [sellerWelcomeVideo, setSellerWelcomeVideo] = useState(null);
+  const [sellerLogoError, setSellerLogoError] = useState("");
+  const [sellerIntroVideoError, setSellerIntroVideoError] = useState("");
+  const [sellerWelcomeVideoError, setSellerWelcomeVideoError] = useState("");
+  const [sellerLogoWarning, setSellerLogoWarning] = useState("");
+  const sellerMediaRequests = useRef({ logo: 0, intro: 0, welcome: 0 });
+  const sellerMediaValid = Boolean(sellerLogo && sellerIntroVideo && sellerWelcomeVideo);
+
+  function readSellerMediaMetadata(file, isImage) {
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const media = isImage ? new Image() : document.createElement("video");
+      const cleanup = () => {
+        clearTimeout(timeout);
+        media.onload = media.onloadedmetadata = media.onerror = null;
+        media.removeAttribute("src");
+        if (!isImage) media.load();
+        URL.revokeObjectURL(url);
+      };
+      const fail = () => {
+        cleanup();
+        reject(new Error("Fichier illisible ou métadonnées indisponibles."));
+      };
+      const timeout = setTimeout(fail, 15000);
+      const loaded = () => {
+        const metadata = isImage
+          ? { width: media.naturalWidth, height: media.naturalHeight }
+          : { width: media.videoWidth, height: media.videoHeight, duration: media.duration };
+        cleanup();
+        resolve(metadata);
+      };
+      media.onerror = fail;
+      if (isImage) media.onload = loaded;
+      else {
+        media.preload = "metadata";
+        media.onloadedmetadata = loaded;
+      }
+      media.src = url;
+    });
+  }
+
+  async function validateSellerMedia(event, kind, setFile, setError) {
+    const input = event.currentTarget;
+    const file = input.files?.[0];
+    const request = ++sellerMediaRequests.current[kind];
+    const isImage = kind === "logo";
+    setFile(null);
+    setError("");
+    if (isImage) setSellerLogoWarning("");
+    if (!file) return;
+    try {
+      const extension = file.name.split(".").pop().toLowerCase();
+      const formats = isImage
+        ? { png: "image/png", jpg: "image/jpeg", jpeg: "image/jpeg", webp: "image/webp" }
+        : { mp4: "video/mp4" };
+      if (!Object.hasOwn(formats, extension) || (file.type && file.type !== formats[extension])) {
+        throw new Error(isImage ? "Formats autorisés : PNG, JPG, JPEG ou WebP." : "Format autorisé : MP4 uniquement.");
+      }
+      const maxMo = isImage ? 2 : 50;
+      if (!file.size || file.size > maxMo * 1024 * 1024) {
+        throw new Error("Le fichier doit être non vide et ne pas dépasser " + maxMo + " Mo.");
+      }
+      const { width, height, duration } = await readSellerMediaMetadata(file, isImage);
+      if (isImage) {
+        if (width < 512 || height < 512) throw new Error("Dimensions minimales : 512 × 512 px.");
+      } else {
+        const welcome = kind === "welcome";
+        if (!Number.isFinite(duration) || duration <= 0 || duration > 60 || (welcome && duration < 30)) {
+          throw new Error(welcome ? "La vidéo doit durer entre 30 et 60 secondes." : "La vidéo doit durer au maximum 60 secondes et avoir une durée positive.");
+        }
+        if (width !== (welcome ? 1080 : 1920) || height !== (welcome ? 1920 : 1080)) {
+          throw new Error(welcome ? "Dimensions requises : 1080 × 1920 px, ratio 9:16 vertical." : "Dimensions requises : 1920 × 1080 px, ratio 16:9.");
+        }
+      }
+      if (request !== sellerMediaRequests.current[kind]) return;
+      if (isImage && width !== height) setSellerLogoWarning("Image non carrée : un format carré est recommandé.");
+      setFile(file);
+    } catch (error) {
+      if (request !== sellerMediaRequests.current[kind]) return;
+      input.value = "";
+      setError(error.message || "Impossible de valider ce fichier.");
+    }
+  }
+
+  function handleSellerLogoChange(event) {
+    return validateSellerMedia(event, "logo", setSellerLogo, setSellerLogoError);
+  }
+
+  function handleSellerIntroVideoChange(event) {
+    return validateSellerMedia(event, "intro", setSellerIntroVideo, setSellerIntroVideoError);
+  }
+
+  function handleSellerWelcomeVideoChange(event) {
+    return validateSellerMedia(event, "welcome", setSellerWelcomeVideo, setSellerWelcomeVideoError);
+  }
+
 
 
 
@@ -2558,8 +2653,20 @@ return (
         <input
           type="file"
           accept="image/png,image/jpeg,image/webp"
-          onChange={(e) => setSellerLogo(e.target.files?.[0] || null)}
+          onChange={handleSellerLogoChange}
         />
+
+        {sellerLogoError && (
+          <div role="alert" style={{ marginTop: 10, fontSize: 13, color: "#dc2626" }}>
+            {sellerLogoError}
+          </div>
+        )}
+
+        {sellerLogoWarning && (
+          <div role="status" style={{ marginTop: 10, fontSize: 13, color: "#b45309" }}>
+            {sellerLogoWarning}
+          </div>
+        )}
 
         {sellerLogo && (
           <div
@@ -2605,10 +2712,14 @@ return (
         <input
           type="file"
           accept="video/mp4"
-          onChange={(e) =>
-            setSellerIntroVideo(e.target.files?.[0] || null)
-          }
+          onChange={handleSellerIntroVideoChange}
         />
+
+        {sellerIntroVideoError && (
+          <div role="alert" style={{ marginTop: 10, fontSize: 13, color: "#dc2626" }}>
+            {sellerIntroVideoError}
+          </div>
+        )}
 
         {sellerIntroVideo && (
           <div
@@ -2654,10 +2765,14 @@ return (
         <input
           type="file"
           accept="video/mp4"
-          onChange={(e) =>
-            setSellerWelcomeVideo(e.target.files?.[0] || null)
-          }
+          onChange={handleSellerWelcomeVideoChange}
         />
+
+        {sellerWelcomeVideoError && (
+          <div role="alert" style={{ marginTop: 10, fontSize: 13, color: "#dc2626" }}>
+            {sellerWelcomeVideoError}
+          </div>
+        )}
 
         {sellerWelcomeVideo && (
           <div
@@ -2698,6 +2813,7 @@ return (
       </button>
 
       <button
+        disabled={!sellerMediaValid}
         style={{
           flex: 2,
           height: 46,
@@ -2705,7 +2821,8 @@ return (
           border: "none",
           background: "linear-gradient(135deg, #7c3aed, #2563eb)",
           color: "white",
-          cursor: "pointer",
+          cursor: sellerMediaValid ? "pointer" : "not-allowed",
+          opacity: sellerMediaValid ? 1 : 0.5,
           fontWeight: 700,
         }}
       >
