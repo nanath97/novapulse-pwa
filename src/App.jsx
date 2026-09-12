@@ -69,6 +69,8 @@ function App() {
   const [openActivationStep, setOpenActivationStep] = useState(null);
   const [activationScreen, setActivationScreen] = useState("intro");
   const [telegramActivationConsent, setTelegramActivationConsent] = useState(false);
+  const [activationCalendlyOpened, setActivationCalendlyOpened] = useState(false);
+  const [activationCallConfirmed, setActivationCallConfirmed] = useState(false);
   const [sellerLogo, setSellerLogo] = useState(null);
   const [sellerIntroVideo, setSellerIntroVideo] = useState(null);
   const [sellerWelcomeVideo, setSellerWelcomeVideo] = useState(null);
@@ -2015,6 +2017,8 @@ return (
       setShowActivationIntro(false);
       setActivationScreen("intro");
       setTelegramActivationConsent(false);
+      setActivationCalendlyOpened(false);
+      setActivationCallConfirmed(false);
     }}
   >
     <div
@@ -2850,7 +2854,7 @@ return (
   </>
 )}
 
-{activationScreen === "activation" && (
+{activationScreen === "activation" && !activationCallConfirmed && (
   <>
     <div style={{ textAlign: "center", marginBottom: 20 }}>
       <div style={{ fontSize: 30, marginBottom: 8 }}>✅</div>
@@ -2902,18 +2906,70 @@ return (
       >
         ← Retour
       </button>
+      {!activationCalendlyOpened ? (
       <button
         type="button"
         disabled={!telegramActivationConsent}
         onClick={() => {
           window.open(NOVAPULSE_ACTIVATION_CALENDLY, "_blank", "noopener,noreferrer");
+          setActivationCalendlyOpened(true);
         }}
         style={{ flex: 2, minHeight: 46, borderRadius: 12, border: "none", background: "linear-gradient(135deg, #7c3aed, #2563eb)", color: "white", opacity: telegramActivationConsent ? 1 : 0.5, cursor: telegramActivationConsent ? "pointer" : "not-allowed", fontWeight: 700 }}
       >
         Réserver mon appel d’activation
       </button>
+      ) : (
+      <div style={{ flex: 2, padding: 16, border: "1px solid #e5e7eb", borderRadius: 14, background: "#f8fafc" }}>
+        <h3 style={{ margin: "0 0 8px" }}>Calendly a été ouvert</h3>
+        <p style={{ margin: "0 0 14px", color: "#64748b", lineHeight: 1.5 }}>
+          Réservez votre créneau dans l’onglet Calendly, puis revenez ici une fois votre rendez-vous confirmé.
+        </p>
+        <button
+          type="button"
+          onClick={() => setActivationCallConfirmed(true)}
+          style={{ width: "100%", minHeight: 46, borderRadius: 12, border: "none", background: "linear-gradient(135deg, #7c3aed, #2563eb)", color: "white", cursor: "pointer", fontWeight: 700 }}
+        >
+          J’ai réservé mon appel
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            window.open(NOVAPULSE_ACTIVATION_CALENDLY, "_blank", "noopener,noreferrer");
+          }}
+          style={{ width: "100%", minHeight: 46, marginTop: 10, borderRadius: 12, border: "1px solid #d1d5db", background: "white", cursor: "pointer", fontWeight: 600 }}
+        >
+          Rouvrir Calendly
+        </button>
+      </div>
+      )}
     </div>
   </>
+)}
+
+{activationScreen === "activation" && activationCallConfirmed && (
+  <div style={{ textAlign: "center" }}>
+    <div style={{ fontSize: 30, marginBottom: 8 }}>✅</div>
+    <h2 style={{ marginBottom: 8 }}>Votre appel d’activation est réservé</h2>
+    <p style={{ margin: "0 0 16px", color: "#64748b", lineHeight: 1.5 }}>
+      Votre dossier est prêt. NovaPulse finalisera avec vous la configuration de Telegram et l’activation de votre espace pendant votre rendez-vous.
+    </p>
+    <p style={{ fontSize: 13, color: "#64748b", lineHeight: 1.5 }}>
+      Vous pouvez fermer cette fenêtre. Vos informations seront enregistrées lors de la prochaine étape de connexion au backend.
+    </p>
+    <button
+      type="button"
+      onClick={() => {
+        setShowActivationIntro(false);
+        setActivationScreen("intro");
+        setTelegramActivationConsent(false);
+        setActivationCalendlyOpened(false);
+        setActivationCallConfirmed(false);
+      }}
+      style={{ width: "100%", minHeight: 46, marginTop: 20, borderRadius: 12, border: "none", background: "linear-gradient(135deg, #7c3aed, #2563eb)", color: "white", cursor: "pointer", fontWeight: 700 }}
+    >
+      Fermer
+    </button>
+  </div>
 )}
     </div>
   </div>
