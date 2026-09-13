@@ -493,7 +493,59 @@ function App() {
     vat_number: "",
     default_vat_rate: "",
   });
-  
+  const [sellerProfileLoading, setSellerProfileLoading] = useState(false);
+  const [sellerProfileLoadError, setSellerProfileLoadError] = useState("");
+  const [sellerProfileLoadedToken, setSellerProfileLoadedToken] = useState("");
+  const sellerProfileRequest = useRef(null);
+  const sellerProfileToken = sellerActivationToken.trim()
+    || sessionStorage.getItem("novapulse_seller_activation_token")?.trim() || "";
+  const sellerProfileReady = Boolean(sellerProfileToken && sellerProfileLoadedToken === sellerProfileToken);
+
+  useEffect(() => {
+    if (!showActivationIntro || activationScreen !== "company" || sellerProfileReady) return;
+    let active = true;
+    // Reuse the pending request on re-entry (including StrictMode effect replay).
+    Promise.resolve().then(async () => {
+      if (!active) return;
+      setSellerProfileLoading(true);
+      setSellerProfileLoadError("");
+      try {
+        if (!sellerProfileToken) throw new Error("Votre session a expiré. Veuillez vous reconnecter.");
+        if (sellerProfileRequest.current?.token !== sellerProfileToken) {
+          const promise = (async () => {
+            const response = await fetch(BRIDGE_URL + "/sellers", {
+              headers: { Authorization: "Bearer " + sellerProfileToken },
+            });
+            if (response.status === 401 || response.status === 403) throw new Error("Votre session a expiré. Veuillez vous reconnecter.");
+            if (response.status === 404) throw new Error("Votre profil vendeur NovaPulse est introuvable.");
+            if (response.status === 409) throw new Error("Une anomalie a été détectée sur votre profil vendeur. Contactez NovaPulse.");
+            if (!response.ok) throw new Error("Le service est momentanément indisponible. Revenez à l’étape précédente puis réessayez.");
+            const data = await response.json().catch(() => null);
+            if (data?.ok !== true || !data.seller || typeof data.seller !== "object" || Array.isArray(data.seller)) {
+              throw new Error("Impossible de charger vos informations. Revenez à l’étape précédente puis réessayez.");
+            }
+            return data.seller;
+          })();
+          sellerProfileRequest.current = { token: sellerProfileToken, promise };
+        }
+        const seller = await sellerProfileRequest.current.promise;
+        if (!active) return;
+        setSellerForm(previous => Object.fromEntries(Object.keys(previous).map(field => [
+          field, typeof seller[field] === "string" || (field === "default_vat_rate" && typeof seller[field] === "number")
+            ? String(seller[field]) : "",
+        ])));
+        setSellerFormTouched({});
+        setSellerProfileLoadedToken(sellerProfileToken);
+      } catch (error) {
+        if (sellerProfileRequest.current?.token === sellerProfileToken) sellerProfileRequest.current = null;
+        if (active) setSellerProfileLoadError(error.message || "Impossible de charger vos informations. Veuillez réessayer.");
+      } finally {
+        if (active) setSellerProfileLoading(false);
+      }
+    });
+    return () => { active = false; };
+  }, [showActivationIntro, activationScreen, sellerProfileToken, sellerProfileReady]);
+
     
   const sellerCompanyErrors = {};
   const requiredSellerFields = {
@@ -537,14 +589,14 @@ function App() {
   }
 
   async function saveSellerProfessionalInfo() {
-    if (sellerSaving) return;
+    if (sellerSaving || sellerProfileLoading || !sellerProfileReady) return;
     setSellerSaveError("");
     if (!sellerCompanyFormValid) {
       setSellerFormTouched(Object.fromEntries(Object.keys(sellerForm).map(field => [field, true])));
       setSellerSaveError("Vérifiez les informations obligatoires avant de continuer.");
       return;
     }
-    if (!sellerActivationToken.trim()) {
+    if (!sellerProfileToken) {
       setSellerSaveError("Votre lien d’activation n’est plus valide. Veuillez utiliser le lien d’activation NovaPulse reçu.");
       return;
     }
@@ -554,7 +606,7 @@ function App() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + sellerActivationToken,
+          Authorization: "Bearer " + sellerProfileToken,
         },
         body: JSON.stringify({
           company_name: sellerForm.company_name,
@@ -2796,8 +2848,10 @@ return (
             </p>
           </div>
 
-          <div
+          <fieldset
+            disabled={!sellerProfileReady || sellerProfileLoading}
             style={{
+              border: 0, padding: 0, margin: 0, minWidth: 0,
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
               gap: 12,
@@ -3024,7 +3078,11 @@ return (
               }
             />
             {sellerCompanyFieldError("default_vat_rate")}
-          </div>
+          </fieldset>
+          {sellerProfileLoading && <div role="status">Chargement de vos informations...</div>}
+          {sellerProfileLoadError && (
+            <div role="alert" style={{ marginTop: 10, fontSize: 13, color: "#dc2626" }}>{sellerProfileLoadError}</div>
+          )}
 
           <div
             style={{
@@ -3050,7 +3108,7 @@ return (
 
             <button
               onClick={saveSellerProfessionalInfo}
-              disabled={!sellerCompanyFormValid || sellerSaving}
+              disabled={!sellerCompanyFormValid || sellerSaving || sellerProfileLoading || !sellerProfileReady}
               style={{
                 flex: 2,
                 height: 46,
@@ -3058,8 +3116,8 @@ return (
                 border: "none",
                 background: "linear-gradient(135deg, #7c3aed, #2563eb)",
                 color: "white",
-                cursor: sellerCompanyFormValid && !sellerSaving ? "pointer" : "not-allowed",
-                opacity: sellerCompanyFormValid && !sellerSaving ? 1 : 0.5,
+                cursor: sellerCompanyFormValid && !sellerSaving && sellerProfileReady && !sellerProfileLoading ? "pointer" : "not-allowed",
+                opacity: sellerCompanyFormValid && !sellerSaving && sellerProfileReady && !sellerProfileLoading ? 1 : 0.5,
                 fontWeight: 700,
               }}
             >
