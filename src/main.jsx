@@ -119,7 +119,7 @@ async function subscribePush() {
   console.log("Email:", email);
   console.log("Seller:", sellerSlug);
 
-  await fetch("https://novapulse-bridge.onrender.com/pwa/subscribe", {
+  await fetch("https://mini-jessie-bot-1.onrender.com/pwa/subscribe", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
