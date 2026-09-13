@@ -329,8 +329,60 @@ function App() {
   const [sellerIntroVideoError, setSellerIntroVideoError] = useState("");
   const [sellerWelcomeVideoError, setSellerWelcomeVideoError] = useState("");
   const [sellerLogoWarning, setSellerLogoWarning] = useState("");
+  const [sellerMediaSaving, setSellerMediaSaving] = useState(false);
+  const [sellerMediaSaveError, setSellerMediaSaveError] = useState("");
   const sellerMediaRequests = useRef({ logo: 0, intro: 0, welcome: 0 });
   const sellerMediaValid = Boolean(sellerLogo && sellerIntroVideo && sellerWelcomeVideo);
+
+  async function saveSellerMedia() {
+    if (sellerMediaSaving || sellerMediaRequests.current.saving) return;
+    sellerMediaRequests.current.saving = true;
+    setSellerMediaSaving(true);
+    setSellerMediaSaveError("");
+    try {
+      if (!sellerMediaValid) {
+        setSellerMediaSaveError("Veuillez sélectionner les trois médias valides avant de continuer.");
+        return;
+      }
+      const token = (sellerActivationToken.trim()
+        || sessionStorage.getItem("novapulse_seller_activation_token") || "").trim();
+      if (!token) {
+        setSellerMediaSaveError("Votre session a expiré. Veuillez vous reconnecter.");
+        return;
+      }
+      const body = new FormData();
+      body.append("avatar", sellerLogo);
+      body.append("intro_video", sellerIntroVideo);
+      body.append("beta_video", sellerWelcomeVideo);
+      const response = await fetch(BRIDGE_URL + "/seller-media", {
+        method: "POST",
+        headers: { Authorization: "Bearer " + token },
+        body,
+      });
+      const data = await response.json().catch(() => null);
+      if (response.status === 401 || response.status === 403) {
+        setSellerMediaSaveError("Votre session a expiré. Veuillez vous reconnecter.");
+        return;
+      }
+      if (response.status !== 200 || data?.ok !== true
+        || !["avatar", "intro_video", "beta_video"].every(key => typeof data?.media?.[key] === "string" && data.media[key].trim())) {
+        setSellerMediaSaveError(response.status === 400
+          ? "Les médias ont été refusés. Vérifiez leur format et leur taille."
+          : response.status === 409
+          ? "Un conflit empêche l’enregistrement. Veuillez réessayer."
+          : response.status >= 500
+          ? "Le service est momentanément indisponible. Veuillez réessayer."
+          : "Impossible d’enregistrer les médias. Veuillez réessayer.");
+        return;
+      }
+      setActivationScreen(current => current === "media" ? "activation" : current);
+    } catch {
+      setSellerMediaSaveError("Impossible d’enregistrer les médias. Vérifiez votre connexion et réessayez.");
+    } finally {
+      sellerMediaRequests.current.saving = false;
+      setSellerMediaSaving(false);
+    }
+  }
 
   function readSellerMediaMetadata(file, isImage) {
     return new Promise((resolve, reject) => {
@@ -3248,8 +3300,8 @@ return (
       </button>
 
       <button
-        disabled={!sellerMediaValid}
-        onClick={() => setActivationScreen("activation")}
+        disabled={!sellerMediaValid || sellerMediaSaving}
+        onClick={saveSellerMedia}
         style={{
           flex: 2,
           height: 46,
@@ -3257,14 +3309,19 @@ return (
           border: "none",
           background: "linear-gradient(135deg, #7c3aed, #2563eb)",
           color: "white",
-          cursor: sellerMediaValid ? "pointer" : "not-allowed",
-          opacity: sellerMediaValid ? 1 : 0.5,
+          cursor: sellerMediaSaving ? "wait" : sellerMediaValid ? "pointer" : "not-allowed",
+          opacity: sellerMediaValid && !sellerMediaSaving ? 1 : 0.5,
           fontWeight: 700,
         }}
       >
-        Continuer →
+        {sellerMediaSaving ? "Enregistrement..." : "Continuer →"}
       </button>
     </div>
+    {sellerMediaSaveError && (
+      <div role="alert" style={{ marginTop: 10, fontSize: 13, color: "#dc2626" }}>
+        {sellerMediaSaveError}
+      </div>
+    )}
   </>
 )}
 
