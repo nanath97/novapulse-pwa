@@ -15,6 +15,153 @@ import { io } from "socket.io-client";
 const BRIDGE_URL = "https://mini-jessie-bot-1.onrender.com";
 const NOVAPULSE_ACTIVATION_CALENDLY = "https://calendly.com/novapulse-online/nouvelle-reunion";
 
+function SellerServicesScreen({ token, onBack, onContinue }) {
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [form, setForm] = useState(null);
+  const [operation, setOperation] = useState("");
+  const [reload, setReload] = useState(0);
+  const busy = useRef(false);
+  const sessionMessage = "Votre session d’activation n’est plus valide. Fermez cette fenêtre et relancez l’activation NovaPulse.";
+  const buttonStyle = { padding: "12px 16px", borderRadius: 12, border: "1px solid #d1d5db", background: "white", fontWeight: 600, cursor: "pointer" };
+  const primaryStyle = { ...buttonStyle, border: "none", background: "linear-gradient(135deg, #7c3aed, #2563eb)", color: "white" };
+
+  useEffect(() => {
+    const controller = new AbortController();
+    async function load() {
+      try {
+        if (!token.trim()) {
+          setError(sessionMessage);
+          return;
+        }
+        const response = await fetch(BRIDGE_URL + "/seller-services", {
+          headers: { Authorization: "Bearer " + token },
+          signal: controller.signal,
+        });
+        if (controller.signal.aborted) return;
+        if (response.status === 401 || response.status === 403) {
+          setError(sessionMessage);
+          return;
+        }
+        if (!response.ok) throw new Error();
+        const data = await response.json();
+        if (!data.ok || !Array.isArray(data.services)) throw new Error();
+        if (!controller.signal.aborted) setServices(data.services);
+      } catch {
+        if (!controller.signal.aborted) setError("Impossible de charger vos services. Veuillez réessayer.");
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
+      }
+    }
+    load();
+    return () => controller.abort();
+  }, [token, reload]);
+
+  async function saveService(event) {
+    event.preventDefault();
+    if (!form || busy.current || loading) return;
+    const name = form.name.trim(), price = form.price.trim();
+    if (!name || !price) {
+      setError("Renseignez le nom et le prix du service.");
+      return;
+    }
+    await mutateService(form.id ? "PUT" : "POST", form.id, form.id
+      ? { name, price }
+      : { name, price, active: true, sort_order: services.reduce((next, service) => Math.max(next, service.sort_order + 1), 0) });
+  }
+
+  async function deleteService(service) {
+    if (busy.current || loading) return;
+    if (!window.confirm(`Supprimer le service « ${service.name} » ?`)) return;
+    await mutateService("DELETE", service.id);
+  }
+
+  async function mutateService(method, id, fields) {
+    if (busy.current) return;
+    setError("");
+    if (!token.trim()) {
+      setError(sessionMessage);
+      return;
+    }
+    busy.current = true;
+    setOperation(method === "DELETE" ? id : "save");
+    try {
+      const response = await fetch(BRIDGE_URL + "/seller-services" + (id ? "/" + encodeURIComponent(id) : ""), {
+        method,
+        headers: { Authorization: "Bearer " + token, ...(fields ? { "Content-Type": "application/json" } : {}) },
+        ...(fields ? { body: JSON.stringify(fields) } : {}),
+      });
+      if (response.status === 401 || response.status === 403) {
+        setError(sessionMessage);
+        return;
+      }
+      if (!response.ok) throw new Error();
+      const data = await response.json();
+      if (!data.ok || (method !== "DELETE" && !data.service?.id)) throw new Error();
+      setServices(previous => method === "DELETE"
+        ? previous.filter(service => service.id !== id)
+        : method === "PUT"
+        ? previous.map(service => service.id === id ? data.service : service)
+        : [...previous, data.service]);
+      if (method !== "DELETE" || form?.id === id) setForm(null);
+    } catch {
+      setError(method === "DELETE"
+        ? "Impossible de supprimer ce service. Veuillez réessayer."
+        : "Impossible d’enregistrer ce service. Veuillez réessayer.");
+    } finally {
+      busy.current = false;
+      setOperation("");
+    }
+  }
+
+  return (
+    <section aria-labelledby="seller-services-title" aria-busy={loading || Boolean(operation)}>
+      <div style={{ textAlign: "center", marginBottom: 20 }}>
+        <h2 id="seller-services-title" style={{ marginBottom: 8 }}>Vos services</h2>
+        <p style={{ margin: 0, color: "#64748b", lineHeight: 1.5 }}>Ajoutez les prestations que vos clients pourront retrouver dans NovaPulse.</p>
+      </div>
+      {loading && <p role="status">Chargement de vos services…</p>}
+      {error && <div role="alert" style={{ color: "#dc2626", marginBottom: 12 }}>{error}</div>}
+      {!loading && error && !operation && !form && (
+        <button type="button" style={buttonStyle} onClick={() => { setError(""); setLoading(true); setReload(value => value + 1); }}>Réessayer le chargement</button>
+      )}
+      {!loading && !error && services.length === 0 && <p style={{ color: "#64748b" }}>Vous n’avez pas encore ajouté de service. Vous pouvez aussi continuer et le faire plus tard.</p>}
+      {!loading && <div style={{ display: "grid", gap: 12, marginBottom: 16 }}>
+        {services.map(service => (
+          <div key={service.id} style={{ padding: 16, border: "1px solid #e5e7eb", borderRadius: 14, background: "#f8fafc", overflowWrap: "anywhere" }}>
+            <strong>{service.name}</strong>
+            <p style={{ margin: "6px 0 12px", color: "#64748b" }}>{service.price}</p>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+              <button type="button" disabled={Boolean(operation) || Boolean(form)} style={buttonStyle} onClick={() => { setError(""); setForm({ id: service.id, name: service.name, price: service.price }); }}>Modifier</button>
+              <button type="button" disabled={Boolean(operation) || Boolean(form)} style={{ ...buttonStyle, color: "#b91c1c" }} onClick={() => deleteService(service)}>{operation === service.id ? "Suppression…" : "Supprimer"}</button>
+            </div>
+          </div>
+        ))}
+      </div>}
+      {form ? (
+        <form onSubmit={saveService} style={{ display: "grid", gap: 12, padding: 16, border: "1px solid #e5e7eb", borderRadius: 14 }}>
+          <h3 style={{ margin: 0 }}>{form.id ? "Modifier le service" : "Ajouter un service"}</h3>
+          <label htmlFor="seller-service-name">Nom du service</label>
+          <input id="seller-service-name" className="input" placeholder="Création de logo" required disabled={Boolean(operation)} value={form.name} onChange={event => setForm({ ...form, name: event.target.value })} />
+          <label htmlFor="seller-service-price">Prix</label>
+          <input id="seller-service-price" className="input" type="text" placeholder="À partir de 150 €" required disabled={Boolean(operation)} value={form.price} onChange={event => setForm({ ...form, price: event.target.value })} />
+          <div style={{ display: "flex", gap: 10 }}>
+            <button type="button" style={buttonStyle} disabled={Boolean(operation)} onClick={() => { setForm(null); setError(""); }}>Annuler</button>
+            <button type="submit" style={primaryStyle} disabled={Boolean(operation) || !form.name.trim() || !form.price.trim()}>{operation === "save" ? "Enregistrement…" : "Enregistrer"}</button>
+          </div>
+        </form>
+      ) : (
+        <button type="button" style={buttonStyle} disabled={loading || Boolean(operation) || Boolean(error) || !token.trim()} onClick={() => setForm({ id: null, name: "", price: "" })}>+ Ajouter un service</button>
+      )}
+      <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
+        <button type="button" style={{ ...buttonStyle, flex: 1 }} disabled={Boolean(operation)} onClick={onBack}>← Retour</button>
+        <button type="button" style={{ ...primaryStyle, flex: 2 }} disabled={loading || Boolean(operation) || Boolean(form) || !token.trim()} onClick={onContinue}>Continuer →</button>
+      </div>
+    </section>
+  );
+}
+
 function App() {
   
   const socketRef = useRef(null);
@@ -376,7 +523,7 @@ function App() {
         }),
       });
       if (response.ok) {
-        setActivationScreen("media");
+        setActivationScreen("services");
         return;
       }
       let message = "Impossible d’enregistrer vos informations. Veuillez réessayer.";
@@ -2874,6 +3021,15 @@ return (
           )}
         </>
       )}
+
+{activationScreen === "services" && (
+  <SellerServicesScreen
+    key={sellerActivationToken}
+    token={sellerActivationToken}
+    onBack={() => setActivationScreen("company")}
+    onContinue={() => setActivationScreen("media")}
+  />
+)}
 
 {activationScreen === "media" && (
   <>
