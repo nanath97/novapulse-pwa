@@ -2224,3 +2224,11 @@ html, body, #root {
     line-height: normal !important;
   }
 }
+
+/* Seller onboarding - placeholders Services */
+.seller-service-input::placeholder {
+  color: #94a3b8;
+  -webkit-text-fill-color: #94a3b8;
+  font-style: italic;
+  opacity: 1;
+}

@@ -143,9 +143,9 @@ function SellerServicesScreen({ token, onBack, onContinue }) {
         <form onSubmit={saveService} style={{ display: "grid", gap: 12, padding: 16, border: "1px solid #e5e7eb", borderRadius: 14 }}>
           <h3 style={{ margin: 0 }}>{form.id ? "Modifier le service" : "Ajouter un service"}</h3>
           <label htmlFor="seller-service-name">Nom du service</label>
-          <input id="seller-service-name" className="input" placeholder="Création de logo" required disabled={Boolean(operation)} value={form.name} onChange={event => setForm({ ...form, name: event.target.value })} />
+          <input id="seller-service-name" className="input seller-service-input" placeholder="Création de logo" required disabled={Boolean(operation)} value={form.name} onChange={event => setForm({ ...form, name: event.target.value })} />
           <label htmlFor="seller-service-price">Prix</label>
-          <input id="seller-service-price" className="input" type="text" placeholder="À partir de 150 €" required disabled={Boolean(operation)} value={form.price} onChange={event => setForm({ ...form, price: event.target.value })} />
+          <input id="seller-service-price" className="input seller-service-input" type="text" placeholder="À partir de 150 €" required disabled={Boolean(operation)} value={form.price} onChange={event => setForm({ ...form, price: event.target.value })} />
           <div style={{ display: "flex", gap: 10 }}>
             <button type="button" style={buttonStyle} disabled={Boolean(operation)} onClick={() => { setForm(null); setError(""); }}>Annuler</button>
             <button type="submit" style={primaryStyle} disabled={Boolean(operation) || !form.name.trim() || !form.price.trim()}>{operation === "save" ? "Enregistrement…" : "Enregistrer"}</button>
@@ -3374,6 +3374,17 @@ return (
       >
         {sellerMediaSaving ? "Enregistrement..." : "Continuer →"}
       </button>
+    </div>
+    <div
+      style={{
+        marginTop: 8,
+        textAlign: "center",
+        fontSize: 12,
+        lineHeight: 1.4,
+        color: "#64748b",
+      }}
+    >
+      L’envoi de vos médias peut prendre jusqu’à environ 1 min 30 selon leur taille. Ne fermez pas cette page pendant l’enregistrement.
     </div>
     {sellerMediaSaveError && (
       <div role="alert" style={{ marginTop: 10, fontSize: 13, color: "#dc2626" }}>
