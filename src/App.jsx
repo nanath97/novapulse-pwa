@@ -1878,62 +1878,6 @@ return (
 
               </div>
 
-              {/* PRODUITS DIGITAUX */}
-              {sellerConfig?.digitalProducts?.length > 0 && (
-                <div className="digital-products-section">
-
-                  <h4 className="digital-title">
-                    Produits digitaux
-                  </h4>
-
-                  <div className="digital-products-grid">
-
-                    {sellerConfig.digitalProducts.map((product, index) => (
-                      <div className="digital-product-card" key={index}>
-
-                        {product.image && (
-                          <img
-                            src={product.image}
-                            alt={product.title}
-                            className="digital-product-image"
-                          />
-                        )}
-
-                        <div className="digital-product-content">
-
-                          <div className="digital-product-header">
-
-                            <h5>{product.title}</h5>
-
-                            <span className="digital-product-price">
-                              {product.price}
-                            </span>
-
-                          </div>
-
-                          <p className="digital-product-description">
-                            {product.description}
-                          </p>
-
-                          <a
-                            href={product.paymentLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="digital-product-button"
-                          >
-                            Acheter maintenant
-                          </a>
-
-                        </div>
-
-                      </div>
-                    ))}
-
-                  </div>
-
-                </div>
-              )}
-
               {/* VALIDATION EN BAS */}
               {isValidated && (
                 <>
