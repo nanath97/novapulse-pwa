@@ -145,7 +145,7 @@ function SellerServicesScreen({ token, onBack, onContinue }) {
           <label htmlFor="seller-service-name">Nom du service</label>
           <input id="seller-service-name" className="input seller-service-input" placeholder="Création de logo" required disabled={Boolean(operation)} value={form.name} onChange={event => setForm({ ...form, name: event.target.value })} />
           <label htmlFor="seller-service-price">Prix</label>
-          <input id="seller-service-price" className="input seller-service-input" type="text" placeholder="À partir de 150 €" required disabled={Boolean(operation)} value={form.price} onChange={event => setForm({ ...form, price: event.target.value })} />
+          <input id="seller-service-price" className="input seller-service-input" type="text" placeholder="50 €" required disabled={Boolean(operation)} value={form.price} onChange={event => setForm({ ...form, price: event.target.value })} />
           <div style={{ display: "flex", gap: 10 }}>
             <button type="button" style={buttonStyle} disabled={Boolean(operation)} onClick={() => { setForm(null); setError(""); }}>Annuler</button>
             <button type="submit" style={primaryStyle} disabled={Boolean(operation) || !form.name.trim() || !form.price.trim()}>{operation === "save" ? "Enregistrement…" : "Enregistrer"}</button>
