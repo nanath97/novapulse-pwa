@@ -962,23 +962,35 @@ console.log("🌐 sellerSlug détecté depuis URL:", sellerSlug);
   notificationSoundRef.current.volume = 0.7;
 }, []);
   useEffect(() => {
+    const events = ["pointerdown", "touchstart", "click"];
+
+    const cleanupUnlockListeners = () => {
+      events.forEach((eventName) => {
+        window.removeEventListener(eventName, unlockAudio);
+      });
+    };
+
     const unlockAudio = () => {
       const audio = notificationSoundRef.current;
       if (!audio) return;
 
-      audio.play().then(() => {
-        audio.pause();
-        audio.currentTime = 0;
-      }).catch(() => {});
-
-      window.removeEventListener("click", unlockAudio);
+      audio.play()
+        .then(() => {
+          audio.pause();
+          audio.currentTime = 0;
+          cleanupUnlockListeners();
+          console.log("🔊 Notification audio unlocked");
+        })
+        .catch((err) => {
+          console.warn("⚠️ Notification audio unlock blocked:", err?.message || err);
+        });
     };
 
-    window.addEventListener("click", unlockAudio);
+    events.forEach((eventName) => {
+      window.addEventListener(eventName, unlockAudio, { passive: true });
+    });
 
-    return () => {
-      window.removeEventListener("click", unlockAudio);
-    };
+    return cleanupUnlockListeners;
   }, []);
 
 useEffect(() => {
@@ -1083,8 +1095,8 @@ const playNotificationSound = () => {
     const audio = notificationSoundRef.current;
     if (audio) {
       audio.currentTime = 0;
-      audio.play().catch(() => {
-        // Certains navigateurs bloquent sans interaction user
+      audio.play().catch((err) => {
+        console.warn("⚠️ Notification sound blocked:", err?.message || err);
       });
     }
   } catch (e) {
