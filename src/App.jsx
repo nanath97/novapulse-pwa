@@ -21,6 +21,18 @@ function documentDownload(url, name) {
     : `${BRIDGE_URL}/pwa/download?url=${encodeURIComponent(url)}&name=${encodeURIComponent(name)}`;
 }
 
+function mergeQuoteHistory(history, current) {
+  const seen = new Set();
+  // Airtable owns quote data; retain live quotes absent from an older HTTP snapshot.
+  return [...history, ...current.filter((m) => m.isQuote === true && m.quoteId)]
+    .filter((message) => {
+      if (message.isQuote !== true || !message.quoteId) return true;
+      if (seen.has(message.quoteId)) return false;
+      seen.add(message.quoteId);
+      return true;
+    });
+}
+
 const BRIDGE_URL = "https://mini-jessie-bot-1.onrender.com";
 const NOVAPULSE_ACTIVATION_CALENDLY = "https://calendly.com/novapulse-online/nouvelle-reunion";
 
@@ -201,7 +213,6 @@ function App() {
   const [isCheckingStorage, setIsCheckingStorage] = useState(true);
   const [messages, setMessages] = useState([]);
   const [topicId, setTopicId] = useState(null);
-  const [historyLoaded, setHistoryLoaded] = useState(false);
   const [missedCount, setMissedCount] = useState(0);
   const [showServices, setShowServices] = useState(false);
   const [sellerConfig, setSellerConfig] = useState(null);
@@ -1217,7 +1228,11 @@ useEffect(() => {
   const quoteId = data?.quoteId || null;
   const isQuote = data?.isQuote === true;
 
-  setMessages((prev) => [
+  setMessages((prev) => {
+    if (isQuote && quoteId && prev.some((message) => message.quoteId === quoteId)) {
+      return prev;
+    }
+    return [
     ...prev,
     {
       from: "admin",
@@ -1228,8 +1243,10 @@ useEffect(() => {
       text,
       quoteId,
       isQuote,
+      quoteStatus: data?.quoteStatus,
     },
-  ]);
+    ];
+  });
 
   playNotificationSound();
   if (document.visibilityState !== "visible") {
@@ -1302,7 +1319,7 @@ useEffect(() => {
     } catch (e) {}
     socketRef.current = null;
   };
-}, [isIdentified, clientEmail, sellerSlug, historyLoaded]);
+}, [isIdentified, clientEmail, sellerSlug]);
 
 const loadPurchasedGallery = async () => {
   if (!clientEmail) return;
@@ -1404,7 +1421,6 @@ const loadPurchasedGallery = async () => {
         setTopicId(newTopicId);
         setIsNewClient(Boolean(data.isNew));
         setIsIdentified(true);
-        setHistoryLoaded(false);
         setMessages([]);
 
         localStorage.setItem("pwa_client_email", cleanEmail);
@@ -1437,8 +1453,7 @@ const loadPurchasedGallery = async () => {
     const data = await res.json();
 
     if (data?.success) {
-      setMessages(data.history || []);
-      setHistoryLoaded(true);
+      setMessages((prev) => mergeQuoteHistory(data.history || [], prev));
 
       // reset du compteur UNIQUEMENT quand l’utilisateur charge l’historique
       setMissedCount(0);
