@@ -12,6 +12,15 @@ import { io } from "socket.io-client";
 
 
 
+function mediaSource(url) {
+  return url?.startsWith('/pwa/telegram-media/') ? BRIDGE_URL + url : url;
+}
+function documentDownload(url, name) {
+  return url?.startsWith('/pwa/telegram-media/')
+    ? mediaSource(url)
+    : `${BRIDGE_URL}/pwa/download?url=${encodeURIComponent(url)}&name=${encodeURIComponent(name)}`;
+}
+
 const BRIDGE_URL = "https://mini-jessie-bot-1.onrender.com";
 const NOVAPULSE_ACTIVATION_CALENDLY = "https://calendly.com/novapulse-online/nouvelle-reunion";
 
@@ -2154,7 +2163,7 @@ return (
 
                   {msg.mediaType === "photo" && (
                     <img
-                      src={msg.url}
+                      src={mediaSource(msg.url)}
                       alt="photo"
                       className="unlocked-image"
                     />
@@ -2162,7 +2171,7 @@ return (
 
                   {msg.mediaType === "video" && (
                     <video
-                      src={msg.url}
+                      src={mediaSource(msg.url)}
                       controls
                       className="unlocked-image"
                     />
@@ -2177,9 +2186,7 @@ return (
                   ) && (
                     <>
                       <a
-                        href={`${BRIDGE_URL}/pwa/download?url=${encodeURIComponent(
-                          msg.url
-                        )}&name=${encodeURIComponent(msg.fileName || "apercu.pdf")}`}
+                        href={documentDownload(msg.url, msg.fileName || "apercu.pdf")}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
