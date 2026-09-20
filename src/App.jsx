@@ -1129,6 +1129,9 @@ useEffect(() => {
 });
 // 👁 Envoi état visibilité initial + listener
   const handleVisibility = () => {
+    if (document.visibilityState === "visible") {
+      setMissedCount(0);
+    }
     socket.emit("pwa_visibility", {
       isVisible: document.visibilityState === "visible"
     });
@@ -1144,7 +1147,9 @@ useEffect(() => {
   const text = data?.text ?? "";
   setMessages((prev) => [...prev, { text, from: "admin", type: "text", createdTime: new Date().toISOString()}]);
   playNotificationSound();
-  setMissedCount((c) => c + 1);
+  if (document.visibilityState !== "visible") {
+    setMissedCount((c) => c + 1);
+  }
 });
 
   socket.on("admin_media", (data) => {
@@ -1172,7 +1177,9 @@ useEffect(() => {
   ]);
 
   playNotificationSound();
-  setMissedCount((c) => c + 1);
+  if (document.visibilityState !== "visible") {
+    setMissedCount((c) => c + 1);
+  }
 });
 
   socket.on("paid_content_locked", (data) => {
@@ -1187,7 +1194,9 @@ useEffect(() => {
       },
     ]);
     playNotificationSound();
+    if (document.visibilityState !== "visible") {
     setMissedCount((c) => c + 1);
+  }
 });
 
   socket.on("simple_payment_request", (data) => {
@@ -1202,7 +1211,9 @@ useEffect(() => {
       },
     ]);
     playNotificationSound();
+    if (document.visibilityState !== "visible") {
     setMissedCount((c) => c + 1);
+  }
 });
 
   socket.on("paid_content_unlocked", (data) => {
@@ -1219,7 +1230,9 @@ useEffect(() => {
       },
     ]);
     playNotificationSound();
+    if (document.visibilityState !== "visible") {
     setMissedCount((c) => c + 1);
+  }
 });
 
   socket.on("disconnect", (reason) => {
@@ -1677,9 +1690,10 @@ return (
           {missedCount > 0 && (
             <span
               style={{
-                position: "absolute",
-                top: -8,
-                right: -30,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginLeft: 6,
                 background: "#ff3b3b",
                 color: "white",
                 borderRadius: "50%",
