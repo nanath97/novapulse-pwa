@@ -15,6 +15,24 @@ import { io } from "socket.io-client";
 const BRIDGE_URL = "https://mini-jessie-bot-1.onrender.com";
 const NOVAPULSE_ACTIVATION_CALENDLY = "https://calendly.com/novapulse-online/nouvelle-reunion";
 
+const CLIENT_MEDIA_ERRORS = {
+  VIDEO_TOO_LARGE: "Cette vidéo dépasse la limite de 20 Mio. Choisissez une vidéo plus légère.",
+  FILE_TOO_LARGE: "Ce fichier dépasse la limite de 50 Mio. Choisissez un fichier plus léger.",
+};
+
+function classifyClientMedia(file) {
+  const ext = /\.([^.]+)$/.exec(file.name || "")?.[1].toLowerCase() || "";
+  const mime = (file.type || "").split(";", 1)[0].trim().toLowerCase();
+  if (["mp4", "mov", "webm", "m4v"].includes(ext) || mime.startsWith("video/")) return "video";
+  if (["pdf", "svg", "ai", "eps", "psd", "zip"].includes(ext) ||
+    ["image/svg+xml", "image/vnd.adobe.photoshop", "image/x-photoshop", "image/psd",
+      "image/x-eps", "image/eps", "application/postscript", "application/pdf",
+      "application/illustrator", "application/vnd.adobe.illustrator", "application/eps",
+      "application/x-eps", "application/zip", "application/x-zip-compressed"].includes(mime)) return "document";
+  if (["png", "jpg", "jpeg"].includes(ext) || ["image/png", "image/jpeg"].includes(mime)) return "photo";
+  return "document";
+}
+
 function SellerServicesScreen({ token, onBack, onContinue }) {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -838,24 +856,30 @@ const handleClientMedia = async (e) => {
   console.log("🏷️ sellerSlug:", sellerSlug);
 
   const file = e.target.files?.[0];
+  // Allow selecting the same file again after a rejected or failed upload.
+  e.target.value = "";
   console.log("📁 File selected:", file);
 
   if (!file) return;
   if (!clientEmail) return;
 
-  try {
-    let localType = "photo";
-    if (file.type.startsWith("video")) localType = "video";
-    else if (file.type.includes("pdf")) localType = "document";
+  const mediaType = classifyClientMedia(file);
+  const limit = (mediaType === "video" ? 20 : 50) * 1024 * 1024;
+  if (file.size > limit) {
+    alert(CLIENT_MEDIA_ERRORS[mediaType === "video" ? "VIDEO_TOO_LARGE" : "FILE_TOO_LARGE"]);
+    return;
+  }
 
-    const localUrl = URL.createObjectURL(file);
+  let localUrl;
+  try {
+    localUrl = URL.createObjectURL(file);
 
     setMessages((prev) => [
       ...prev,
       {
         from: "client",
         type: "media",
-        mediaType: localType,
+        mediaType,
         url: localUrl,
         fileName: file.name,
         text: "",
@@ -871,19 +895,19 @@ const handleClientMedia = async (e) => {
       body: formData,
     });
 
-    const uploadData = await uploadResp.json();
+    const uploadData = await uploadResp.json().catch(() => null);
+    if (uploadResp.status === 413) {
+      const code = uploadData?.error;
+      throw new Error(Object.hasOwn(CLIENT_MEDIA_ERRORS, code) ? CLIENT_MEDIA_ERRORS[code] :
+        "Le serveur a refusé ce fichier car il est trop volumineux. Limites : 20 Mio par vidéo, 50 Mio pour les autres fichiers.");
+    }
+    if (!uploadResp.ok || uploadData?.success !== true ||
+      typeof uploadData?.mediaUrl !== "string" || !uploadData.mediaUrl.trim()) {
+      throw new Error("Impossible de téléverser le fichier. Vérifiez votre connexion et réessayez.");
+    }
     const mediaUrl = uploadData.mediaUrl;
 
-    if (!mediaUrl) {
-      console.error("❌ mediaUrl missing in upload response");
-      return;
-    }
-
-    let mediaType = "photo";
-    if (file.type.startsWith("video")) mediaType = "video";
-    else mediaType = "document";
-
-    await fetch(`${BRIDGE_URL}/pwa/client-send-media`, {
+    const sendResp = await fetch(`${BRIDGE_URL}/pwa/client-send-media`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -896,9 +920,19 @@ const handleClientMedia = async (e) => {
         fileName: file.name,
       }),
     });
+    const sendData = await sendResp.json().catch(() => null);
+    if (!sendResp.ok || sendData?.success !== true) {
+      throw new Error("Le fichier a été téléversé, mais son envoi a échoué. Veuillez réessayer.");
+    }
+    setMessages(prev => prev.map(message => message.url === localUrl ? { ...message, url: mediaUrl } : message));
 
   } catch (err) {
     console.error("❌ handleClientMedia error:", err);
+    if (localUrl) setMessages(prev => prev.filter(message => message.url !== localUrl));
+    alert(err instanceof TypeError ? "Impossible d’envoyer le fichier. Vérifiez votre connexion et réessayez." :
+      err.message || "Impossible d’envoyer le fichier. Veuillez réessayer.");
+  } finally {
+    if (localUrl) URL.revokeObjectURL(localUrl);
   }
 };
 
