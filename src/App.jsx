@@ -194,7 +194,7 @@ function SellerServicesScreen({ token, onBack, onContinue }) {
         <button type="button" style={buttonStyle} disabled={loading || Boolean(operation) || Boolean(error) || !token.trim()} onClick={() => setForm({ id: null, name: "", price: "" })}>+ Ajouter un service</button>
       )}
       <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
-        <button type="button" style={{ ...buttonStyle, flex: 1 }} disabled={Boolean(operation)} onClick={onBack}>← Retour</button>
+        <button className="activation-back-button" type="button" style={{ ...buttonStyle, flex: 1 }} disabled={Boolean(operation)} onClick={onBack}>← Retour</button>
         <button type="button" style={{ ...primaryStyle, flex: 2 }} disabled={loading || Boolean(operation) || Boolean(form) || !token.trim()} onClick={onContinue}>Continuer →</button>
       </div>
     </section>
@@ -3117,7 +3117,7 @@ return (
               marginTop: 20,
             }}
           >
-            <button
+            <button className="activation-back-button"
               onClick={() => setActivationScreen("intro")}
               style={{
                 flex: 1,
@@ -3368,7 +3368,7 @@ return (
         marginTop: 20,
       }}
     >
-      <button
+      <button className="activation-back-button"
         onClick={() => setActivationScreen("company")}
         style={{
           flex: 1,
@@ -3465,7 +3465,7 @@ return (
     </label>
 
     <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
-      <button
+      <button className="activation-back-button"
         type="button"
         onClick={() => setActivationScreen("media")}
         style={{ flex: 1, height: 46, borderRadius: 12, border: "1px solid #d1d5db", background: "white", cursor: "pointer", fontWeight: 600 }}

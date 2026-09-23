@@ -2268,3 +2268,17 @@ html, body, #root {
     margin: auto;
   }
 }
+
+/* Keep activation back labels centered on one line on mobile only. */
+@media (max-width: 768px) {
+  .activation-back-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    line-height: 1.2;
+    /* Override the Services button inline horizontal padding only. */
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+}
